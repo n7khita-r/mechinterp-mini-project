@@ -338,18 +338,31 @@ make slides-zip                          # sources + PDF as presentation/slides.
   plus `\reading{}` — **the interpretation line under every table.**
 * **Do not ship a table without a `\reading{}`.** An unfamiliar audience needs
   the interpretation, not the numbers.
-* The deck is 26 frames, ordered: question → what an FV is → block-diagram
-  overview → data → method → controls → results by research question → heads →
-  logit lens → 12B → interpretation → limitations → changes → challenges →
-  future work.
+* The deck is 34 frames: question → what an FV is → block-diagram overview →
+  data → method → controls → results by research question → heads → logit lens
+  → 12B → **Full 4B results (8 frames, p22–29)** → interpretation →
+  limitations → changes → challenges → future work.
+* **The "Full 4B results" section (p22–29)** carries every experiment class we
+  ran at 4B: all-15-task baselines, all-15-task intervention with CIs, all 50
+  control rows, the transfer matrix, the layer sweep, the four causal-mediation
+  maps, vector similarity, and paired gaps with bootstrap CIs. Tables are
+  `\input{}` from `presentation/tables/` (copies of `paper/tables/`), so
+  regenerating the analysis updates the slides.
+* Tables are wrapped in `\adjustbox{max width=..., max totalheight=...}` so a
+  wide table scales to the frame width and a tall one to its height. Plain
+  `\resizebox` can only constrain one and silently overflows the other.
+* `\reading{}` starts with `\par` deliberately — without it the interpretation
+  text wraps *around* a centred table instead of sitting below it.
 
 **Traps:**
 
 * **Do not run `09_report.py` for 12B.** It writes `paper/tables/*.tex` keyed
   by *stage*, not model, and would overwrite the 4B tables the deck cites.
   `run_subset.sh` omits it by default.
-* `paper/tables/tier.tex` is the **degenerate** one-row table from the core-only
-  run. The real one is `tier_accuracy.tex`. Drop `tier.tex` and `tier.pdf`.
+* Tier tables are now **per-model** (`tier_accuracy_gemma3_4b_h200.tex`,
+  `..._12b_...`). They previously shared one filename, and the 12B run
+  silently overwrote the 4B numbers — the same clobbering hazard as
+  `09_report`. Regenerate with `scripts/tier_report.py`; no GPU needed.
 * `logit_lens.pdf/png` in `paper/figures/` are **stale** — stage 07 never ran
   for 4B. The 12B logit-lens numbers in §5g come from
   `results/07_logitlens/gemma3_12b_h200/`.
@@ -365,7 +378,9 @@ make slides-zip                          # sources + PDF as presentation/slides.
   fix, tiers done across all 15 tasks.
 * **12B: complete** for the 5-task subset — baselines, mediation, FVs,
   intervention, transfer, logit lens, controls. No tier run (see §5f).
-* **Presentation: complete**, 26 frames, builds clean.
+* **Presentation: complete**, 34 frames, builds clean, zero overfull boxes.
+  `make slides-zip` produces a self-contained bundle (verified by building it
+  in an empty directory).
 * **Paper: not started.** ACL template (`acl.sty`, `acl_natbib.bst` already in
   `paper/`), LuaLaTeX, 4–8 pages, tables generated and `\input{}`-ready in
   `paper/tables/`.

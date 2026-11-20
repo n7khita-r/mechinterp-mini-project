@@ -29,6 +29,10 @@
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
+% max width AND max height: a wide table scales to the frame width, a tall one
+% to the frame height, whichever binds first -- plain \resizebox can only do one
+% and silently overflows the other.
+\usepackage[export]{adjustbox}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 
@@ -45,7 +49,10 @@
 \newcommand{\cond}[1]{\textsc{#1}}
 % Every results table carries its interpretation directly beneath it.
 \newcommand{\reading}[1]{%
-  \vspace{1mm}{\small\textbf{What this says:} #1}}
+  \par\vspace{1mm}{\small\textbf{What this says:} #1\par}}
+% Compact variant, for frames where a dense table leaves little room.
+\newcommand{\readingsm}[1]{%
+  \par\vspace{0.5mm}{\footnotesize\textbf{What this says:} #1\par}}
 
 \title[Where Does Code-Mixing Break the Task?]{Where Does Code-Mixing Break the Task?\\Function Vectors in Telugu, Romanized Telugu and Tenglish}
 \author[2024114003, 2025701032]{Nikhita Ravi (2024114003) \and Krishna Kartheek (2025701032)}
@@ -75,6 +82,7 @@
       \begin{enumerate}\small\tight
         \setcounter{enumi}{5}
         \item Results, one research question at a time
+        \item Full 4B results: all tasks, all controls
         \item What we think it means
         \item Limitations, changes, challenges
         \item Future work
@@ -804,6 +812,174 @@
     specifically, code-mixing damages what Telugu keeps in its
     \emph{grammatical endings}, while leaving what it keeps in
     \emph{recognisable names} intact.}
+\end{frame}
+
+
+% ===================== FULL 4B RESULTS ==================================== %
+
+\begin{frame}{All 15 tasks: baseline accuracy}
+  \centering
+  \src{10-shot accuracy and items kept by the competence filter, Gemma 3 4B,
+    \texttt{core} tier. ``kept'' is the control: items the model already gets
+    right with examples, which are the only ones we go on to test.}\\[1mm]
+  {\setlength{\tabcolsep}{3.2pt}%
+   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
+     \input{tables/baselines.tex}}}
+  \reading{Extraction tasks stay near ceiling in every condition. Word-level
+    tasks (antonym, next item) lose most of their items under romanization ---
+    antonym keeps 4 of 167 --- which is itself the finding: the model cannot do
+    the task at all there, so there is nothing left to intervene on. Cells with
+    single-digit ``kept'' are reported but carry no weight.}
+\end{frame}
+
+\begin{frame}{All 15 tasks: does the vector restore the task?}
+  \centering
+  \src{Held-out zero-shot accuracy with the function vector, 95\% bootstrap CIs,
+    Gemma 3 4B}\\[1mm]
+  {\setlength{\tabcolsep}{3.0pt}%
+   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
+     \input{tables/fv_strength.tex}}}
+  \reading{The vector works across the board in English and Telugu script, and
+    the \cond{rom}/\cond{tg} collapse is concentrated in the tasks whose answer
+    lives in word endings (\texttt{extract\_verb} 0.21/0.30,
+    \texttt{subject\_gender} 0.00/0.00) rather than in tasks whose answer is a
+    name (\texttt{extract\_person} 0.85/0.93). Wide intervals mark the small
+    cells --- \texttt{antonym}/\cond{rom} is [0.00,\,1.00] on 3 items.}
+\end{frame}
+
+\begin{frame}{All controls, every cell}
+  \centering
+  \src{Gemma 3 4B. A result must beat all three controls.}\\[0.5mm]
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}\centering
+      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.60\textheight}{\input{tables/controls_1of2.tex}}}
+    \end{column}
+    \begin{column}{0.49\textwidth}\centering
+      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.60\textheight}{\input{tables/controls_2of2.tex}}}
+    \end{column}
+  \end{columns}
+  \readingsm{Where the vector works the random column is flat (0.00--0.07): the
+    effect is \emph{direction}, not perturbation. The unrelated-task column is
+    stricter, and a few cells fail it --- \texttt{present\_past}/\cond{te}
+    scores 1.00 with \emph{either} vector.}
+\end{frame}
+
+\begin{frame}{Transfer: does a vector built in one condition work in another?}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \centering
+      \src{Rows: condition the vector was built from.\\Columns: condition of the
+        prompt it was injected into.}\\[1.5mm]
+      {\setlength{\tabcolsep}{4pt}%
+       \adjustbox{max width=\linewidth, max totalheight=0.42\textheight}{%
+         \input{tables/transfer.tex}}}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{itemize}\footnotesize\tight
+        \item \textbf{The diagonal wins everywhere.} Each condition's own
+              vector is the best vector for it.
+        \item But the off-diagonal is far from zero --- an English vector still
+              reaches 0.50 on Telugu prompts, against 0.74 for Telugu's own.
+        \item \cond{tg} is the hardest target for every source (0.21--0.40),
+              including its own.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \reading{Task vectors are \textbf{partly} shared across conditions: enough
+    overlap that a foreign vector helps, not enough that it substitutes. This
+    sits exactly between the two clean outcomes --- a fully shared
+    representation would make the matrix flat, a fully separate one would make
+    the off-diagonal collapse to zero. Neither happened.}
+\end{frame}
+
+\begin{frame}{Where in the model the task lives}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{layer_sweep.png}\\[0.5mm]
+      \src{Accuracy against the layer the vector is injected at.}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{baselines.png}\\[0.5mm]
+      \src{10-shot accuracy by task and condition.}
+    \end{column}
+  \end{columns}
+  \reading{The intervention only works in a \textbf{middle band} of the network
+    --- too early and the task has not formed, too late and the answer is
+    already fixed. That band sits around layer 11--23 of 34, matching where the
+    causal-mediation heads were found, and matching the depth Todd et al.
+    report for a different model.}
+\end{frame}
+
+\begin{frame}{Causal mediation maps, per condition}
+  \begin{columns}[T]
+    \begin{column}{0.25\textwidth}
+      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_en.png}\\\src{\cond{en}}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_te.png}\\\src{\cond{te}}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_rom.png}\\\src{\cond{rom}}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_tg.png}\\\src{\cond{tg}}
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \src{Indirect effect of every attention head (layer $\times$ head), computed
+    separately for each condition.}
+  \reading{The bright region sits in the \textbf{same place in all four maps}.
+    We computed these independently per condition --- nothing forced them to
+    agree --- so the fact that they do is evidence that code-mixed input is
+    handled by the same machinery, not routed elsewhere.}
+\end{frame}
+
+\begin{frame}{How similar are the vectors themselves?}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \centering
+      \includegraphics[width=0.96\linewidth,height=0.52\textheight,keepaspectratio]{similarity.png}\\[0.5mm]
+      \src{Cosine similarity between function vectors, all (task, condition)
+        pairs.}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{itemize}\footnotesize\tight
+        \item Vectors group by \textbf{task} first and by condition second ---
+              the same task in two languages is more alike than two tasks in
+              one language.
+        \item \textbf{Caveat we cannot remove:} English is SVO and Telugu SOV,
+              so \cond{en}--\cond{te} vectors differ partly because the word
+              order differs, not because the script does.
+        \item That is why \cond{rom} vs \cond{tg} is our clean comparison:
+              same script, same order, only code-mixing changes.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \reading{A function vector encodes mostly \emph{what the task is}, with a
+    smaller language-specific component on top. That is consistent with the
+    transfer matrix: enough shared structure to help across conditions, enough
+    private structure that the home vector still wins.}
+\end{frame}
+
+\begin{frame}{Paired comparisons, with confidence intervals}
+  \centering
+  \src{Accuracy difference between conditions on the \emph{same items}, 95\%
+    bootstrap CI. \textbf{Bold} = excludes zero. Gemma 3 4B}\\[0.5mm]
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}\centering
+      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.58\textheight}{\input{tables/paired_gaps_1of2.tex}}}
+    \end{column}
+    \begin{column}{0.49\textwidth}\centering
+      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.58\textheight}{\input{tables/paired_gaps_2of2.tex}}}
+    \end{column}
+  \end{columns}
+  \readingsm{These are \emph{paired} differences --- the same sentence tested twice
+    --- far more sensitive than two independent samples. Largest reliable gap:
+    \texttt{extract\_verb} \cond{en}$-$\cond{rom}, $0.77$ [0.69,\,0.86]. Some
+    run the \emph{other} way: \texttt{present\_past} \cond{en}$-$\cond{te} is
+    $-0.71$ --- Telugu beats English on its own morphology.}
 \end{frame}
 
 % ----------------------------------- limitations and negative results -----

@@ -113,7 +113,9 @@ def main() -> int:
                 cells.append(f"{acc} & {r['n']}")
         tex.append(f"{TIER_NAME[tier]} & " + " & ".join(cells) + r" \\")
     tex += [r"\bottomrule", r"\end{tabular}"]
-    tex_path = REPO_ROOT / "paper" / "tables" / "tier_accuracy.tex"
+    # Model-suffixed: this table is per-model, and a shared filename means a
+    # second model silently overwrites the first model's numbers.
+    tex_path = REPO_ROOT / "paper" / "tables" / f"tier_accuracy_{mcfg.name}.tex"
     tex_path.parent.mkdir(parents=True, exist_ok=True)
     tex_path.write_text("\n".join(tex) + "\n", encoding="utf-8")
     print(f"\nwrote {tex_path.relative_to(REPO_ROOT)}")

@@ -32,6 +32,18 @@ def included_images(tex: str) -> set[str]:
     return {Path(m).name for m in re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", tex)}
 
 
+def included_inputs(tex: str) -> set[str]:
+    """Paths pulled in by \\input -- the generated tables live here.
+
+    Without these the bundle builds on this machine (where the files exist) and
+    fails everywhere else, which is the worst kind of broken.
+    """
+    out = set()
+    for m in re.findall(r"\\input\{([^}]+)\}", tex):
+        out.add(m if m.endswith(".tex") else f"{m}.tex")
+    return out
+
+
 def main() -> int:
     main_tex = SRC / "main.tex"
     if not main_tex.exists():
@@ -57,6 +69,13 @@ def main() -> int:
             members.append((img_dir / f"{name}.png", f"presentation/images/{name}.png"))
         else:
             missing.append(name)
+
+    for rel in sorted(included_inputs(tex)):
+        f = SRC / rel
+        if f.exists():
+            members.append((f, f"presentation/{rel}"))
+        else:
+            missing.append(rel)
 
     pdf = SRC / "main.pdf"
     if pdf.exists():

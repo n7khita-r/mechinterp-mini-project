@@ -43,8 +43,9 @@ presentation/*.pdf
 # Run logs: machine-specific, and they contain host and path details
 logs/
 
-# Generated bundle (rebuild with: make slides-zip)
+# Generated bundles (rebuild with: make slides-zip)
 presentation/slides.zip
+presentation.zip
 
 # OS
 .DS_Store

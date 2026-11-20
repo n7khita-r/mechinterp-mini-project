@@ -691,11 +691,11 @@
 \end{frame}
 
 % ------------------------------------------- logit lens -------------------
-\begin{frame}{A second, independent check: what is in the vector?}
+\begin{frame}{Logit lens: an independent check on the vector}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \textbf{Read the vector as vocabulary.} Project it onto the output layer
-      and ask: which words does it push for?
+      \textbf{1. Read the vector as vocabulary.} Project it onto the output
+      layer and ask: which words does it push for? \src{(Gemma 3 12B)}
       \vspace{1.5mm}
 
       {\footnotesize\setlength{\tabcolsep}{3pt}
@@ -718,7 +718,7 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{Where the answer appears across depth}
+      \textbf{2. Where the answer appears across depth}
       \vspace{1mm}
 
       \src{Layer where the correct word first enters the top 10
@@ -847,21 +847,36 @@
     cells --- \texttt{antonym}/\cond{rom} is [0.00,\,1.00] on 3 items.}
 \end{frame}
 
-\begin{frame}{All controls, every cell}
+\begin{frame}{Controls, grouped by kind of task}
   \centering
-  \src{Gemma 3 4B. A result must beat all three controls.}\\[0.5mm]
-  \begin{columns}[T]
-    \begin{column}{0.49\textwidth}\centering
-      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.60\textheight}{\input{tables/controls_1of2.tex}}}
-    \end{column}
-    \begin{column}{0.49\textwidth}\centering
-      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.60\textheight}{\input{tables/controls_2of2.tex}}}
-    \end{column}
-  \end{columns}
-  \readingsm{Where the vector works the random column is flat (0.00--0.07): the
-    effect is \emph{direction}, not perturbation. The unrelated-task column is
-    stricter, and a few cells fail it --- \texttt{present\_past}/\cond{te}
-    scores 1.00 with \emph{either} vector.}
+  \src{Mean accuracy per group; \textbf{FV} must beat all three controls. 4B}\\[1mm]
+  {\scriptsize\setlength{\tabcolsep}{4.5pt}
+  \begin{tabular}{llcccc c}
+    \toprule
+    task group & cond. & \textbf{FV} & random & unrelated & shuffled & fails \\
+    \midrule
+    Word pairs              & \cond{en}  & 0.58 & 0.00 & 0.03 & 0.21 & 1 of 4 \\
+                            & \cond{te}  & 0.79 & 0.37 & 0.59 & 0.20 & 1 of 4 \\
+                            & \cond{rom} & 0.64 & 0.43 & 0.61 & 0.35 & \textbf{3 of 4} \\
+    \midrule
+    Category / choice       & \cond{en}  & 0.55 & 0.13 & 0.43 & 0.00 & -- \\
+                            & \cond{te}  & 0.71 & 0.01 & 0.48 & 0.01 & -- \\
+                            & \cond{rom} & 0.41 & 0.00 & 0.19 & 0.03 & -- \\
+    \midrule
+    Extract from sentence   & \cond{en}  & \textbf{0.89} & 0.12 & 0.32 & 0.09 & -- \\
+                            & \cond{te}  & \textbf{0.93} & 0.04 & 0.26 & 0.06 & -- \\
+                            & \cond{rom} & 0.55 & 0.05 & 0.23 & 0.05 & -- \\
+                            & \cond{tg}  & 0.60 & 0.01 & -- & 0.06 & -- \\
+    \midrule
+    Label the sentence      & \cond{en}  & 0.63 & 0.00 & 0.02 & 0.64 & \textbf{2 of 2} \\
+                            & \cond{te}  & 0.71 & 0.00 & 0.00 & 0.57 & 1 of 2 \\
+                            & \cond{rom} & 0.39 & 0.00 & 0.00 & 0.55 & 1 of 2 \\
+                            & \cond{tg}  & 0.22 & 0.00 & -- & 0.60 & \textbf{2 of 2} \\
+    \bottomrule
+  \end{tabular}}
+  \readingsm{\textbf{Extraction passes every control.} \textbf{Labelling fails
+    everywhere} --- a two-way task's shuffled floor is already ${\sim}0.6$.
+    \textbf{Romanized word pairs fail} on 3--4 surviving items.}
 \end{frame}
 
 \begin{frame}{Transfer: does a vector built in one condition work in another?}
@@ -893,93 +908,37 @@
 \end{frame}
 
 \begin{frame}{Where in the model the task lives}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{layer_sweep.png}\\[0.5mm]
-      \src{Accuracy against the layer the vector is injected at.}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[width=\linewidth,height=0.46\textheight,keepaspectratio]{baselines.png}\\[0.5mm]
-      \src{10-shot accuracy by task and condition.}
-    \end{column}
-  \end{columns}
+  \centering
+  \includegraphics[width=0.62\linewidth,height=0.56\textheight,keepaspectratio]{layer_sweep.png}\\[0.5mm]
+  \src{Zero-shot accuracy against the layer the function vector is injected at.}
   \reading{The intervention only works in a \textbf{middle band} of the network
-    --- too early and the task has not formed, too late and the answer is
-    already fixed. That band sits around layer 11--23 of 34, matching where the
-    causal-mediation heads were found, and matching the depth Todd et al.
-    report for a different model.}
-\end{frame}
-
-\begin{frame}{Causal mediation maps, per condition}
-  \begin{columns}[T]
-    \begin{column}{0.25\textwidth}
-      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_en.png}\\\src{\cond{en}}
-    \end{column}
-    \begin{column}{0.25\textwidth}
-      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_te.png}\\\src{\cond{te}}
-    \end{column}
-    \begin{column}{0.25\textwidth}
-      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_rom.png}\\\src{\cond{rom}}
-    \end{column}
-    \begin{column}{0.25\textwidth}
-      \centering\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{aie_tg.png}\\\src{\cond{tg}}
-    \end{column}
-  \end{columns}
-  \vspace{1mm}
-  \src{Indirect effect of every attention head (layer $\times$ head), computed
-    separately for each condition.}
-  \reading{The bright region sits in the \textbf{same place in all four maps}.
-    We computed these independently per condition --- nothing forced them to
-    agree --- so the fact that they do is evidence that code-mixed input is
-    handled by the same machinery, not routed elsewhere.}
+    --- inject too early and the task representation has not formed yet, too
+    late and the answer is already decided. That band sits around layer
+    11--23 of 34, which is where causal mediation independently put the
+    important heads, and matches the depth Todd et al. report for a different
+    model.}
 \end{frame}
 
 \begin{frame}{How similar are the vectors themselves?}
-  \begin{columns}[T]
-    \begin{column}{0.54\textwidth}
-      \centering
-      \includegraphics[width=0.96\linewidth,height=0.52\textheight,keepaspectratio]{similarity.png}\\[0.5mm]
-      \src{Cosine similarity between function vectors, all (task, condition)
-        pairs.}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{itemize}\footnotesize\tight
-        \item Vectors group by \textbf{task} first and by condition second ---
-              the same task in two languages is more alike than two tasks in
-              one language.
-        \item \textbf{Caveat we cannot remove:} English is SVO and Telugu SOV,
-              so \cond{en}--\cond{te} vectors differ partly because the word
-              order differs, not because the script does.
-        \item That is why \cond{rom} vs \cond{tg} is our clean comparison:
-              same script, same order, only code-mixing changes.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-  \reading{A function vector encodes mostly \emph{what the task is}, with a
-    smaller language-specific component on top. That is consistent with the
-    transfer matrix: enough shared structure to help across conditions, enough
-    private structure that the home vector still wins.}
-\end{frame}
-
-\begin{frame}{Paired comparisons, with confidence intervals}
-  \centering
-  \src{Accuracy difference between conditions on the \emph{same items}, 95\%
-    bootstrap CI. \textbf{Bold} = excludes zero. Gemma 3 4B}\\[0.5mm]
-  \begin{columns}[T]
-    \begin{column}{0.49\textwidth}\centering
-      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.58\textheight}{\input{tables/paired_gaps_1of2.tex}}}
-    \end{column}
-    \begin{column}{0.49\textwidth}\centering
-      {\setlength{\tabcolsep}{2.2pt}\adjustbox{max width=\linewidth, max totalheight=0.58\textheight}{\input{tables/paired_gaps_2of2.tex}}}
-    \end{column}
-  \end{columns}
-  \readingsm{These are \emph{paired} differences --- the same sentence tested twice
-    --- far more sensitive than two independent samples. Largest reliable gap:
-    \texttt{extract\_verb} \cond{en}$-$\cond{rom}, $0.77$ [0.69,\,0.86]. Some
-    run the \emph{other} way: \texttt{present\_past} \cond{en}$-$\cond{te} is
-    $-0.71$ --- Telugu beats English on its own morphology.}
+  \vspace{2mm}
+  \begin{itemize}\small\tight
+    \item We compared every function vector against every other one (cosine
+          similarity between the vectors themselves, not their accuracy).
+    \vspace{1mm}
+    \item \textbf{Vectors group by task first, by language second.} The
+          \emph{same} task in two different conditions is more alike than two
+          \emph{different} tasks in the same condition.
+    \vspace{1mm}
+    \item \textbf{A confound we cannot remove:} English is SVO and Telugu is
+          SOV, so \cond{en} and \cond{te} vectors differ partly because the
+          word order differs --- not only because the script does. That is why
+          \cond{rom} vs \cond{tg} is our clean comparison: same script, same
+          word order, only code-mixing changes.
+  \end{itemize}
+  \reading{A function vector mostly encodes \emph{what the task is}, with a
+    smaller language-specific part on top. That fits the transfer matrix
+    exactly: enough shared structure that a foreign vector still helps, enough
+    private structure that a condition's own vector still wins.}
 \end{frame}
 
 % ----------------------------------- limitations and negative results -----

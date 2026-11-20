@@ -338,16 +338,22 @@ make slides-zip                          # sources + PDF as presentation/slides.
   plus `\reading{}` — **the interpretation line under every table.**
 * **Do not ship a table without a `\reading{}`.** An unfamiliar audience needs
   the interpretation, not the numbers.
-* The deck is 34 frames: question → what an FV is → block-diagram overview →
+* The deck is 32 frames: question → what an FV is → block-diagram overview →
   data → method → controls → results by research question → heads → logit lens
-  → 12B → **Full 4B results (8 frames, p22–29)** → interpretation →
-  limitations → changes → challenges → future work.
-* **The "Full 4B results" section (p22–29)** carries every experiment class we
-  ran at 4B: all-15-task baselines, all-15-task intervention with CIs, all 50
-  control rows, the transfer matrix, the layer sweep, the four causal-mediation
-  maps, vector similarity, and paired gaps with bootstrap CIs. Tables are
-  `\input{}` from `presentation/tables/` (copies of `paper/tables/`), so
-  regenerating the analysis updates the slides.
+  (p19) → 12B → **Full 4B results (p22–27)** → interpretation → limitations →
+  changes → challenges → future work.
+* **The "Full 4B results" section (p22–27)**: all-15-task baselines,
+  all-15-task intervention with CIs, controls **grouped by task kind** with a
+  failure count per group, the transfer matrix, the layer sweep, and vector
+  similarity (as text). Tables are `\input{}` from `presentation/tables/`
+  (copies of `paper/tables/`), so regenerating the analysis updates the slides.
+* The controls slide is **aggregated on purpose**. The raw 50-row table is
+  unreadable on a projector; the grouped version shows the same controls plus a
+  "fails" column, and the failures are: `antonym/rom`, `next_item/rom`,
+  `subject_gender/rom` (too few items); all four `negation` cells,
+  `present_past/en`, `subject_gender/en` and `/tg` (below the shuffled floor);
+  `present_past/te` and `singular_plural/rom` (unrelated vector matches). Full
+  table remains in `paper/tables/controls.tex`.
 * Tables are wrapped in `\adjustbox{max width=..., max totalheight=...}` so a
   wide table scales to the frame width and a tall one to its height. Plain
   `\resizebox` can only constrain one and silently overflows the other.
@@ -363,9 +369,12 @@ make slides-zip                          # sources + PDF as presentation/slides.
   `..._12b_...`). They previously shared one filename, and the 12B run
   silently overwrote the 4B numbers — the same clobbering hazard as
   `09_report`. Regenerate with `scripts/tier_report.py`; no GPU needed.
-* `logit_lens.pdf/png` in `paper/figures/` are **stale** — stage 07 never ran
-  for 4B. The 12B logit-lens numbers in §5g come from
-  `results/07_logitlens/gemma3_12b_h200/`.
+* **The logit-lens slide is p19**, "Logit lens: an independent check on the
+  vector". Both halves of it are **12B** — stage 07 never ran for 4B, so there
+  is no 4B logit lens. The stale `logit_lens.pdf/png` in `paper/figures/` are
+  from the smoke-test model; do not cite them. Real numbers live in
+  `results/07_logitlens/gemma3_12b_h200/` (`fv_vocabulary.json`,
+  `lens_curves.json`).
 * Cells with tiny n (romanized word-level tasks keep 2–13 items) are shown but
   carry no weight.
 * Word order confounds `en`–`te` comparisons (SVO vs SOV). `rom`–`tg` is clean.

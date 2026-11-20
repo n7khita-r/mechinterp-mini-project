@@ -1,0 +1,41 @@
+# Tiny end-to-end configuration for the CPU smoke test. Same code path as
+# default.yaml, everything shrunk so all nine stages run in a couple of minutes.
+name: smoke
+seed: 42
+
+prompt:
+  n_shots: 3
+  prefixes:
+    input: "Q:"
+    output: "A:"
+    instructions: ""
+  separators:
+    input: "\n"
+    output: "\n\n"
+    instructions: ""
+
+data:
+  test_split: 0.3
+  headline_tiers: [core]
+  exclude_tiers: [ambiguous]
+  max_items_per_cell: 20   # smoke-only: cap items so stages stay fast
+
+mean_activations:
+  n_trials: 4
+
+mediation:
+  n_trials: 2
+  last_token_only: true
+
+fv:
+  n_top_heads: 3
+  head_set_scope: per_condition
+
+intervene:
+  edit_layer: -1
+  n_shots_eval: 0
+
+eval:
+  topk: [1, 10]
+  score_full_answer: true
+  n_bootstrap: 50

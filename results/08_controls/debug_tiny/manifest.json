@@ -1,0 +1,13 @@
+{
+  "stage": "08_controls",
+  "model": "debug_tiny",
+  "config_hash": "7ef36aeea742",
+  "git_sha": "unknown",
+  "host": "nikhita-ravi-HP-Pavilion-Laptop-15-eg3xxx",
+  "slurm_job_id": null,
+  "started": "2026-11-20T01:38:25.068596+00:00",
+  "elapsed_sec": 41.5,
+  "peak_vram_gib": null,
+  "torch": "2.15.0+cpu",
+  "n_cells": 4
+}

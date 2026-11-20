@@ -1,0 +1,13 @@
+{
+  "stage": "02_mean_activations",
+  "model": "gemma3_4b_h200",
+  "config_hash": "86e5f4b2a53b",
+  "git_sha": "unknown",
+  "host": "12c91c669205",
+  "slurm_job_id": null,
+  "started": "2026-11-19T23:15:08.022937+00:00",
+  "elapsed_sec": 525.6,
+  "peak_vram_gib": 8.01,
+  "torch": "2.15.0+cu132",
+  "n_cells": 52
+}

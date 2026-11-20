@@ -1,0 +1,21 @@
+{
+  "stage": "03_mediation",
+  "model": "gemma3_4b_h200",
+  "config_hash": "86e5f4b2a53b",
+  "git_sha": "unknown",
+  "host": "12c91c669205",
+  "slurm_job_id": null,
+  "started": "2026-11-19T23:29:34.993894+00:00",
+  "elapsed_sec": 463.4,
+  "peak_vram_gib": 8.01,
+  "torch": "2.15.0+cu132",
+  "conditions": [
+    "en",
+    "te",
+    "rom",
+    "tg"
+  ],
+  "n_top_heads": 10,
+  "forwards_per_trial": 34,
+  "forwards_per_trial_if_unbatched": 272
+}

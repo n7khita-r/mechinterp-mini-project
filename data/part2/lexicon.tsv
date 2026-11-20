@@ -1,0 +1,82 @@
+id	tier	slot	en	te	rom	notes
+pm-001	core	person_m	venkat	వెంకట్	venkat	Part 2 is lowercased everywhere so names cannot be found by capitalisation
+pm-002	core	person_m	ravi	రవి	ravi
+pm-003	core	person_m	suresh	సురేష్	suresh
+pm-004	core	person_m	kiran	కిరణ్	kiran
+pm-005	core	person_m	srinivas	శ్రీనివాస్	srinivas
+pm-006	core	person_m	naresh	నరేష్	naresh
+pm-007	core	person_m	mahesh	మహేష్	mahesh
+pm-008	core	person_m	prasad	ప్రసాద్	prasad
+pm-009	core	person_m	ramesh	రమేష్	ramesh
+pm-010	core	person_m	anil	అనిల్	anil
+pm-011	core	person_m	sai	సాయి	sai
+pm-012	core	person_m	vijay	విజయ్	vijay
+pm-013	core	person_m	bhaskar	భాస్కర్	bhaskar
+pm-014	core	person_m	murali	మురళి	murali
+pm-015	core	person_m	kishore	కిషోర్	kishore
+pf-001	core	person_f	lakshmi	లక్ష్మి	lakshmi
+pf-002	core	person_f	padma	పద్మ	padma
+pf-003	core	person_f	sita	సీత	sita
+pf-004	core	person_f	radha	రాధ	radha
+pf-005	core	person_f	swapna	స్వప్న	swapna
+pf-006	core	person_f	kavita	కవిత	kavita
+pf-007	core	person_f	sunita	సునీత	sunita
+pf-008	core	person_f	anita	అనిత	anita
+pf-009	core	person_f	sridevi	శ్రీదేవి	sridevi
+pf-010	core	person_f	jyothi	జ్యోతి	jyothi
+pf-011	core	person_f	vani	వాణి	vani
+pf-012	core	person_f	latha	లత	latha
+pf-013	core	person_f	madhavi	మాధవి	madhavi
+pf-014	core	person_f	sailaja	శైలజ	sailaja
+pf-015	core	person_f	usha	ఉష	usha
+plc-001	core	place	hyderabad	హైదరాబాద్	hyderabad
+plc-002	core	place	vijayawada	విజయవాడ	vijayawada
+plc-003	core	place	guntur	గుంటూరు	guntur
+plc-004	core	place	warangal	వరంగల్	warangal
+plc-005	core	place	tirupati	తిరుపతి	tirupati
+plc-006	core	place	visakhapatnam	విశాఖపట్నం	visakhapatnam
+plc-007	core	place	kurnool	కర్నూలు	kurnool
+plc-008	core	place	nellore	నెల్లూరు	nellore
+plc-009	core	place	kakinada	కాకినాడ	kakinada
+plc-010	core	place	rajahmundry	రాజమండ్రి	rajahmundry
+plc-011	core	place	nizamabad	నిజామాబాద్	nizamabad
+plc-012	core	place	karimnagar	కరీంనగర్	karimnagar
+plc-013	core	place	anantapur	అనంతపురం	anantapur
+plc-014	core	place	khammam	ఖమ్మం	khammam
+plc-015	core	place	ongole	ఒంగోలు	ongole
+fd-001	core	food	rice	అన్నం	annam	translatable: en and rom differ
+fd-002	core	food	curd	పెరుగు	perugu	translatable
+fd-003	core	food	milk	పాలు	palu	translatable
+fd-004	core	food	curry	కూర	kura	translatable
+fd-005	core	food	bread	రొట్టె	rotte	translatable
+fd-006	core	food	sweet	మిఠాయి	mithayi	translatable
+fd-007	core	food	mango	మామిడి	mamidi	translatable
+fd-008	core	food	banana	అరటి	arati	translatable
+fd-009	core	food	water	నీళ్ళు	nillu	translatable
+fd-010	core	food	tea	టీ	ti	loanword: en and rom coincide
+fd-011	core	food	coffee	కాఫీ	kaphi	loanword
+fd-012	core	food	biryani	బిర్యానీ	biryani	loanword: en and rom coincide
+fd-013	core	food	dosa	దోస	dosa	loanword
+fd-014	core	food	idli	ఇడ్లీ	idli	loanword
+fd-015	core	food	vada	వడ	vada	loanword
+fd-016	core	food	upma	ఉప్మా	upma	loanword
+fd-017	core	food	pulihora	పులిహోర	pulihora	loanword
+fd-018	core	food	pesarattu	పెసరట్టు	pesarattu	loanword
+fd-019	core	food	sambar	సాంబార్	sambar	loanword
+fd-020	core	food	laddu	లడ్డు	laddu	loanword
+fd-021	complex	food	curd rice	పెరుగన్నం	perugannam	compound
+fd-022	complex	food	gongura pickle	గోంగూర పచ్చడి	gongura pachchadi	two-word filler
+fd-023	complex	food	payasam	పాయసం	payasam	loanword
+fd-024	rare	food	bobbatlu	బొబ్బట్లు	bobbatlu	regional sweet
+fd-025	rare	food	ariselu	అరిసెలు	ariselu	regional sweet
+fd-026	rare	food	murukulu	మురుకులు	murukulu	regional snack
+tm-001	core	time	yesterday	నిన్న	ninna	time words leak tense, so templates for the tense task omit this slot
+tm-002	core	time	today	ఈరోజు	iroju
+tm-003	core	time	tomorrow	రేపు	repu
+tm-004	core	time	in the morning	ఉదయం	udayam
+tm-005	core	time	in the evening	సాయంత్రం	sayantram
+tm-006	core	time	at night	రాత్రి	ratri
+tm-007	core	time	just now	ఇప్పుడే	ippude
+tm-008	complex	time	last week	గత వారం	gata varam	two-word filler
+tm-009	complex	time	next week	వచ్చే వారం	vachche varam	two-word filler
+tm-010	complex	time	every day	రోజూ	roju

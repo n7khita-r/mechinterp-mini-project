@@ -1,0 +1,62 @@
+{
+  "cuda available": {
+    "ok": true,
+    "detail": "NVIDIA H200 140 GiB"
+  },
+  "dtype appropriate for this GPU": {
+    "ok": true,
+    "detail": "dtype=bfloat16; native bf16 (sm_80+)=True"
+  },
+  "not a Pascal GPU": {
+    "ok": true,
+    "detail": "compute capability 9.0"
+  },
+  "gpu memory sufficient": {
+    "ok": true,
+    "detail": "have 140 GiB, want >= 0 GiB for gemma3_4b_h200"
+  },
+  "weights reachable": {
+    "ok": true,
+    "detail": "google/gemma-3-4b-pt (cc012e0a)"
+  },
+  "model loads": {
+    "ok": true,
+    "detail": "34L x 8H, head_dim 256, resid 2560"
+  },
+  "module paths discovered": {
+    "ok": true,
+    "detail": "model.language_model.layers.* / norm=model.language_model.norm"
+  },
+  "head_dim read from config, not derived": {
+    "ok": true,
+    "detail": "head_dim=256; resid_dim//n_heads would give 320  <- these differ, deriving it would be WRONG"
+  },
+  "head capture": {
+    "ok": true,
+    "detail": "34 layers, (1, 8, 256)"
+  },
+  "head patching changes logits": {
+    "ok": true,
+    "detail": "min per-head delta 1.625"
+  },
+  "residual add changes logits": {
+    "ok": true,
+    "detail": "max delta 0.4736"
+  },
+  "logit lens reproduces final logits": {
+    "ok": true,
+    "detail": "max abs error 0"
+  },
+  "recommended_head_batch": 91,
+  "model_info": {
+    "n_layers": 34,
+    "n_heads": 8,
+    "head_dim": 256,
+    "resid_dim": 2560,
+    "attn_in_dim": 2048,
+    "layer_prefix": "model.language_model.layers",
+    "norm_name": "model.language_model.norm",
+    "aie_forwards_per_trial": 34,
+    "aie_forwards_per_trial_unbatched": 272
+  }
+}

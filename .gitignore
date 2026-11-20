@@ -1,0 +1,43 @@
+# Results: keep the directory structure and small artefacts, drop bulk
+results/cache/
+results/aie/*.pt
+results/fv/**/*.pt
+results/**/*.npz
+
+# Model weights / HF cache if anyone points it here
+models/
+*.safetensors
+*.bin
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# SLURM logs
+slurm-*.out
+slurm_logs/
+
+# LaTeX build artefacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+paper/*.pdf
+presentation/*.pdf
+
+# OS
+.DS_Store

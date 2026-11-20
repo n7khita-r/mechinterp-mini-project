@@ -1,0 +1,71 @@
+# Experiment defaults. Values follow Todd et al. (ICLR 2024) exactly except where
+# a comment says otherwise; see CONTEXT.md for the reference hyperparameter table.
+name: default
+seed: 42
+
+# ---- prompt construction (identical to the reference implementation)
+prompt:
+  n_shots: 10
+  prefixes:
+    input: "Q:"
+    output: "A:"
+    instructions: ""
+  separators:
+    input: "\n"
+    output: "\n\n"
+    instructions: ""
+
+# ---- data
+data:
+  # Reference uses 0.3. Inverted here: the train pool only needs enough variety
+  # to build distinct 10-shot prompts (~35 items suffices), so the remainder is
+  # better spent on evaluation, where hand-authored data is the scarce resource.
+  test_split: 0.65         # fraction held out as the `valid` split
+  # Floor on the train pool: prompt construction samples n_shots items from it
+  # without replacement, so a small cell must not fall below n_shots.
+  min_train: 20
+  headline_tiers: [core]   # tiers used for the headline numbers
+  exclude_tiers: [ambiguous]
+
+# ---- mean head activations
+mean_activations:
+  n_trials: 100
+
+# ---- causal mediation / indirect effect
+mediation:
+  n_trials: 50             # reference uses 25; raised because we sweep per
+                           # condition rather than per task, so we can afford it
+  last_token_only: true
+
+# ---- function vector
+fv:
+  n_top_heads: 10
+  # Head sets are computed per condition (en/te/rom/tenglish) plus one pooled
+  # set over all conditions. See CONTEXT.md for why this differs from the paper.
+  head_set_scope: per_condition
+
+# ---- intervention
+intervene:
+  edit_layer: -1           # -1 sweeps every layer
+  n_shots_eval: 0          # FV is added to zero-shot prompts
+  # With few eval items, reporting the max over 34-62 layers is optimistically
+  # biased. The layer is chosen on a held-out dev slice of `valid` and the
+  # headline number is reported at that fixed layer on the remaining items.
+  layer_selection: dev_slice
+  dev_slice_frac: 0.3
+  # The layer sweep costs n_layers forwards per item, so it runs on a capped
+  # subsample; the headline number at the chosen layer uses every item.
+  layer_sweep_max_items: 40
+  # Gemma's residual stream grows ~100x with depth (780 -> 100k for the 4B), so a
+  # raw function vector (norm ~16) is a 0.1% nudge and changes nothing. The
+  # vector is scaled to `fv_rel_norm` times the residual norm at the edit layer:
+  # relative, so it transfers across models instead of being a magic multiplier.
+  # alpha is chosen from the grid on the dev slice, ties going to the smallest.
+  fv_rel_norm: 0.1
+  fv_rel_norm_grid: [0.05, 0.1, 0.2, 0.4, 0.8]
+
+# ---- evaluation
+eval:
+  topk: [1, 10]
+  score_full_answer: true  # also log full-answer logprob / exact match
+  n_bootstrap: 2000

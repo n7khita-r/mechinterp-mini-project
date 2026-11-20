@@ -1,0 +1,15 @@
+# Lower bounds only. Ada pins exact versions via
+# scripts/slurm/constraints-ada.txt (torch 2.3.1 is the ceiling there:
+# Ubuntu 18.04 ships glibc 2.27 and torch 2.4+ wheels are manylinux_2_28).
+# A pip constraint cannot downgrade below a requirement, so keep these loose.
+torch>=2.1.0
+transformers>=4.50.0  # Gemma 3 support
+accelerate>=0.34.0
+numpy>=1.26.0
+pandas>=2.2.0
+pyyaml>=6.0
+matplotlib>=3.8.0
+scipy>=1.13.0
+sentencepiece>=0.2.0
+protobuf>=4.25.0
+pytest>=8.0.0

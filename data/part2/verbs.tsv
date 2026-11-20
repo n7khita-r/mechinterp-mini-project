@@ -1,0 +1,121 @@
+id	tier	lemma	tense	polarity	gender	en	te	rom	notes
+vb-001	core	eat	past	aff	m	ate	తిన్నాడు	tinnadu	
+vb-002	core	eat	past	aff	f	ate	తింది	tindi	
+vb-003	complex	eat	past	neg	m	did not eat	తినలేదు	tinaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-004	complex	eat	past	neg	f	did not eat	తినలేదు	tinaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-005	core	eat	present	aff	m	is eating	తింటున్నాడు	tintunnadu	
+vb-006	core	eat	present	aff	f	is eating	తింటోంది	tintondi	
+vb-007	complex	eat	present	neg	m	is not eating	తినడం లేదు	tinadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-008	complex	eat	present	neg	f	is not eating	తినడం లేదు	tinadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-009	core	eat	future	aff	m	will eat	తింటాడు	tintadu	
+vb-010	core	eat	future	aff	f	will eat	తింటుంది	tintundi	
+vb-011	complex	eat	future	neg	m	will not eat	తినడు	tinadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-012	complex	eat	future	neg	f	will not eat	తినదు	tinadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-013	core	drink	past	aff	m	drank	తాగాడు	tagadu	
+vb-014	core	drink	past	aff	f	drank	తాగింది	tagindi	
+vb-015	complex	drink	past	neg	m	did not drink	తాగలేదు	tagaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-016	complex	drink	past	neg	f	did not drink	తాగలేదు	tagaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-017	core	drink	present	aff	m	is drinking	తాగుతున్నాడు	tagutunnadu	
+vb-018	core	drink	present	aff	f	is drinking	తాగుతోంది	tagutondi	
+vb-019	complex	drink	present	neg	m	is not drinking	తాగడం లేదు	tagadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-020	complex	drink	present	neg	f	is not drinking	తాగడం లేదు	tagadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-021	core	drink	future	aff	m	will drink	తాగుతాడు	tagutadu	
+vb-022	core	drink	future	aff	f	will drink	తాగుతుంది	tagutundi	
+vb-023	complex	drink	future	neg	m	will not drink	తాగడు	tagadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-024	complex	drink	future	neg	f	will not drink	తాగదు	tagadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-025	core	buy	past	aff	m	bought	కొన్నాడు	konnadu	
+vb-026	core	buy	past	aff	f	bought	కొంది	kondi	
+vb-027	complex	buy	past	neg	m	did not buy	కొనలేదు	konaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-028	complex	buy	past	neg	f	did not buy	కొనలేదు	konaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-029	core	buy	present	aff	m	is buying	కొంటున్నాడు	kontunnadu	
+vb-030	core	buy	present	aff	f	is buying	కొంటోంది	kontondi	
+vb-031	complex	buy	present	neg	m	is not buying	కొనడం లేదు	konadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-032	complex	buy	present	neg	f	is not buying	కొనడం లేదు	konadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-033	core	buy	future	aff	m	will buy	కొంటాడు	kontadu	
+vb-034	core	buy	future	aff	f	will buy	కొంటుంది	kontundi	
+vb-035	complex	buy	future	neg	m	will not buy	కొనడు	konadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-036	complex	buy	future	neg	f	will not buy	కొనదు	konadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-037	core	make	past	aff	m	made	చేశాడు	cheshadu	
+vb-038	core	make	past	aff	f	made	చేసింది	chesindi	
+vb-039	complex	make	past	neg	m	did not make	చేయలేదు	cheyaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-040	complex	make	past	neg	f	did not make	చేయలేదు	cheyaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-041	core	make	present	aff	m	is making	చేస్తున్నాడు	chestunnadu	
+vb-042	core	make	present	aff	f	is making	చేస్తోంది	chestondi	
+vb-043	complex	make	present	neg	m	is not making	చేయడం లేదు	cheyadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-044	complex	make	present	neg	f	is not making	చేయడం లేదు	cheyadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-045	core	make	future	aff	m	will make	చేస్తాడు	chestadu	
+vb-046	core	make	future	aff	f	will make	చేస్తుంది	chestundi	
+vb-047	complex	make	future	neg	m	will not make	చేయడు	cheyadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-048	complex	make	future	neg	f	will not make	చేయదు	cheyadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-049	core	bring	past	aff	m	brought	తెచ్చాడు	techchadu	
+vb-050	core	bring	past	aff	f	brought	తెచ్చింది	techchindi	
+vb-051	complex	bring	past	neg	m	did not bring	తేలేదు	teledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-052	complex	bring	past	neg	f	did not bring	తేలేదు	teledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-053	core	bring	present	aff	m	is bringing	తెస్తున్నాడు	testunnadu	
+vb-054	core	bring	present	aff	f	is bringing	తెస్తోంది	testondi	
+vb-055	complex	bring	present	neg	m	is not bringing	తేవడం లేదు	tevadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-056	complex	bring	present	neg	f	is not bringing	తేవడం లేదు	tevadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-057	core	bring	future	aff	m	will bring	తెస్తాడు	testadu	
+vb-058	core	bring	future	aff	f	will bring	తెస్తుంది	testundi	
+vb-059	complex	bring	future	neg	m	will not bring	తేడు	tedu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-060	complex	bring	future	neg	f	will not bring	తేదు	tedu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-061	core	give	past	aff	m	gave	ఇచ్చాడు	ichchadu	
+vb-062	core	give	past	aff	f	gave	ఇచ్చింది	ichchindi	
+vb-063	complex	give	past	neg	m	did not give	ఇవ్వలేదు	ivvaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-064	complex	give	past	neg	f	did not give	ఇవ్వలేదు	ivvaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-065	core	give	present	aff	m	is giving	ఇస్తున్నాడు	istunnadu	
+vb-066	core	give	present	aff	f	is giving	ఇస్తోంది	istondi	
+vb-067	complex	give	present	neg	m	is not giving	ఇవ్వడం లేదు	ivvadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-068	complex	give	present	neg	f	is not giving	ఇవ్వడం లేదు	ivvadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-069	core	give	future	aff	m	will give	ఇస్తాడు	istadu	
+vb-070	core	give	future	aff	f	will give	ఇస్తుంది	istundi	
+vb-071	complex	give	future	neg	m	will not give	ఇవ్వడు	ivvadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-072	complex	give	future	neg	f	will not give	ఇవ్వదు	ivvadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-073	core	sell	past	aff	m	sold	అమ్మాడు	ammadu	
+vb-074	core	sell	past	aff	f	sold	అమ్మింది	ammindi	
+vb-075	complex	sell	past	neg	m	did not sell	అమ్మలేదు	ammaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-076	complex	sell	past	neg	f	did not sell	అమ్మలేదు	ammaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-077	core	sell	present	aff	m	is selling	అమ్ముతున్నాడు	ammutunnadu	
+vb-078	core	sell	present	aff	f	is selling	అమ్ముతోంది	ammutondi	
+vb-079	complex	sell	present	neg	m	is not selling	అమ్మడం లేదు	ammadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-080	complex	sell	present	neg	f	is not selling	అమ్మడం లేదు	ammadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-081	core	sell	future	aff	m	will sell	అమ్ముతాడు	ammutadu	
+vb-082	core	sell	future	aff	f	will sell	అమ్ముతుంది	ammutundi	
+vb-083	complex	sell	future	neg	m	will not sell	అమ్మడు	ammadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-084	complex	sell	future	neg	f	will not sell	అమ్మదు	ammadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-085	core	see	past	aff	m	saw	చూశాడు	chushadu	
+vb-086	core	see	past	aff	f	saw	చూసింది	chusindi	
+vb-087	complex	see	past	neg	m	did not see	చూడలేదు	chudaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-088	complex	see	past	neg	f	did not see	చూడలేదు	chudaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-089	core	see	present	aff	m	is seeing	చూస్తున్నాడు	chustunnadu	
+vb-090	core	see	present	aff	f	is seeing	చూస్తోంది	chustondi	
+vb-091	complex	see	present	neg	m	is not seeing	చూడడం లేదు	chudadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-092	complex	see	present	neg	f	is not seeing	చూడడం లేదు	chudadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-093	core	see	future	aff	m	will see	చూస్తాడు	chustadu	
+vb-094	core	see	future	aff	f	will see	చూస్తుంది	chustundi	
+vb-095	complex	see	future	neg	m	will not see	చూడడు	chudadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-096	complex	see	future	neg	f	will not see	చూడదు	chudadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-097	core	take	past	aff	m	took	తీసుకున్నాడు	tisukunnadu	
+vb-098	core	take	past	aff	f	took	తీసుకుంది	tisukundi	
+vb-099	complex	take	past	neg	m	did not take	తీసుకోలేదు	tisukoledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-100	complex	take	past	neg	f	did not take	తీసుకోలేదు	tisukoledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-101	core	take	present	aff	m	is taking	తీసుకుంటున్నాడు	tisukuntunnadu	
+vb-102	core	take	present	aff	f	is taking	తీసుకుంటోంది	tisukuntondi	
+vb-103	complex	take	present	neg	m	is not taking	తీసుకోవడం లేదు	tisukovadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-104	complex	take	present	neg	f	is not taking	తీసుకోవడం లేదు	tisukovadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-105	core	take	future	aff	m	will take	తీసుకుంటాడు	tisukuntadu	
+vb-106	core	take	future	aff	f	will take	తీసుకుంటుంది	tisukuntundi	
+vb-107	complex	take	future	neg	m	will not take	తీసుకోడు	tisukodu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-108	complex	take	future	neg	f	will not take	తీసుకోదు	tisukodu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-109	core	cook	past	aff	m	cooked	వండాడు	vandadu	
+vb-110	core	cook	past	aff	f	cooked	వండింది	vandindi	
+vb-111	complex	cook	past	neg	m	did not cook	వండలేదు	vandaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-112	complex	cook	past	neg	f	did not cook	వండలేదు	vandaledu	Telugu negative past does not mark subject gender: m and f forms are identical
+vb-113	core	cook	present	aff	m	is cooking	వండుతున్నాడు	vandutunnadu	
+vb-114	core	cook	present	aff	f	is cooking	వండుతోంది	vandutondi	
+vb-115	complex	cook	present	neg	m	is not cooking	వండడం లేదు	vandadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-116	complex	cook	present	neg	f	is not cooking	వండడం లేదు	vandadam ledu	Telugu negative present does not mark subject gender: m and f forms are identical
+vb-117	core	cook	future	aff	m	will cook	వండుతాడు	vandutadu	
+vb-118	core	cook	future	aff	f	will cook	వండుతుంది	vandutundi	
+vb-119	complex	cook	future	neg	m	will not cook	వండడు	vandadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically
+vb-120	complex	cook	future	neg	f	will not cook	వండదు	vandadu	ROMANIZATION COLLAPSE: the m and f forms differ in script but romanize identically

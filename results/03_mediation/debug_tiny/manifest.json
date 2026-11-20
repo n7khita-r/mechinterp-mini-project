@@ -1,0 +1,21 @@
+{
+  "stage": "03_mediation",
+  "model": "debug_tiny",
+  "config_hash": "e9c1d19aa951",
+  "git_sha": "unknown",
+  "host": "nikhita-ravi-HP-Pavilion-Laptop-15-eg3xxx",
+  "slurm_job_id": null,
+  "started": "2026-11-19T22:44:10.040222+00:00",
+  "elapsed_sec": 7.6,
+  "peak_vram_gib": null,
+  "torch": "2.15.0+cpu",
+  "conditions": [
+    "en",
+    "te",
+    "rom",
+    "tg"
+  ],
+  "n_top_heads": 3,
+  "forwards_per_trial": 4,
+  "forwards_per_trial_if_unbatched": 16
+}

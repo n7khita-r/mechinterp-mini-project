@@ -1,0 +1,24 @@
+# Tiny randomly-initialised Gemma-3-shaped model for CPU-only smoke tests.
+# Deliberately keeps n_heads * head_dim != hidden_size (4 * 24 = 96 != 64) so the
+# smoke test exercises the same shape path as real Gemma 3 and would catch the
+# `head_dim = hidden_size // n_heads` bug present in the reference implementation.
+# Uses the gpt2 tokenizer so it runs with no gated-model access and no network.
+name: debug_tiny
+hf_id: null                # built from scratch, nothing downloaded
+random_init: true
+tokenizer_id: gpt2
+dtype: float32
+device_map: cpu
+prepend_bos: true
+
+expect:
+  n_layers: 4
+  hidden_size: 64
+  n_heads: 4
+  head_dim: 24             # 4 * 24 = 96 != hidden_size 64, on purpose
+  n_kv_heads: 2
+
+batch:
+  score: 4
+  head_batch: 3            # not a divisor of 16 -- exercises ragged last batch
+  logitlens: 2

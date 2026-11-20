@@ -1,0 +1,130 @@
+id	tier	en_in	en_out	te_in	te_out	rom_in	rom_out	notes
+ni-001	core	Monday	Tuesday	సోమవారం	మంగళవారం	somavaram	mangalavaram	
+ni-002	core	Tuesday	Wednesday	మంగళవారం	బుధవారం	mangalavaram	budhavaram	
+ni-003	core	Wednesday	Thursday	బుధవారం	గురువారం	budhavaram	guruvaram	
+ni-004	core	Thursday	Friday	గురువారం	శుక్రవారం	guruvaram	shukravaram	
+ni-005	core	Friday	Saturday	శుక్రవారం	శనివారం	shukravaram	shanivaram	
+ni-006	core	Saturday	Sunday	శనివారం	ఆదివారం	shanivaram	adivaram	
+ni-007	core	January	February	జనవరి	ఫిబ్రవరి	janavari	phibravari	
+ni-008	core	February	March	ఫిబ్రవరి	మార్చి	phibravari	marchi	
+ni-009	core	March	April	మార్చి	ఏప్రిల్	marchi	epril	
+ni-010	core	May	June	మే	జూన్	me	jun	
+ni-011	core	June	July	జూన్	జూలై	jun	julai	
+ni-012	core	August	September	ఆగస్టు	సెప్టెంబర్	agastu	septembar	
+ni-013	core	September	October	సెప్టెంబర్	అక్టోబర్	septembar	aktobar	
+ni-014	core	October	November	అక్టోబర్	నవంబర్	aktobar	navambar	
+ni-015	core	November	December	నవంబర్	డిసెంబర్	navambar	disembar	
+ni-016	core	one	two	ఒకటి	రెండు	okati	rendu	
+ni-017	core	two	three	రెండు	మూడు	rendu	mudu	
+ni-018	core	three	four	మూడు	నాలుగు	mudu	nalugu	
+ni-019	core	four	five	నాలుగు	ఐదు	nalugu	aidu	
+ni-020	core	five	six	ఐదు	ఆరు	aidu	aru	
+ni-021	core	six	seven	ఆరు	ఏడు	aru	edu	
+ni-022	core	seven	eight	ఏడు	ఎనిమిది	edu	enimidi	
+ni-023	core	eight	nine	ఎనిమిది	తొమ్మిది	enimidi	tommidi	
+ni-024	core	nine	ten	తొమ్మిది	పది	tommidi	padi	
+ni-025	core	ten	eleven	పది	పదకొండు	padi	padakondu	
+ni-026	core	eleven	twelve	పదకొండు	పన్నెండు	padakondu	pannendu	
+ni-027	core	twelve	thirteen	పన్నెండు	పదమూడు	pannendu	padamudu	
+ni-028	core	twenty	thirty	ఇరవై	ముప్పై	iravai	muppai	
+ni-029	core	thirty	forty	ముప్పై	నలభై	muppai	nalabhai	
+ni-030	core	forty	fifty	నలభై	యాభై	nalabhai	yabhai	
+ni-031	core	first	second	మొదటి	రెండవ	modati	rendava	
+ni-032	core	second	third	రెండవ	మూడవ	rendava	mudava	
+ni-033	core	third	fourth	మూడవ	నాలుగవ	mudava	naluguva	
+ni-034	core	fourth	fifth	నాలుగవ	ఐదవ	naluguva	aidava	
+ni-035	complex	ka	kha	క	ఖ	ka	kha	Telugu consonant order follows the varnamala
+ni-036	complex	kha	ga	ఖ	గ	kha	ga	
+ni-037	complex	ga	gha	గ	ఘ	ga	gha	
+ni-038	complex	cha	chha	చ	ఛ	cha	chha	
+ni-039	complex	ja	jha	జ	ఝ	ja	jha	
+ni-040	complex	pa	pha	ప	ఫ	pa	pha	
+ni-041	complex	ba	bha	బ	భ	ba	bha	
+ni-042	complex	ya	ra	య	ర	ya	ra	
+ni-043	complex	ra	la	ర	ల	ra	la	
+ni-044	complex	sa	ha	స	హ	sa	ha	
+ni-045	complex	spring	summer	వసంతం	గ్రీష్మం	vasantam	grishmam	Telugu has a six-season cycle; see ni-061
+ni-046	complex	hundred	thousand	వంద	వెయ్యి	vanda	veyyi	
+ni-047	complex	thousand	lakh	వెయ్యి	లక్ష	veyyi	laksha	Indian numbering
+ni-048	complex	lakh	crore	లక్ష	కోటి	laksha	koti	Indian numbering
+ni-049	complex	morning	noon	ఉదయం	మధ్యాహ్నం	udayam	madhyahnam	
+ni-050	complex	noon	evening	మధ్యాహ్నం	సాయంత్రం	madhyahnam	sayantram	
+ni-051	sanskritized	Chaitra	Vaisakha	చైత్రం	వైశాఖం	chaitram	vaishakham	traditional lunisolar month order
+ni-052	sanskritized	Vaisakha	Jyeshtha	వైశాఖం	జ్యేష్ఠం	vaishakham	jyeshtham	
+ni-053	sanskritized	Jyeshtha	Ashadha	జ్యేష్ఠం	ఆషాఢం	jyeshtham	ashadham	
+ni-054	sanskritized	Ashadha	Shravana	ఆషాఢం	శ్రావణం	ashadham	shravanam	
+ni-055	sanskritized	Shravana	Bhadrapada	శ్రావణం	భాద్రపదం	shravanam	bhadrapadam	
+ni-056	sanskritized	Bhadrapada	Ashvayuja	భాద్రపదం	ఆశ్వయుజం	bhadrapadam	ashvayujam	
+ni-057	sanskritized	Ashvayuja	Kartika	ఆశ్వయుజం	కార్తీకం	ashvayujam	kartikam	
+ni-058	sanskritized	Kartika	Margashira	కార్తీకం	మార్గశిరం	kartikam	margashiram	
+ni-059	sanskritized	Margashira	Pushya	మార్గశిరం	పుష్యం	margashiram	pushyam	
+ni-060	sanskritized	Magha	Phalguna	మాఘం	ఫాల్గుణం	magham	phalgunam	
+ni-061	sanskritized	Vasanta	Grishma	వసంతం	గ్రీష్మం	vasantam	grishmam	six-season cycle; cf. ni-045
+ni-062	sanskritized	Grishma	Varsha	గ్రీష్మం	వర్షం	grishmam	varsham	
+ni-063	sanskritized	Varsha	Sharad	వర్షం	శరత్తు	varsham	sharattu	
+ni-064	sanskritized	Sharad	Hemanta	శరత్తు	హేమంతం	sharattu	hemantam	
+ni-065	sanskritized	Hemanta	Shishira	హేమంతం	శిశిరం	hemantam	shishiram	
+ni-066	rare	Prabhava	Vibhava	ప్రభవ	విభవ	prabhava	vibhava	first two years of the 60-year samvatsara cycle
+ni-067	rare	Ashvini	Bharani	అశ్విని	భరణి	ashvini	bharani	nakshatra order
+ni-068	rare	Bharani	Krittika	భరణి	కృత్తిక	bharani	kruttika	
+ni-069	rare	Mesha	Vrishabha	మేషం	వృషభం	mesham	vrushabham	zodiac order
+ni-070	rare	Vrishabha	Mithuna	వృషభం	మిథునం	vrushabham	mithunam	
+ni-071	literary_en	primary	secondary	ప్రాథమిక	ద్వితీయ	prathamika	dvitiya	
+ni-072	literary_en	penultimate	ultimate	చివరికి ముందు	చివరి	chivariki mundu	chivari	CHECK two-word Telugu form
+ni-073	literary_en	infancy	childhood	శైశవం	బాల్యం	shaishavam	balyam	
+ni-074	literary_en	childhood	adolescence	బాల్యం	కౌమారం	balyam	kaumaram	
+ni-075	literary_en	adolescence	adulthood	కౌమారం	యౌవనం	kaumaram	yauvanam	
+ni-076	ambiguous	a	aa	అ	ఆ	a	a	ROMANIZATION COLLAPSE: vowel length is unmarked, so both sides are a
+ni-077	ambiguous	i	ii	ఇ	ఈ	i	i	ROMANIZATION COLLAPSE: both sides are i
+ni-078	ambiguous	ta	tha	ట	ఠ	ta	tha	retroflex series collides with the dental series under this convention
+ni-079	ambiguous	April	May	ఏప్రిల్	మే	epril	me	English May is also a modal verb
+ni-080	ambiguous	Sunday	Monday	ఆదివారం	సోమవారం	adivaram	somavaram	week start is conventional; some orders put Sunday last
+ni-081	core	thirteen	fourteen	పదమూడు	పదునాలుగు	padamudu	padunalugu	
+ni-082	core	fourteen	fifteen	పదునాలుగు	పదిహేను	padunalugu	padihenu	
+ni-083	core	fifteen	sixteen	పదిహేను	పదహారు	padihenu	padaharu	
+ni-084	core	sixteen	seventeen	పదహారు	పదిహేడు	padaharu	padihedu	
+ni-085	core	seventeen	eighteen	పదిహేడు	పదునెనిమిది	padihedu	padunenimidi	
+ni-086	core	eighteen	nineteen	పదునెనిమిది	పందొమ్మిది	padunenimidi	pandommidi	
+ni-087	core	nineteen	twenty	పందొమ్మిది	ఇరవై	pandommidi	iravai	
+ni-088	core	fifty	sixty	యాభై	అరవై	yabhai	aravai	
+ni-089	core	sixty	seventy	అరవై	డెబ్బై	aravai	debbai	
+ni-090	core	seventy	eighty	డెబ్బై	ఎనభై	debbai	enabhai	
+ni-091	core	eighty	ninety	ఎనభై	తొంభై	enabhai	tombhai	
+ni-092	core	ninety	hundred	తొంభై	వంద	tombhai	vanda	
+ni-093	core	fifth	sixth	ఐదవ	ఆరవ	aidava	arava	
+ni-094	core	sixth	seventh	ఆరవ	ఏడవ	arava	edava	
+ni-095	core	seventh	eighth	ఏడవ	ఎనిమిదవ	edava	enimidava	
+ni-096	core	eighth	ninth	ఎనిమిదవ	తొమ్మిదవ	enimidava	tommidava	
+ni-097	core	ninth	tenth	తొమ్మిదవ	పదవ	tommidava	padava	
+ni-098	core	tenth	eleventh	పదవ	పదకొండవ	padava	padakondava	
+ni-099	core	July	August	జూలై	ఆగస్టు	julai	agastu	
+ni-100	core	December	January	డిసెంబర్	జనవరి	disembar	janavari	
+ni-101	core	April	May	ఏప్రిల్	మే	epril	me	duplicate of ni-079 kept as core because the Telugu side is unambiguous
+ni-102	core	evening	night	సాయంత్రం	రాత్రి	sayantram	ratri	
+ni-103	core	night	morning	రాత్రి	ఉదయం	ratri	udayam	
+ni-104	core	second	minute	క్షణం	నిమిషం	kshanam	nimisham	units of time, ascending
+ni-105	core	minute	hour	నిమిషం	గంట	nimisham	ganta	
+ni-106	core	hour	day	గంట	రోజు	ganta	roju	
+ni-107	core	day	week	రోజు	వారం	roju	varam	
+ni-108	core	week	month	వారం	నెల	varam	nela	
+ni-109	core	month	year	నెల	సంవత్సరం	nela	samvatsaram	
+ni-110	core	gram	kilogram	గ్రాము	కిలో	gramu	kilo	
+ni-111	core	ten	twenty	పది	ఇరవై	padi	iravai	counting by tens
+ni-112	core	two	four	రెండు	నాలుగు	rendu	nalugu	counting by twos
+ni-113	core	five	ten	ఐదు	పది	aidu	padi	counting by fives
+ni-114	complex	gha	nga	ఘ	ఙ	gha	nga	
+ni-115	complex	chha	ja	ఛ	జ	chha	ja	
+ni-116	complex	jha	nya	ఝ	ఞ	jha	nya	
+ni-117	complex	tha	da	ఠ	డ	tha	da	retroflex series
+ni-118	complex	da	dha	డ	ఢ	da	dha	retroflex series
+ni-119	complex	dha	na	ఢ	ణ	dha	na	retroflex series
+ni-120	complex	pha	ba	ఫ	బ	pha	ba	
+ni-121	complex	bha	ma	భ	మ	bha	ma	
+ni-122	complex	la	va	ల	వ	la	va	
+ni-123	complex	va	sha	వ	శ	va	sha	
+ni-124	rare	sa	ri	స	రి	sa	ri	sargam solfege order
+ni-125	rare	ri	ga	రి	గ	ri	ga	sargam solfege order
+ni-126	rare	ga	ma	గ	మ	ga	ma	sargam solfege order
+ni-127	rare	ma	pa	మ	ప	ma	pa	sargam solfege order
+ni-128	rare	pa	da	ప	ద	pa	da	sargam solfege order
+ni-129	ambiguous	sha	sha	శ	ష	sha	sha	ROMANIZATION COLLAPSE: both sibilants are sha

@@ -1,0 +1,26 @@
+# Gemma 3 27B base on an H200 SXM (141 GiB, sm_90, native bf16).
+#
+# ~54 GiB of bf16 weights leaves ~85 GiB for activations and KV cache, which is
+# why the batch sizes here are far above the H100-80GB config.
+#
+# `head_batch: 32` puts all 32 heads of a layer into one batched forward, so the
+# causal-mediation sweep costs n_layers forwards per trial instead of
+# n_layers * n_heads. Without it the 27B sweep is ~50 h rather than ~1.5 h.
+name: gemma3_27b_h200
+hf_id: google/gemma-3-27b-pt
+dtype: bfloat16
+device_map: cuda
+prepend_bos: true
+drop_vision_tower: true
+
+expect:
+  n_layers: 62
+  hidden_size: 5376
+  n_heads: 32
+  head_dim: 128            # NOTE 32 * 128 = 4096 != hidden_size 5376
+  n_kv_heads: 16
+
+batch:
+  score: 48
+  head_batch: 32
+  logitlens: 24

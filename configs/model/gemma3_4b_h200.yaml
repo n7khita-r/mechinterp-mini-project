@@ -1,0 +1,29 @@
+# Gemma 3 4B base on an H200 SXM (141 GiB, sm_90, native bf16).
+#
+# bf16, not fp16: scripts/00_env_check.py on Ada's RTX 2080 Ti showed Gemma 3
+# producing NaN in fp16 -- head patching, the residual add and the logit lens all
+# returned nan, because the model was trained in bf16 and Turing has no native
+# bf16 support. sm_90 does, so this is the dtype the weights expect.
+#
+# Batch sizes are large because 141 GiB against ~8 GiB of weights leaves the GPU
+# effectively unconstrained; the limit here is Gemma 3's 262k vocabulary, and the
+# forward helper already asks for last-position logits only (logits_to_keep=1),
+# so a batch of 128 costs megabytes rather than gigabytes of logits.
+name: gemma3_4b_h200
+hf_id: google/gemma-3-4b-pt
+dtype: bfloat16
+device_map: cuda
+prepend_bos: true
+drop_vision_tower: true
+
+expect:
+  n_layers: 34
+  hidden_size: 2560
+  n_heads: 8
+  head_dim: 256            # NOTE 8 * 256 = 2048 != hidden_size 2560
+  n_kv_heads: 4
+
+batch:
+  score: 128
+  head_batch: 8            # all 8 heads of a layer in one forward
+  logitlens: 64

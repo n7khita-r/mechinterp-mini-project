@@ -1,0 +1,13 @@
+{
+  "stage": "06_transfer",
+  "model": "gemma3_4b_h200",
+  "config_hash": "16ebfd7c1d3e",
+  "git_sha": "unknown",
+  "host": "12c91c669205",
+  "slurm_job_id": null,
+  "started": "2026-11-20T01:11:51.345851+00:00",
+  "elapsed_sec": 727.2,
+  "peak_vram_gib": 8.01,
+  "torch": "2.8.0+cu129",
+  "n_pairs": 184
+}

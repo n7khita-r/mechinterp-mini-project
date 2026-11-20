@@ -1,0 +1,187 @@
+id	tier	en_in	en_out	te_in	te_out	rom_in	rom_out	notes
+sp-001	core	cat	cats	పిల్లి	పిల్లులు	pilli	pillulu	
+sp-002	core	dog	dogs	కుక్క	కుక్కలు	kukka	kukkalu	
+sp-003	core	book	books	పుస్తకం	పుస్తకాలు	pustakam	pustakalu	
+sp-004	core	tree	trees	చెట్టు	చెట్లు	chettu	chetlu	
+sp-005	core	car	cars	కారు	కార్లు	karu	karlu	
+sp-006	core	bird	birds	పక్షి	పక్షులు	pakshi	pakshulu	
+sp-007	core	flower	flowers	పువ్వు	పువ్వులు	puvvu	puvvulu	
+sp-008	core	river	rivers	నది	నదులు	nadi	nadulu	
+sp-009	core	star	stars	నక్షత్రం	నక్షత్రాలు	nakshatram	nakshatralu	
+sp-010	core	girl	girls	అమ్మాయి	అమ్మాయిలు	ammayi	ammayilu	
+sp-011	core	boy	boys	అబ్బాయి	అబ్బాయిలు	abbayi	abbayilu	
+sp-012	core	fruit	fruits	పండు	పండ్లు	pandu	pandlu	
+sp-013	core	room	rooms	గది	గదులు	gadi	gadulu	
+sp-014	core	school	schools	బడి	బడులు	badi	badulu	
+sp-015	core	name	names	పేరు	పేర్లు	peru	perlu	
+sp-016	core	word	words	మాట	మాటలు	mata	matalu	
+sp-017	core	day	days	రోజు	రోజులు	roju	rojulu	
+sp-018	core	country	countries	దేశం	దేశాలు	desham	deshalu	
+sp-019	core	horse	horses	గుర్రం	గుర్రాలు	gurram	gurralu	
+sp-020	core	cow	cows	ఆవు	ఆవులు	avu	avulu	
+sp-021	core	goat	goats	మేక	మేకలు	meka	mekalu	
+sp-022	core	fish	fishes	చేప	చేపలు	chepa	chepalu	English fish is usually invariant; fishes is the marked plural
+sp-023	core	doll	dolls	బొమ్మ	బొమ్మలు	bomma	bommalu	
+sp-024	core	story	stories	కథ	కథలు	katha	kathalu	
+sp-025	core	song	songs	పాట	పాటలు	pata	patalu	
+sp-026	core	shop	shops	దుకాణం	దుకాణాలు	dukanam	dukanalu	
+sp-027	core	village	villages	ఊరు	ఊర్లు	uru	urlu	
+sp-028	core	city	cities	నగరం	నగరాలు	nagaram	nagaralu	
+sp-029	core	letter	letters	ఉత్తరం	ఉత్తరాలు	uttaram	uttaralu	
+sp-030	core	window	windows	కిటికీ	కిటికీలు	kitiki	kitikilu	
+sp-031	core	chair	chairs	కుర్చీ	కుర్చీలు	kurchi	kurchilu	
+sp-032	core	table	tables	బల్ల	బల్లలు	balla	ballalu	
+sp-033	core	pen	pens	కలం	కలాలు	kalam	kalalu	
+sp-034	core	paper	papers	కాగితం	కాగితాలు	kagitam	kagitalu	
+sp-035	core	stone	stones	రాయి	రాళ్ళు	rayi	rallu	
+sp-036	core	bird	birds	పిట్ట	పిట్టలు	pitta	pittalu	alternative Telugu lexeme to sp-006
+sp-037	core	snake	snakes	పాము	పాములు	pamu	pamulu	
+sp-038	core	elephant	elephants	ఏనుగు	ఏనుగులు	enugu	enugulu	
+sp-039	core	tiger	tigers	పులి	పులులు	puli	pululu	
+sp-040	core	monkey	monkeys	కోతి	కోతులు	koti	kotulu	
+sp-041	complex	eye	eyes	కన్ను	కళ్ళు	kannu	kallu	irregular Telugu plural
+sp-042	complex	hand	hands	చేయి	చేతులు	cheyi	chetulu	irregular Telugu plural
+sp-043	complex	leg	legs	కాలు	కాళ్ళు	kalu	kallu	irregular Telugu plural
+sp-044	complex	hen	hens	కోడి	కోళ్ళు	kodi	kollu	irregular Telugu plural
+sp-045	complex	person	people	మనిషి	మనుషులు	manishi	manushulu	irregular on both sides
+sp-046	complex	child	children	పిల్ల	పిల్లలు	pilla	pillalu	irregular English plural
+sp-047	complex	man	men	మగవాడు	మగవాళ్ళు	magavadu	magavallu	irregular English plural
+sp-048	complex	woman	women	ఆడది	ఆడవాళ్ళు	adadi	adavallu	irregular on both sides
+sp-049	complex	tooth	teeth	పలు	పళ్ళు	palu	pallu	irregular on both sides
+sp-050	complex	foot	feet	అడుగు	అడుగులు	adugu	adugulu	irregular English plural
+sp-051	complex	leaf	leaves	ఆకు	ఆకులు	aku	akulu	irregular English plural
+sp-052	complex	knife	knives	కత్తి	కత్తులు	katti	kattulu	irregular English plural
+sp-053	complex	mouse	mice	ఎలుక	ఎలుకలు	eluka	elukalu	irregular English plural
+sp-054	complex	wife	wives	భార్య	భార్యలు	bharya	bharyalu	irregular English plural
+sp-055	complex	life	lives	జీవితం	జీవితాలు	jivitam	jivitalu	irregular English plural
+sp-056	sanskritized	deed	deeds	కార్యం	కార్యాలు	karyam	karyalu	
+sp-057	sanskritized	scripture	scriptures	గ్రంథం	గ్రంథాలు	grantham	granthalu	
+sp-058	sanskritized	temple	temples	దేవాలయం	దేవాలయాలు	devalayam	devalayalu	
+sp-059	sanskritized	disciple	disciples	శిష్యుడు	శిష్యులు	shishyudu	shishyulu	
+sp-060	sanskritized	teacher	teachers	ఆచార్యుడు	ఆచార్యులు	acharyudu	acharyulu	
+sp-061	sanskritized	king	kings	రాజు	రాజులు	raju	rajulu	
+sp-062	sanskritized	sage	sages	ఋషి	ఋషులు	rushi	rushulu	vocalic r; romanization writes ru
+sp-063	sanskritized	virtue	virtues	గుణం	గుణాలు	gunam	gunalu	
+sp-064	sanskritized	element	elements	భూతం	భూతాలు	bhutam	bhutalu	
+sp-065	sanskritized	direction	directions	దిక్కు	దిక్కులు	dikku	dikkulu	
+sp-066	rare	anklet	anklets	అందె	అందెలు	ande	andelu	
+sp-067	rare	granary	granaries	గాదె	గాదెలు	gade	gadelu	
+sp-068	rare	bullock	bullocks	ఎద్దు	ఎద్దులు	eddu	eddulu	
+sp-069	rare	sickle	sickles	కొడవలి	కొడవళ్ళు	kodavali	kodavallu	irregular plural
+sp-070	rare	winnow	winnows	చేట	చేటలు	cheta	chetalu	
+sp-071	literary_en	hypothesis	hypotheses	పరికల్పన	పరికల్పనలు	parikalpana	parikalpanalu	Latinate English plural
+sp-072	literary_en	criterion	criteria	ప్రమాణం	ప్రమాణాలు	pramanam	pramanalu	Greek English plural
+sp-073	literary_en	phenomenon	phenomena	దృగ్విషయం	దృగ్విషయాలు	drugvishayam	drugvishayalu	CHECK Telugu coinage
+sp-074	literary_en	appendix	appendices	అనుబంధం	అనుబంధాలు	anubandham	anubandhalu	Latinate English plural
+sp-075	literary_en	matrix	matrices	మాత్రిక	మాత్రికలు	matrika	matrikalu	Latinate English plural
+sp-076	literary_en	nucleus	nuclei	కేంద్రకం	కేంద్రకాలు	kendrakam	kendrakalu	Latinate English plural
+sp-077	literary_en	axis	axes	అక్షం	అక్షాలు	aksham	akshalu	Latinate English plural
+sp-078	literary_en	vertex	vertices	శీర్షం	శీర్షాలు	shirsham	shirshalu	Latinate English plural
+sp-079	ambiguous	house	houses	ఇల్లు	ఇళ్ళు	illu	illu	ROMANIZATION COLLAPSE: singular and plural both romanize to illu
+sp-080	ambiguous	wood	woods	కట్టె	కట్టెలు	katte	kattelu	English woods also means forest
+sp-081	ambiguous	glass	glasses	అద్దం	అద్దాలు	addam	addalu	English glasses also means spectacles
+sp-082	ambiguous	fish	fish	చేప	చేపలు	chepa	chepalu	English plural is invariant; cf. sp-022
+sp-083	ambiguous	sheep	sheep	గొర్రె	గొర్రెలు	gorre	gorrelu	English plural is invariant
+sp-084	core	field	fields	పొలం	పొలాలు	polam	polalu	
+sp-085	core	garden	gardens	తోట	తోటలు	tota	totalu	
+sp-086	core	well	wells	బావి	బావులు	bavi	bavulu	
+sp-087	core	pond	ponds	చెరువు	చెరువులు	cheruvu	cheruvulu	
+sp-088	core	sea	seas	సముద్రం	సముద్రాలు	samudram	samudralu	
+sp-089	core	hill	hills	కొండ	కొండలు	konda	kondalu	
+sp-090	core	street	streets	వీధి	వీధులు	vidhi	vidhulu	
+sp-091	core	bridge	bridges	వంతెన	వంతెనలు	vantena	vantenalu	
+sp-092	core	market	markets	సంత	సంతలు	santa	santalu	
+sp-093	core	hospital	hospitals	ఆసుపత్రి	ఆసుపత్రులు	asupatri	asupatrulu	
+sp-094	core	bus	buses	బస్సు	బస్సులు	bassu	bassulu	
+sp-095	core	aeroplane	aeroplanes	విమానం	విమానాలు	vimanam	vimanalu	
+sp-096	core	boat	boats	పడవ	పడవలు	padava	padavalu	
+sp-097	core	wheel	wheels	చక్రం	చక్రాలు	chakram	chakralu	
+sp-098	core	lock	locks	తాళం	తాళాలు	talam	talalu	
+sp-099	core	box	boxes	పెట్టె	పెట్టెలు	pette	pettelu	
+sp-100	core	bag	bags	సంచి	సంచులు	sanchi	sanchulu	
+sp-101	core	bottle	bottles	సీసా	సీసాలు	sisa	sisalu	
+sp-102	core	cup	cups	కప్పు	కప్పులు	kappu	kappulu	
+sp-103	core	spoon	spoons	చెంచా	చెంచాలు	chencha	chenchalu	
+sp-104	core	pot	pots	కుండ	కుండలు	kunda	kundalu	
+sp-105	core	lamp	lamps	దీపం	దీపాలు	dipam	dipalu	
+sp-106	core	clock	clocks	గడియారం	గడియారాలు	gadiyaram	gadiyaralu	
+sp-107	core	comb	combs	దువ్వెన	దువ్వెనలు	duvvena	duvvenalu	
+sp-108	core	soap	soaps	సబ్బు	సబ్బులు	sabbu	sabbulu	
+sp-109	core	shirt	shirts	చొక్కా	చొక్కాలు	chokka	chokkalu	
+sp-110	core	saree	sarees	చీర	చీరలు	chira	chiralu	
+sp-111	core	sandal	sandals	చెప్పు	చెప్పులు	cheppu	cheppulu	
+sp-112	core	cap	caps	టోపీ	టోపీలు	topi	topilu	
+sp-113	core	ring	rings	ఉంగరం	ఉంగరాలు	ungaram	ungaralu	
+sp-114	core	rupee	rupees	రూపాయి	రూపాయలు	rupayi	rupayalu	
+sp-115	core	price	prices	ధర	ధరలు	dhara	dharalu	
+sp-116	core	line	lines	గీత	గీతలు	gita	gitalu	
+sp-117	core	page	pages	పేజీ	పేజీలు	peji	pejilu	
+sp-118	core	picture	pictures	చిత్రం	చిత్రాలు	chitram	chitralu	
+sp-119	core	film	films	సినిమా	సినిమాలు	sinima	sinimalu	
+sp-120	core	game	games	ఆట	ఆటలు	ata	atalu	
+sp-121	core	ball	balls	బంతి	బంతులు	banti	bantulu	
+sp-122	core	farmer	farmers	రైతు	రైతులు	raitu	raitulu	
+sp-123	core	soldier	soldiers	సైనికుడు	సైనికులు	sainikudu	sainikulu	
+sp-124	core	singer	singers	గాయకుడు	గాయకులు	gayakudu	gayakulu	
+sp-125	core	poet	poets	కవి	కవులు	kavi	kavulu	
+sp-126	core	thief	thieves	దొంగ	దొంగలు	donga	dongalu	English plural is irregular
+sp-127	core	baby	babies	పాప	పాపలు	papa	papalu	
+sp-128	core	brother	brothers	అన్న	అన్నలు	anna	annalu	
+sp-129	core	sister	sisters	అక్క	అక్కలు	akka	akkalu	
+sp-130	core	bone	bones	ఎముక	ఎముకలు	emuka	emukalu	
+sp-131	core	hair	hairs	వెంట్రుక	వెంట్రుకలు	ventruka	ventrukalu	
+sp-132	core	ear	ears	చెవి	చెవులు	chevi	chevulu	
+sp-133	core	nose	noses	ముక్కు	ముక్కులు	mukku	mukkulu	
+sp-134	core	tongue	tongues	నాలుక	నాలుకలు	naluka	nalukalu	
+sp-135	core	head	heads	తల	తలలు	tala	talalu	
+sp-136	core	neck	necks	మెడ	మెడలు	meda	medalu	
+sp-137	core	shoulder	shoulders	భుజం	భుజాలు	bhujam	bhujalu	
+sp-138	core	heart	hearts	గుండె	గుండెలు	gunde	gundelu	
+sp-139	core	stomach	stomachs	పొట్ట	పొట్టలు	potta	pottalu	
+sp-140	core	seed	seeds	విత్తనం	విత్తనాలు	vittanam	vittanalu	
+sp-141	core	branch	branches	కొమ్మ	కొమ్మలు	komma	kommalu	
+sp-142	core	curry	curries	కూర	కూరలు	kura	kuralu	
+sp-143	core	grain	grains	గింజ	గింజలు	ginja	ginjalu	
+sp-144	core	cloud	clouds	మేఘం	మేఘాలు	megham	meghalu	
+sp-145	core	wind	winds	గాలి	గాలులు	gali	galulu	
+sp-146	core	rain	rains	వర్షం	వర్షాలు	varsham	varshalu	
+sp-147	core	smoke	smokes	పొగ	పొగలు	poga	pogalu	
+sp-148	core	shadow	shadows	నీడ	నీడలు	nida	nidalu	
+sp-149	core	sound	sounds	శబ్దం	శబ్దాలు	shabdam	shabdalu	
+sp-150	core	dream	dreams	కల	కలలు	kala	kalalu	
+sp-151	core	thought	thoughts	ఆలోచన	ఆలోచనలు	alochana	alochanalu	
+sp-152	core	question	questions	ప్రశ్న	ప్రశ్నలు	prashna	prashnalu	
+sp-153	core	answer	answers	జవాబు	జవాబులు	javabu	javabulu	
+sp-154	core	mistake	mistakes	తప్పు	తప్పులు	tappu	tappulu	
+sp-155	core	rule	rules	నియమం	నియమాలు	niyamam	niyamalu	
+sp-156	core	month	months	నెల	నెలలు	nela	nelalu	
+sp-157	core	week	weeks	వారం	వారాలు	varam	varalu	
+sp-158	core	hour	hours	గంట	గంటలు	ganta	gantalu	
+sp-159	core	minute	minutes	నిమిషం	నిమిషాలు	nimisham	nimishalu	
+sp-160	core	night	nights	రాత్రి	రాత్రులు	ratri	ratrulu	
+sp-161	core	festival	festivals	పండుగ	పండుగలు	panduga	pandugalu	
+sp-162	core	gift	gifts	కానుక	కానుకలు	kanuka	kanukalu	
+sp-163	core	prize	prizes	బహుమతి	బహుమతులు	bahumati	bahumatulu	
+sp-164	core	friend	friends	స్నేహితుడు	స్నేహితులు	snehitudu	snehitulu	
+sp-165	core	enemy	enemies	శత్రువు	శత్రువులు	shatruvu	shatruvulu	English plural is irregular
+sp-166	complex	temple	temples	గుడి	గుళ్ళు	gudi	gullu	irregular Telugu plural
+sp-167	complex	train	trains	రైలు	రైళ్ళు	railu	raillu	irregular Telugu plural
+sp-168	complex	bicycle	bicycles	సైకిల్	సైకిళ్ళు	saikil	saikillu	irregular Telugu plural
+sp-169	complex	road	roads	రోడ్డు	రోడ్లు	roddu	rodlu	irregular Telugu plural
+sp-170	complex	finger	fingers	వేలు	వేళ్ళు	velu	vellu	irregular Telugu plural
+sp-171	complex	nail	nails	గోరు	గోళ్ళు	goru	gollu	irregular Telugu plural
+sp-172	complex	mouth	mouths	నోరు	నోళ్ళు	noru	nollu	irregular Telugu plural
+sp-173	complex	knee	knees	మోకాలు	మోకాళ్ళు	mokalu	mokallu	irregular Telugu plural
+sp-174	complex	wedding	weddings	పెళ్ళి	పెళ్ళిళ్ళు	pelli	pellillu	reduplicated irregular plural
+sp-175	complex	note	notes	నోటు	నోట్లు	notu	notlu	irregular Telugu plural
+sp-176	complex	towel	towels	తువ్వాలు	తువ్వాళ్ళు	tuvvalu	tuvvallu	CHECK irregular Telugu plural
+sp-177	complex	plate	plates	పళ్ళెం	పళ్ళేలు	pallem	pallelu	CHECK irregular Telugu plural
+sp-178	complex	coin	coins	నాణెం	నాణేలు	nanem	nanelu	CHECK irregular Telugu plural
+sp-179	complex	neighbour	neighbours	పొరుగువాడు	పొరుగువాళ్ళు	poruguvadu	poruguvallu	
+sp-180	complex	beggar	beggars	బిచ్చగాడు	బిచ్చగాళ్ళు	bichchagadu	bichchagallu	
+sp-181	sanskritized	office	offices	కార్యాలయం	కార్యాలయాలు	karyalayam	karyalayalu	
+sp-182	sanskritized	year	years	సంవత్సరం	సంవత్సరాలు	samvatsaram	samvatsaralu	
+sp-183	sanskritized	syllable	syllables	అక్షరం	అక్షరాలు	aksharam	aksharalu	aksharam is a syllable/character, distinct from uttaram a postal letter (sp-029)
+sp-184	sanskritized	number	numbers	సంఖ్య	సంఖ్యలు	sankhya	sankhyalu	
+sp-185	sanskritized	necklace	necklaces	హారం	హారాలు	haram	haralu	
+sp-186	ambiguous	root	roots	వేరు	వేళ్ళు	veru	vellu	Telugu plural collides with that of velu finger; cf. sp-170

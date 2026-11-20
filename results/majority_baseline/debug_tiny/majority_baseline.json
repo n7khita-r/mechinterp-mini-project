@@ -1,0 +1,191 @@
+[
+  {
+    "task": "tense",
+    "condition": "en",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "past",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "present": 1,
+      "past": 2
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "te",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "past",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "past": 2,
+      "present": 1
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "rom",
+    "n": 3,
+    "n_classes": 1,
+    "majority_label": "past",
+    "majority_acc": 1.0,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -1.0,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "past": 3
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "tg",
+    "n": 3,
+    "n_classes": 1,
+    "majority_label": "past",
+    "majority_acc": 1.0,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -1.0,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "past": 3
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "en",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "yes": 2,
+      "no": 1
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "te",
+    "n": 3,
+    "n_classes": 1,
+    "majority_label": "yes",
+    "majority_acc": 1.0,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -1.0,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "yes": 3
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "rom",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "no": 1,
+      "yes": 2
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "tg",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "yes": 2,
+      "no": 1
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "en",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "she": 1,
+      "he": 2
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "te",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 2,
+      "she": 1
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "rom",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 2,
+      "she": 1
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "tg",
+    "n": 3,
+    "n_classes": 2,
+    "majority_label": "she",
+    "majority_acc": 0.6667,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.6667,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 1,
+      "she": 2
+    }
+  }
+]

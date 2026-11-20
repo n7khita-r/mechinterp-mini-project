@@ -1,0 +1,92 @@
+[
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 16.4
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 16.4
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 16.4
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 14.3
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 14.3
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 14.3
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 15.9
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 15.9
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 1,
+    "n": 70,
+    "acc": 0.0,
+    "fv_rel_norm": 0.05,
+    "resid_norm_at_layer": 15.9
+  }
+]

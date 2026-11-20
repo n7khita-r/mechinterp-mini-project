@@ -1,0 +1,35 @@
+# Gemma 3 27B base -- NOT runnable on Ada. Use a rented H100/A100 80 GB.
+#
+# Two independent reasons Ada cannot host this model:
+#   1. Memory. bf16 weights are ~54 GB. An Ada node has 4 x 11 GB = 44 GB total,
+#      and QoS caps a job at 4 GPUs, i.e. one node. It does not fit even sharded.
+#   2. Storage. ~54 GB of weights exceeds the 50 GB /home quota, and /home is the
+#      only filesystem visible from Ada's compute nodes (/share1 is master-only,
+#      /scratch and /ssd_scratch are per-node and purged after 7 days).
+# Quantising to 8-bit would fit in memory but would also mean dequantising the
+# o_proj weights to build function vectors, adding numerical risk to the exact
+# quantity the study measures. Not worth it -- run this elsewhere.
+#
+# On one H100 80 GB: ~54 GB of weights leaves ~25 GB for activations and KV
+# cache, which is comfortable at the batch sizes below.
+name: gemma3_27b
+hf_id: google/gemma-3-27b-pt
+dtype: bfloat16
+device_map: cuda
+prepend_bos: true
+drop_vision_tower: true
+
+expect:
+  n_layers: 62
+  hidden_size: 5376
+  n_heads: 32
+  head_dim: 128            # NOTE 32 * 128 = 4096 != hidden_size 5376
+  n_kv_heads: 16
+
+# `head_batch: 32` runs all 32 heads of a layer in one forward, so the AIE sweep
+# costs n_layers forwards per trial rather than n_layers * n_heads. Without this
+# the 27B sweep is ~50 h instead of ~1.5 h.
+batch:
+  score: 16
+  head_batch: 32
+  logitlens: 8

@@ -1,0 +1,11 @@
+# pip constraints for Ada.
+#
+# torch is pinned to 2.3.1 because that is what the environment was built and
+# tested against. Note the original reason for the ceiling has lapsed: Ada's
+# compute partition is now `u22` (Ubuntu 22.04, glibc 2.35), not the Ubuntu 18.04
+# the docs describe, so torch 2.4+ manylinux_2_28 wheels would in fact load. If
+# you ever rebuild the venv, you may raise this -- but rebuild and re-run
+# scripts/00_env_check.py rather than changing it mid-study.
+torch==2.3.1+cu118
+transformers>=4.50,<4.57
+numpy<2.0

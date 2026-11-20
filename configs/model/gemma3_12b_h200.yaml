@@ -1,0 +1,33 @@
+# Gemma 3 12B base on an H200 SXM (141 GiB, sm_90, native bf16).
+#
+# The middle scale point. GPU memory is a non-issue here -- ~24.5 GiB of weights
+# against 141 GiB -- so the only real constraint is disk for the checkpoint. On a
+# 28 GB RunPod network volume this fits only after deleting the 4B weights and
+# any other cached repos; resize the volume if you want to keep both.
+#
+# Note the head geometry trap again, and worse than 4B: 16 * 256 = 4096 while
+# hidden_size is 3840. The reference implementation's `head_dim = hidden_size //
+# n_heads` would give 240 here, so it would read a 240-wide slice of a 256-wide
+# head and silently mix neighbouring heads together. `expect` is asserted against
+# the loaded model at startup, so a mismatch fails the job instead of producing
+# plausible-looking nonsense.
+name: gemma3_12b_h200
+hf_id: google/gemma-3-12b-pt
+dtype: bfloat16
+device_map: cuda
+prepend_bos: true
+drop_vision_tower: true
+
+expect:
+  n_layers: 48
+  hidden_size: 3840
+  n_heads: 16
+  head_dim: 256            # NOTE 16 * 256 = 4096 != hidden_size 3840
+  n_kv_heads: 8
+
+# head_batch is n_heads: all 16 heads of a layer in one batched forward, so the
+# mediation sweep costs n_layers forwards per trial, not n_layers * n_heads.
+batch:
+  score: 64
+  head_batch: 16
+  logitlens: 32

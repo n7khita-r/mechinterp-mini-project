@@ -1,0 +1,13 @@
+{
+  "stage": "09_report",
+  "model": "gemma3_4b_h200",
+  "config_hash": "16ebfd7c1d3e",
+  "git_sha": "unknown",
+  "host": "12c91c669205",
+  "slurm_job_id": null,
+  "started": "2026-11-20T01:32:55.479687+00:00",
+  "elapsed_sec": 8.5,
+  "peak_vram_gib": 0.0,
+  "torch": "2.8.0+cu129",
+  "n_artefacts": 20
+}

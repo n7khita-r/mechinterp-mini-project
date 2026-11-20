@@ -1,0 +1,171 @@
+id	tier	en_in	en_out	te_in	te_out	rom_in	rom_out	notes
+ant-001	core	big	small	పెద్ద	చిన్న	pedda	chinna	
+ant-002	core	hot	cold	వేడి	చల్లని	vedi	challani	
+ant-003	core	good	bad	మంచి	చెడు	manchi	chedu	
+ant-004	core	new	old	కొత్త	పాత	kotta	pata	
+ant-005	core	day	night	పగలు	రాత్రి	pagalu	ratri	
+ant-006	core	tall	short	పొడవు	పొట్టి	podavu	potti	
+ant-007	core	happy	sad	సంతోషం	బాధ	santosham	badha	
+ant-008	core	light	darkness	వెలుగు	చీకటి	velugu	chikati	en_in glossed as the noun to avoid the light/heavy reading
+ant-009	core	rich	poor	ధనిక	పేద	dhanika	peda	
+ant-010	core	truth	lie	నిజం	అబద్ధం	nijam	abaddham	
+ant-011	core	near	far	దగ్గర	దూరం	daggara	duram	
+ant-012	core	more	less	ఎక్కువ	తక్కువ	ekkuva	takkuva	
+ant-013	core	first	last	మొదటి	చివరి	modati	chivari	
+ant-014	core	love	hatred	ప్రేమ	ద్వేషం	prema	dvesham	
+ant-015	core	victory	defeat	గెలుపు	ఓటమి	gelupu	otami	native register; cf. ant-061 for the tatsama pair
+ant-016	core	friend	enemy	స్నేహితుడు	శత్రువు	snehitudu	shatruvu	
+ant-017	core	hard	soft	గట్టి	మెత్తని	gatti	mettani	
+ant-018	core	wet	dry	తడి	పొడి	tadi	podi	
+ant-019	core	clean	dirty	శుభ్రం	మురికి	shubhram	muriki	
+ant-020	core	heavy	light	బరువు	తేలిక	baruvu	telika	
+ant-021	core	inside	outside	లోపల	బయట	lopala	bayata	
+ant-022	core	before	after	ముందు	తరువాత	mundu	taruvata	
+ant-023	core	morning	evening	ఉదయం	సాయంత్రం	udayam	sayantram	
+ant-024	core	sweet	bitter	తీపి	చేదు	tipi	chedu	
+ant-025	core	young	old	చిన్న	ముసలి	chinna	musali	
+ant-026	core	strength	weakness	బలం	బలహీనత	balam	balahinata	
+ant-027	core	deep	shallow	లోతు	మిట్ట	lotu	mitta	
+ant-028	core	easy	difficult	సులభం	కష్టం	sulabham	kashtam	
+ant-029	core	above	below	మీద	కింద	mida	kinda	
+ant-030	core	left	right	ఎడమ	కుడి	edama	kudi	
+ant-031	core	question	answer	ప్రశ్న	జవాబు	prashna	javabu	
+ant-032	core	laughter	weeping	నవ్వు	ఏడుపు	navvu	edupu	
+ant-033	core	beginning	end	ప్రారంభం	ముగింపు	prarambham	mugimpu	
+ant-034	core	open	closed	తెరిచిన	మూసిన	terichina	musina	
+ant-035	core	full	empty	నిండిన	ఖాళీ	nindina	khali	
+ant-036	core	many	few	చాలా	కొన్ని	chala	konni	
+ant-037	core	fast	slow	వేగం	నెమ్మది	vegam	nemmadi	
+ant-038	core	up	down	పైకి	కిందికి	paiki	kindiki	
+ant-039	core	fear	courage	భయం	ధైర్యం	bhayam	dhairyam	
+ant-040	core	war	peace	యుద్ధం	శాంతి	yuddham	shanti	
+ant-041	core	summer	winter	వేసవి	చలికాలం	vesavi	chalikalam	
+ant-042	core	sun	moon	సూర్యుడు	చంద్రుడు	suryudu	chandrudu	not a strict antonym but a stable paired opposition
+ant-043	core	man	woman	మగవాడు	ఆడది	magavadu	adadi	
+ant-044	core	king	servant	రాజు	సేవకుడు	raju	sevakudu	
+ant-045	core	birth	death	పుట్టుక	చావు	puttuka	chavu	native register; cf. ant-062
+ant-046	core	thick	thin	మందం	పలుచన	mandam	paluchana	
+ant-047	core	sharp	blunt	పదునైన	మొద్దు	padunaina	moddu	
+ant-048	core	loud	quiet	గట్టిగా	నెమ్మదిగా	gattiga	nemmadiga	adverbial pair; CHECK
+ant-049	core	expensive	cheap	ఖరీదైన	చౌక	kharidaina	chauka	
+ant-050	core	white	black	తెలుపు	నలుపు	telupu	nalupu	
+ant-051	complex	remembering	forgetting	గుర్తుంచుకోవడం	మరచిపోవడం	gurtunchukovadam	marachipovadam	multi-suffix verbal nouns
+ant-052	complex	buying	selling	కొనడం	అమ్మడం	konadam	ammadam	
+ant-053	complex	coming	going	రావడం	వెళ్లడం	ravadam	velladam	
+ant-054	complex	giving	taking	ఇవ్వడం	తీసుకోవడం	ivvadam	tisukovadam	
+ant-055	complex	increasing	decreasing	పెరగడం	తగ్గడం	peragadam	taggadam	
+ant-056	complex	rising	setting	ఉదయించడం	అస్తమించడం	udayinchadam	astaminchadam	
+ant-057	complex	entering	leaving	ప్రవేశించడం	నిష్క్రమించడం	praveshinchadam	nishkraminchadam	
+ant-058	complex	gathering	scattering	పోగుచేయడం	చెదరగొట్టడం	pogucheyadam	chedaragottadam	CHECK
+ant-059	complex	building	demolishing	నిర్మించడం	కూల్చడం	nirminchadam	kulchadam	
+ant-060	complex	tying	untying	కట్టడం	విప్పడం	kattadam	vippadam	
+ant-061	sanskritized	victory	defeat	విజయం	పరాజయం	vijayam	parajayam	tatsama counterpart of ant-015
+ant-062	sanskritized	immortality	death	అమరత్వం	మరణం	amaratvam	maranam	tatsama counterpart of ant-045
+ant-063	sanskritized	truth	untruth	సత్యం	అసత్యం	satyam	asatyam	a- privative prefix
+ant-064	sanskritized	knowledge	ignorance	జ్ఞానం	అజ్ఞానం	jnanam	ajnanam	a- privative prefix
+ant-065	sanskritized	righteousness	unrighteousness	ధర్మం	అధర్మం	dharmam	adharmam	
+ant-066	sanskritized	auspicious	inauspicious	శుభం	అశుభం	shubham	ashubham	
+ant-067	sanskritized	possible	impossible	సాధ్యం	అసాధ్యం	sadhyam	asadhyam	
+ant-068	sanskritized	visible	invisible	దృశ్యం	అదృశ్యం	drushyam	adrushyam	
+ant-069	sanskritized	justice	injustice	న్యాయం	అన్యాయం	nyayam	anyayam	
+ant-070	sanskritized	gratitude	ingratitude	కృతజ్ఞత	కృతఘ్నత	krutajnata	krutaghnata	
+ant-071	sanskritized	eternal	transient	శాశ్వతం	అశాశ్వతం	shashvatam	ashashvatam	
+ant-072	sanskritized	unity	division	ఐక్యత	విభజన	aikyata	vibhajana	
+ant-073	sanskritized	generosity	miserliness	ఔదార్యం	పిసినారితనం	audaryam	pisinaritanam	mixed register: tatsama input, native output
+ant-074	sanskritized	devotion	indifference	భక్తి	ఉపేక్ష	bhakti	upeksha	CHECK
+ant-075	sanskritized	purity	impurity	పవిత్రత	అపవిత్రత	pavitrata	apavitrata	
+ant-076	rare	dawn	dusk	ప్రత్యూషం	సంధ్య	pratyusham	sandhya	literary Telugu
+ant-077	rare	praise	censure	ప్రశంస	నింద	prashamsa	ninda	
+ant-078	rare	abundance	scarcity	సమృద్ధి	కొరత	samruddhi	korata	
+ant-079	rare	humility	arrogance	వినయం	గర్వం	vinayam	garvam	
+ant-080	rare	ascent	descent	ఆరోహణ	అవరోహణ	arohana	avarohana	
+ant-081	literary_en	ephemeral	perennial	క్షణికం	శాశ్వతం	kshanikam	shashvatam	English side is the hard one here
+ant-082	literary_en	ubiquitous	scarce	సర్వవ్యాప్తం	అరుదైన	sarvavyaptam	arudaina	
+ant-083	literary_en	laconic	verbose	సంక్షిప్తం	విస్తృతం	samkshiptam	vistrutam	
+ant-084	literary_en	magnanimous	petty	ఉదారం	సంకుచితం	udaram	samkuchitam	
+ant-085	literary_en	nascent	mature	ఆరంభ	పరిపక్వ	arambha	paripakva	
+ant-086	literary_en	opaque	transparent	అపారదర్శకం	పారదర్శకం	aparadarshakam	paradarshakam	
+ant-087	literary_en	candid	evasive	నిష్కపటం	దాటవేసే	nishkapatam	datavese	CHECK
+ant-088	literary_en	prodigal	frugal	దుబారా	పొదుపు	dubara	podupu	
+ant-089	literary_en	zenith	nadir	శిఖరం	అధఃపాతం	shikharam	adhahpatam	
+ant-090	literary_en	lucid	obscure	స్పష్టం	అస్పష్టం	spashtam	aspashtam	
+ant-091	ambiguous	light	heavy	తేలిక	బరువు	telika	baruvu	English light has two antonyms; see ant-008 and ant-020
+ant-092	ambiguous	old	new	పాత	కొత్త	pata	kotta	English old is the antonym of both new and young; cf. ant-025
+ant-093	ambiguous	right	wrong	సరైన	తప్పు	saraina	tappu	English right is the antonym of both wrong and left; cf. ant-030
+ant-094	core	sky	earth	ఆకాశం	భూమి	akasham	bhumi	
+ant-095	core	water	fire	నీరు	నిప్పు	niru	nippu	
+ant-096	core	sour	sweet	పుల్లని	తీపి	pullani	tipi	
+ant-097	core	noise	silence	శబ్దం	నిశ్శబ్దం	shabdam	nishshabdam	
+ant-098	core	front	back	ముందు	వెనుక	mundu	venuka	
+ant-099	core	north	south	ఉత్తరం	దక్షిణం	uttaram	dakshinam	
+ant-100	core	east	west	తూర్పు	పడమర	turpu	padamara	
+ant-101	core	raw	ripe	పచ్చి	పండిన	pachchi	pandina	
+ant-102	core	alive	dead	బతికిన	చచ్చిన	batikina	chachchina	
+ant-103	core	sleep	wakefulness	నిద్ర	మెలకువ	nidra	melakuva	
+ant-104	core	hope	despair	ఆశ	నిరాశ	asha	nirasha	
+ant-105	core	profit	loss	లాభం	నష్టం	labham	nashtam	
+ant-106	core	wide	narrow	వెడల్పు	సన్నని	vedalpu	sannani	
+ant-107	core	smooth	rough	నునుపు	గరుకు	nunupu	garuku	
+ant-108	core	brightness	dimness	ప్రకాశం	మసక	prakasham	masaka	
+ant-109	core	everything	nothing	అన్నీ	ఏమీ	anni	emi	
+ant-110	core	here	there	ఇక్కడ	అక్కడ	ikkada	akkada	
+ant-111	core	this	that	ఇది	అది	idi	adi	
+ant-112	core	same	different	ఒకటే	వేరు	okate	veru	
+ant-113	core	together	apart	కలిసి	విడిగా	kalisi	vidiga	
+ant-114	core	warm	cool	వెచ్చని	చల్లని	vechchani	challani	
+ant-115	core	tight	loose	బిగుతు	వదులు	bigutu	vadulu	
+ant-116	core	straight	crooked	తిన్నని	వంకర	tinnani	vankara	
+ant-117	core	height	depth	ఎత్తు	పల్లం	ettu	pallam	
+ant-118	core	teacher	student	గురువు	శిష్యుడు	guruvu	shishyudu	
+ant-119	core	doctor	patient	వైద్యుడు	రోగి	vaidyudu	rogi	
+ant-120	core	master	slave	యజమాని	బానిస	yajamani	banisa	
+ant-121	core	husband	wife	భర్త	భార్య	bharta	bharya	
+ant-122	core	brother	sister	అన్న	అక్క	anna	akka	
+ant-123	core	son	daughter	కొడుకు	కూతురు	koduku	kuturu	
+ant-124	core	boy	girl	అబ్బాయి	అమ్మాయి	abbayi	ammayi	
+ant-125	core	father	mother	తండ్రి	తల్లి	tandri	talli	
+ant-126	core	grandfather	grandmother	తాత	అవ్వ	tata	avva	
+ant-127	core	uncle	aunt	మామ	అత్త	mama	atta	
+ant-128	core	heaven	hell	స్వర్గం	నరకం	svargam	narakam	
+ant-129	core	soul	body	ఆత్మ	శరీరం	atma	shariram	
+ant-130	core	speech	silence	మాట	మౌనం	mata	maunam	
+ant-131	core	beauty	ugliness	అందం	వికారం	andam	vikaram	
+ant-132	core	youth	senility	యవ్వనం	వృద్ధాప్యం	yavvanam	vruddhapyam	
+ant-133	core	medicine	poison	మందు	విషం	mandu	visham	
+ant-134	core	land	sea	భూమి	సముద్రం	bhumi	samudram	
+ant-135	core	mountain	valley	కొండ	లోయ	konda	loya	
+ant-136	core	forest	desert	అడవి	ఎడారి	adavi	edari	
+ant-137	core	village	city	ఊరు	నగరం	uru	nagaram	
+ant-138	core	rain	drought	వర్షం	కరువు	varsham	karuvu	
+ant-139	core	yesterday	tomorrow	నిన్న	రేపు	ninna	repu	
+ant-140	core	past	future	గతం	భవిష్యత్తు	gatam	bhavishyattu	
+ant-141	core	work	rest	పని	విశ్రాంతి	pani	vishranti	
+ant-142	core	reward	punishment	బహుమతి	శిక్ష	bahumati	shiksha	
+ant-143	core	freedom	bondage	స్వాతంత్ర్యం	బంధనం	svatantryam	bandhanam	
+ant-144	core	cleverness	foolishness	తెలివి	మూర్ఖత్వం	telivi	murkhatvam	
+ant-145	core	honesty	deceit	నిజాయితీ	మోసం	nijayiti	mosam	
+ant-146	core	kindness	cruelty	దయ	క్రూరత్వం	daya	kruratvam	
+ant-147	core	patience	haste	ఓపిక	తొందర	opika	tondara	
+ant-148	core	manners	rudeness	మర్యాద	మొరటు	maryada	moratu	
+ant-149	core	laziness	diligence	సోమరితనం	శ్రమ	somaritanam	shrama	
+ant-150	core	calmness	anger	శాంతం	కోపం	shantam	kopam	
+ant-151	core	joy	sorrow	ఆనందం	దుఃఖం	anandam	duhkham	
+ant-152	core	comfort	hardship	సుఖం	కష్టం	sukham	kashtam	
+ant-153	core	noon	midnight	మధ్యాహ్నం	అర్ధరాత్రి	madhyahnam	ardharatri	
+ant-154	core	sunrise	sunset	సూర్యోదయం	సూర్యాస్తమయం	suryodayam	suryastamayam	
+ant-155	core	brave person	coward	ధైర్యవంతుడు	పిరికివాడు	dhairyavantudu	pirikivadu	
+ant-156	core	flood	drought	వరద	కరువు	varada	karuvu	
+ant-157	core	god	demon	దేవుడు	రాక్షసుడు	devudu	rakshasudu	
+ant-158	core	sight	blindness	చూపు	అంధత్వం	chupu	andhatvam	
+ant-159	core	hearing	deafness	వినికిడి	చెవుడు	vinikidi	chevudu	
+ant-160	core	seller	buyer	అమ్మేవాడు	కొనేవాడు	ammevadu	konevadu	
+ant-161	core	cooked	raw	వండిన	పచ్చి	vandina	pachchi	
+ant-162	core	start	stop	మొదలు	ఆపు	modalu	apu	
+ant-163	core	early	late	ముందుగా	ఆలస్యంగా	munduga	alasyanga	
+ant-164	core	often	rarely	ఎప్పుడూ	అప్పుడప్పుడు	eppudu	appudappudu	
+ant-165	core	everyone	nobody	అందరూ	ఎవరూ	andaru	evaru	
+ant-166	core	mine	yours	నాది	నీది	nadi	nidi	
+ant-167	core	enough	insufficient	చాలు	చాలదు	chalu	chaladu	
+ant-168	core	top	bottom	పై	కింద	pai	kinda	
+ant-169	core	monsoon	summer	వర్షాకాలం	ఎండాకాలం	varshakalam	endakalam	
+ant-170	core	mind	body	మనసు	శరీరం	manasu	shariram	

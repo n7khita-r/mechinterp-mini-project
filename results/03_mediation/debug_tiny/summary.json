@@ -1,0 +1,142 @@
+{
+  "en": {
+    "n_tasks": 15,
+    "tasks": [
+      "animal_vs_object",
+      "antonym",
+      "choose_last",
+      "colour_vs_animal",
+      "extract_food",
+      "extract_person",
+      "extract_place",
+      "extract_verb",
+      "fruit_vs_animal",
+      "negation",
+      "next_item",
+      "present_past",
+      "singular_plural",
+      "subject_gender",
+      "tense"
+    ],
+    "top_heads": [
+      [
+        1,
+        3,
+        0.0
+      ],
+      [
+        3,
+        1,
+        0.0
+      ],
+      [
+        2,
+        3,
+        0.0
+      ]
+    ]
+  },
+  "te": {
+    "n_tasks": 15,
+    "tasks": [
+      "animal_vs_object",
+      "antonym",
+      "choose_last",
+      "colour_vs_animal",
+      "extract_food",
+      "extract_person",
+      "extract_place",
+      "extract_verb",
+      "fruit_vs_animal",
+      "negation",
+      "next_item",
+      "present_past",
+      "singular_plural",
+      "subject_gender",
+      "tense"
+    ],
+    "top_heads": [
+      [
+        1,
+        3,
+        0.0
+      ],
+      [
+        2,
+        0,
+        0.0
+      ],
+      [
+        3,
+        2,
+        0.0
+      ]
+    ]
+  },
+  "rom": {
+    "n_tasks": 15,
+    "tasks": [
+      "animal_vs_object",
+      "antonym",
+      "choose_last",
+      "colour_vs_animal",
+      "extract_food",
+      "extract_person",
+      "extract_place",
+      "extract_verb",
+      "fruit_vs_animal",
+      "negation",
+      "next_item",
+      "present_past",
+      "singular_plural",
+      "subject_gender",
+      "tense"
+    ],
+    "top_heads": [
+      [
+        0,
+        2,
+        1e-06
+      ],
+      [
+        0,
+        1,
+        0.0
+      ],
+      [
+        2,
+        3,
+        0.0
+      ]
+    ]
+  },
+  "tg": {
+    "n_tasks": 7,
+    "tasks": [
+      "extract_food",
+      "extract_person",
+      "extract_place",
+      "extract_verb",
+      "negation",
+      "subject_gender",
+      "tense"
+    ],
+    "top_heads": [
+      [
+        2,
+        1,
+        1e-06
+      ],
+      [
+        1,
+        3,
+        1e-06
+      ],
+      [
+        3,
+        0,
+        1e-06
+      ]
+    ]
+  }
+}

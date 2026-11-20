@@ -1,0 +1,198 @@
+[
+  {
+    "task": "tense",
+    "condition": "en",
+    "n": 45,
+    "n_classes": 3,
+    "majority_label": "past",
+    "majority_acc": 0.4444,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.4444,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "present": 16,
+      "past": 20,
+      "future": 9
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "te",
+    "n": 40,
+    "n_classes": 3,
+    "majority_label": "past",
+    "majority_acc": 0.45,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.45,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "past": 18,
+      "present": 12,
+      "future": 10
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "rom",
+    "n": 22,
+    "n_classes": 3,
+    "majority_label": "past",
+    "majority_acc": 0.3636,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.3636,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "present": 7,
+      "past": 8,
+      "future": 7
+    }
+  },
+  {
+    "task": "tense",
+    "condition": "tg",
+    "n": 18,
+    "n_classes": 3,
+    "majority_label": "present",
+    "majority_acc": 0.3889,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.3889,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "present": 7,
+      "future": 6,
+      "past": 5
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "en",
+    "n": 62,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.5323,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.5323,
+    "above_majority": 0.0,
+    "collapsed_to_majority": true,
+    "label_counts": {
+      "yes": 33,
+      "no": 29
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "te",
+    "n": 53,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.5472,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.4906,
+    "above_majority": -0.0566,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "yes": 29,
+      "no": 24
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "rom",
+    "n": 43,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.7674,
+    "acc_zero_shot": 0.0233,
+    "acc_with_fv": 0.7674,
+    "above_majority": 0.0,
+    "collapsed_to_majority": true,
+    "label_counts": {
+      "yes": 33,
+      "no": 10
+    }
+  },
+  {
+    "task": "negation",
+    "condition": "tg",
+    "n": 41,
+    "n_classes": 2,
+    "majority_label": "yes",
+    "majority_acc": 0.8049,
+    "acc_zero_shot": 0.0244,
+    "acc_with_fv": 0.3902,
+    "above_majority": -0.4146,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "yes": 33,
+      "no": 8
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "en",
+    "n": 10,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.9,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.8,
+    "above_majority": -0.1,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "she": 1,
+      "he": 9
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "te",
+    "n": 19,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.5789,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.8947,
+    "above_majority": 0.3158,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 11,
+      "she": 8
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "rom",
+    "n": 12,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.75,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.75,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 9,
+      "she": 3
+    }
+  },
+  {
+    "task": "subject_gender",
+    "condition": "tg",
+    "n": 13,
+    "n_classes": 2,
+    "majority_label": "he",
+    "majority_acc": 0.5385,
+    "acc_zero_shot": 0.0,
+    "acc_with_fv": 0.0,
+    "above_majority": -0.5385,
+    "collapsed_to_majority": false,
+    "label_counts": {
+      "he": 7,
+      "she": 6
+    }
+  }
+]

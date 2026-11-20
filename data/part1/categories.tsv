@@ -1,0 +1,143 @@
+id	tier	category	en	te	rom	notes
+fru-001	core	fruit	mango	మామిడి	mamidi	
+fru-002	core	fruit	banana	అరటి	arati	
+fru-003	core	fruit	apple	ఆపిల్	apil	
+fru-004	core	fruit	grape	ద్రాక్ష	draksha	
+fru-005	core	fruit	guava	జామ	jama	
+fru-006	core	fruit	papaya	బొప్పాయి	boppayi	
+fru-007	core	fruit	pomegranate	దానిమ్మ	danimma	
+fru-008	core	fruit	watermelon	పుచ్చకాయ	puchchakaya	
+fru-009	core	fruit	jackfruit	పనస	panasa	
+fru-010	core	fruit	custard apple	సీతాఫలం	sitaphalam	
+fru-011	core	fruit	sapota	సపోటా	sapota	
+fru-012	core	fruit	pineapple	అనాస	anasa	
+fru-013	core	fruit	lemon	నిమ్మ	nimma	
+fru-014	core	fruit	coconut	కొబ్బరి	kobbari	
+fru-015	core	fruit	tamarind	చింత	chinta	
+fru-016	core	fruit	fig	అత్తి	atti	
+fru-017	core	fruit	jamun	నేరేడు	neredu	
+fru-018	core	fruit	pear	బేరి	beri	
+fru-019	core	fruit	jujube	రేగు	regu	
+fru-020	core	fruit	muskmelon	కర్బూజ	karbuja	
+fru-021	core	fruit	sweet lime	బత్తాయి	battayi	
+fru-022	core	fruit	gooseberry	ఉసిరి	usiri	
+fru-023	core	fruit	wood apple	వెలగ	velaga	
+fru-024	core	fruit	palm fruit	తాటి	tati	
+fru-025	core	fruit	date	ఖర్జూరం	kharjuram	
+fru-026	rare	fruit	mulberry	మల్బరీ	malbari	
+fru-027	rare	fruit	breadfruit	సీమపనస	simapanasa	CHECK
+fru-028	rare	fruit	bael	మారేడు	maredu	
+fru-029	core	fruit	strawberry	స్ట్రాబెరీ	strabari	English loanword in Telugu
+fru-030	core	fruit	cherry	చెరీ	cheri	English loanword in Telugu
+ani-001	core	animal	dog	కుక్క	kukka	
+ani-002	core	animal	cat	పిల్లి	pilli	
+ani-003	core	animal	cow	ఆవు	avu	
+ani-004	core	animal	buffalo	బర్రె	barre	
+ani-005	core	animal	goat	మేక	meka	
+ani-006	core	animal	sheep	గొర్రె	gorre	
+ani-007	core	animal	horse	గుర్రం	gurram	
+ani-008	core	animal	donkey	గాడిద	gadida	
+ani-009	core	animal	pig	పంది	pandi	
+ani-010	core	animal	elephant	ఏనుగు	enugu	
+ani-011	core	animal	tiger	పులి	puli	
+ani-012	core	animal	lion	సింహం	simham	
+ani-013	core	animal	bear	ఎలుగుబంటి	elugubanti	
+ani-014	core	animal	wolf	తోడేలు	todelu	
+ani-015	core	animal	fox	నక్క	nakka	
+ani-016	core	animal	deer	జింక	jinka	
+ani-017	core	animal	monkey	కోతి	koti	
+ani-018	core	animal	rabbit	కుందేలు	kundelu	
+ani-019	core	animal	rat	ఎలుక	eluka	
+ani-020	core	animal	squirrel	ఉడుత	uduta	
+ani-021	core	animal	snake	పాము	pamu	
+ani-022	core	animal	frog	కప్ప	kappa	
+ani-023	core	animal	crocodile	మొసలి	mosali	
+ani-024	core	animal	turtle	తాబేలు	tabelu	
+ani-025	core	animal	camel	ఒంటె	onte	
+ani-026	core	animal	bull	ఎద్దు	eddu	
+ani-027	core	animal	hen	కోడి	kodi	
+ani-028	core	animal	crow	కాకి	kaki	
+ani-029	core	animal	parrot	చిలుక	chiluka	
+ani-030	core	animal	peacock	నెమలి	nemali	
+ani-031	core	animal	fish	చేప	chepa	
+ani-032	rare	animal	mongoose	ముంగిస	mungisa	
+obj-001	core	object	chair	కుర్చీ	kurchi	
+obj-002	core	object	table	బల్ల	balla	
+obj-003	core	object	bed	మంచం	mancham	
+obj-004	core	object	door	తలుపు	talupu	
+obj-005	core	object	window	కిటికీ	kitiki	
+obj-006	core	object	box	పెట్టె	pette	
+obj-007	core	object	bag	సంచి	sanchi	
+obj-008	core	object	pen	కలం	kalam	
+obj-009	core	object	pencil	పెన్సిల్	pensil	
+obj-010	core	object	book	పుస్తకం	pustakam	
+obj-011	core	object	paper	కాగితం	kagitam	
+obj-012	core	object	lamp	దీపం	dipam	
+obj-013	core	object	clock	గడియారం	gadiyaram	
+obj-014	core	object	mirror	అద్దం	addam	
+obj-015	core	object	comb	దువ్వెన	duvvena	
+obj-016	core	object	soap	సబ్బు	sabbu	
+obj-017	core	object	towel	తువ్వాలు	tuvvalu	
+obj-018	core	object	bucket	బకెట్	baket	
+obj-019	core	object	pot	కుండ	kunda	
+obj-020	core	object	plate	పళ్ళెం	pallem	
+obj-021	core	object	spoon	చెంచా	chencha	
+obj-022	core	object	knife	కత్తి	katti	
+obj-023	core	object	cup	కప్పు	kappu	
+obj-024	core	object	bottle	సీసా	sisa	
+obj-025	core	object	key	తాళంచెవి	talamchevi	
+obj-026	core	object	rope	తాడు	tadu	
+obj-027	core	object	basket	బుట్ట	butta	
+obj-028	core	object	broom	చీపురు	chipuru	
+obj-029	core	object	stone	రాయి	rayi	
+obj-030	core	object	wheel	చక్రం	chakram	
+obj-031	core	object	umbrella	గొడుగు	godugu	
+obj-032	core	object	sandal	చెప్పు	cheppu	
+col-001	core	colour	red	ఎరుపు	erupu	
+col-002	core	colour	blue	నీలం	nilam	
+col-003	core	colour	green	ఆకుపచ్చ	akupachcha	
+col-004	core	colour	yellow	పసుపు	pasupu	turmeric is the colour term; see note on col-017
+col-005	core	colour	black	నలుపు	nalupu	
+col-006	core	colour	white	తెలుపు	telupu	
+col-007	core	colour	pink	గులాబీ	gulabi	literally rose
+col-008	core	colour	purple	ఊదా	uda	
+col-009	core	colour	grey	బూడిద	budida	literally ash
+col-010	core	colour	golden	బంగారు	bangaru	
+col-011	core	colour	silver	వెండి	vendi	
+col-012	core	colour	maroon	మెరూన్	merun	English loanword in Telugu
+col-013	core	colour	sky blue	ఆకాశనీలం	akashanilam	
+col-014	core	colour	cream	క్రీమ్	krim	English loanword in Telugu
+col-015	core	colour	dark blue	ముదురునీలం	mudurunilam	CHECK
+col-016	ambiguous	colour	orange	నారింజ	narinja	collides with the fruit of the same name; excluded from headline numbers
+col-017	ambiguous	colour	brown	గోధుమ	godhuma	also means wheat, a grain
+col-018	ambiguous	colour	violet	వంగపండు	vangapandu	literally brinjal fruit, so it collides with the vegetable
+veg-001	core	vegetable	brinjal	వంకాయ	vankaya	
+veg-002	core	vegetable	okra	బెండకాయ	bendakaya	
+veg-003	core	vegetable	tomato	టొమాటో	tomato	
+veg-004	core	vegetable	potato	బంగాళాదుంప	bangaladumpa	
+veg-005	core	vegetable	onion	ఉల్లిపాయ	ullipaya	
+veg-006	core	vegetable	garlic	వెల్లుల్లి	vellulli	
+veg-007	core	vegetable	ginger	అల్లం	allam	
+veg-008	core	vegetable	carrot	క్యారెట్	kyaret	
+veg-009	core	vegetable	beans	చిక్కుడు	chikkudu	
+veg-010	core	vegetable	cabbage	క్యాబేజీ	kyabeji	
+veg-011	core	vegetable	spinach	పాలకూర	palakura	
+veg-012	core	vegetable	bottle gourd	సొరకాయ	sorakaya	
+veg-013	core	vegetable	ridge gourd	బీరకాయ	birakaya	
+veg-014	core	vegetable	bitter gourd	కాకరకాయ	kakarakaya	
+veg-015	core	vegetable	snake gourd	పొట్లకాయ	potlakaya	
+veg-016	core	vegetable	pumpkin	గుమ్మడికాయ	gummadikaya	
+veg-017	core	vegetable	cucumber	దోసకాయ	dosakaya	
+veg-018	core	vegetable	radish	ముల్లంగి	mullangi	
+veg-019	core	vegetable	drumstick	మునగకాయ	munagakaya	
+veg-020	core	vegetable	chilli	మిరపకాయ	mirapakaya	
+veg-021	core	vegetable	coriander	కొత్తిమీర	kottimira	
+veg-022	core	vegetable	curry leaf	కరివేపాకు	karivepaku	
+veg-023	core	vegetable	peas	బటాణీ	batani	
+veg-024	core	vegetable	corn	మొక్కజొన్న	mokkajonna	
+veg-025	core	vegetable	yam	కంద	kanda	
+veg-026	core	vegetable	colocasia	చామదుంప	chamadumpa	
+veg-027	core	vegetable	beetroot	బీట్‌రూట్	bitrut	English loanword in Telugu
+veg-028	core	vegetable	cauliflower	కాలీఫ్లవర్	kaliphlavar	English loanword in Telugu
+veg-029	rare	vegetable	ash gourd	బూడిదగుమ్మడి	budidagummadi	
+veg-030	rare	vegetable	plantain stem	అరటిదూట	aratiduta	

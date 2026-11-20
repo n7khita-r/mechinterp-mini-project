@@ -1,0 +1,1474 @@
+[
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "antonym",
+    "edit_layer": 15,
+    "n": 67,
+    "acc": 0.014925373134328358
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "antonym",
+    "edit_layer": 15,
+    "n": 67,
+    "acc": 0.014925373134328358
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "antonym",
+    "edit_layer": 15,
+    "n": 67,
+    "acc": 0.014925373134328358
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.10526315789473684
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.10526315789473684
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.10526315789473684
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 4,
+    "acc": 0.5
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 4,
+    "acc": 0.5
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "antonym",
+    "edit_layer": 11,
+    "n": 4,
+    "acc": 0.5
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.10144927536231885
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.10144927536231885
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.10144927536231885
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.5846153846153846
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.6153846153846154
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.6153846153846154
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 12,
+    "n": 51,
+    "acc": 0.6862745098039216
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 12,
+    "n": 51,
+    "acc": 0.6862745098039216
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 12,
+    "n": 51,
+    "acc": 0.6862745098039216
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "singular_plural",
+    "edit_layer": 15,
+    "n": 78,
+    "acc": 0.0641025641025641
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "singular_plural",
+    "edit_layer": 15,
+    "n": 78,
+    "acc": 0.0641025641025641
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "singular_plural",
+    "edit_layer": 15,
+    "n": 78,
+    "acc": 0.0641025641025641
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 78,
+    "acc": 0.7564102564102564
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 78,
+    "acc": 0.7564102564102564
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 78,
+    "acc": 0.7564102564102564
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.5797101449275363
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.5797101449275363
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "singular_plural",
+    "edit_layer": 11,
+    "n": 69,
+    "acc": 0.5797101449275363
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "next_item",
+    "edit_layer": 13,
+    "n": 40,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "next_item",
+    "edit_layer": 13,
+    "n": 40,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "next_item",
+    "edit_layer": 13,
+    "n": 40,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "next_item",
+    "edit_layer": 19,
+    "n": 33,
+    "acc": 0.2727272727272727
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "next_item",
+    "edit_layer": 19,
+    "n": 33,
+    "acc": 0.2727272727272727
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "next_item",
+    "edit_layer": 19,
+    "n": 33,
+    "acc": 0.2727272727272727
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "next_item",
+    "edit_layer": 11,
+    "n": 3,
+    "acc": 0.3333333333333333
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "next_item",
+    "edit_layer": 11,
+    "n": 3,
+    "acc": 0.3333333333333333
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "next_item",
+    "edit_layer": 11,
+    "n": 3,
+    "acc": 0.3333333333333333
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "fruit_vs_animal",
+    "edit_layer": 19,
+    "n": 37,
+    "acc": 0.35135135135135137
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "fruit_vs_animal",
+    "edit_layer": 19,
+    "n": 37,
+    "acc": 0.35135135135135137
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "fruit_vs_animal",
+    "edit_layer": 19,
+    "n": 37,
+    "acc": 0.35135135135135137
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "fruit_vs_animal",
+    "edit_layer": 12,
+    "n": 28,
+    "acc": 0.32142857142857145
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "fruit_vs_animal",
+    "edit_layer": 12,
+    "n": 28,
+    "acc": 0.32142857142857145
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "fruit_vs_animal",
+    "edit_layer": 12,
+    "n": 28,
+    "acc": 0.32142857142857145
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "fruit_vs_animal",
+    "edit_layer": 11,
+    "n": 16,
+    "acc": 0.0625
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "fruit_vs_animal",
+    "edit_layer": 11,
+    "n": 16,
+    "acc": 0.0625
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "fruit_vs_animal",
+    "edit_layer": 11,
+    "n": 16,
+    "acc": 0.0625
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "animal_vs_object",
+    "edit_layer": 19,
+    "n": 51,
+    "acc": 0.29411764705882354
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "animal_vs_object",
+    "edit_layer": 19,
+    "n": 51,
+    "acc": 0.29411764705882354
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "animal_vs_object",
+    "edit_layer": 19,
+    "n": 51,
+    "acc": 0.29411764705882354
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "animal_vs_object",
+    "edit_layer": 15,
+    "n": 43,
+    "acc": 0.23255813953488372
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "animal_vs_object",
+    "edit_layer": 15,
+    "n": 43,
+    "acc": 0.23255813953488372
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "animal_vs_object",
+    "edit_layer": 15,
+    "n": 43,
+    "acc": 0.23255813953488372
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "animal_vs_object",
+    "edit_layer": 21,
+    "n": 28,
+    "acc": 0.2857142857142857
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "animal_vs_object",
+    "edit_layer": 21,
+    "n": 28,
+    "acc": 0.2857142857142857
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "animal_vs_object",
+    "edit_layer": 21,
+    "n": 28,
+    "acc": 0.2857142857142857
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.15789473684210525
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.15789473684210525
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.15789473684210525
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 18,
+    "acc": 0.2222222222222222
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 18,
+    "acc": 0.2222222222222222
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 18,
+    "acc": 0.2222222222222222
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 9,
+    "acc": 0.1111111111111111
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 9,
+    "acc": 0.1111111111111111
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "colour_vs_animal",
+    "edit_layer": 11,
+    "n": 9,
+    "acc": 0.1111111111111111
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "choose_last",
+    "edit_layer": 14,
+    "n": 74,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "choose_last",
+    "edit_layer": 14,
+    "n": 74,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "choose_last",
+    "edit_layer": 14,
+    "n": 74,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 69,
+    "acc": 0.07246376811594203
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 69,
+    "acc": 0.07246376811594203
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 69,
+    "acc": 0.07246376811594203
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 71,
+    "acc": 0.014084507042253521
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 71,
+    "acc": 0.014084507042253521
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "choose_last",
+    "edit_layer": 12,
+    "n": 71,
+    "acc": 0.014084507042253521
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 17,
+    "n": 130,
+    "acc": 0.6153846153846154
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 17,
+    "n": 130,
+    "acc": 0.6230769230769231
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 17,
+    "n": 130,
+    "acc": 0.6230769230769231
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 17,
+    "n": 130,
+    "acc": 0.6230769230769231
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 15,
+    "n": 129,
+    "acc": 0.3875968992248062
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 15,
+    "n": 129,
+    "acc": 0.4108527131782946
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 15,
+    "n": 129,
+    "acc": 0.40310077519379844
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 15,
+    "n": 129,
+    "acc": 0.40310077519379844
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 8,
+    "n": 113,
+    "acc": 0.5575221238938053
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 8,
+    "n": 113,
+    "acc": 0.5575221238938053
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 8,
+    "n": 113,
+    "acc": 0.5752212389380531
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 8,
+    "n": 113,
+    "acc": 0.5663716814159292
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 16,
+    "n": 130,
+    "acc": 0.5461538461538461
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 16,
+    "n": 130,
+    "acc": 0.5461538461538461
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 16,
+    "n": 130,
+    "acc": 0.5384615384615384
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 16,
+    "n": 130,
+    "acc": 0.5461538461538461
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_place",
+    "edit_layer": 13,
+    "n": 190,
+    "acc": 0.015789473684210527
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_place",
+    "edit_layer": 13,
+    "n": 190,
+    "acc": 0.015789473684210527
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_place",
+    "edit_layer": 13,
+    "n": 190,
+    "acc": 0.015789473684210527
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_place",
+    "edit_layer": 13,
+    "n": 190,
+    "acc": 0.015789473684210527
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 194,
+    "acc": 0.14948453608247422
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 194,
+    "acc": 0.14948453608247422
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 194,
+    "acc": 0.14948453608247422
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 194,
+    "acc": 0.14948453608247422
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 188,
+    "acc": 0.13297872340425532
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 188,
+    "acc": 0.12234042553191489
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 188,
+    "acc": 0.1276595744680851
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_place",
+    "edit_layer": 18,
+    "n": 188,
+    "acc": 0.12234042553191489
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_place",
+    "edit_layer": 19,
+    "n": 188,
+    "acc": 0.14361702127659576
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_place",
+    "edit_layer": 19,
+    "n": 188,
+    "acc": 0.13829787234042554
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_place",
+    "edit_layer": 19,
+    "n": 188,
+    "acc": 0.13829787234042554
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_place",
+    "edit_layer": 19,
+    "n": 188,
+    "acc": 0.14361702127659576
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 194,
+    "acc": 0.015463917525773196
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 194,
+    "acc": 0.010309278350515464
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 194,
+    "acc": 0.010309278350515464
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 194,
+    "acc": 0.010309278350515464
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 193,
+    "acc": 0.12953367875647667
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 193,
+    "acc": 0.12953367875647667
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 193,
+    "acc": 0.12435233160621761
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_food",
+    "edit_layer": 15,
+    "n": 193,
+    "acc": 0.12435233160621761
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_food",
+    "edit_layer": 13,
+    "n": 171,
+    "acc": 0.011695906432748537
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_food",
+    "edit_layer": 13,
+    "n": 171,
+    "acc": 0.011695906432748537
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_food",
+    "edit_layer": 13,
+    "n": 171,
+    "acc": 0.011695906432748537
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_food",
+    "edit_layer": 13,
+    "n": 171,
+    "acc": 0.017543859649122806
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_food",
+    "edit_layer": 21,
+    "n": 173,
+    "acc": 0.017341040462427744
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_food",
+    "edit_layer": 21,
+    "n": 173,
+    "acc": 0.017341040462427744
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_food",
+    "edit_layer": 21,
+    "n": 173,
+    "acc": 0.017341040462427744
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_food",
+    "edit_layer": 21,
+    "n": 173,
+    "acc": 0.017341040462427744
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 17,
+    "n": 194,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 17,
+    "n": 194,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 17,
+    "n": 194,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 17,
+    "n": 194,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 15,
+    "n": 179,
+    "acc": 0.07262569832402235
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 15,
+    "n": 179,
+    "acc": 0.07262569832402235
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 15,
+    "n": 179,
+    "acc": 0.07262569832402235
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 15,
+    "n": 179,
+    "acc": 0.07262569832402235
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 21,
+    "n": 189,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 21,
+    "n": 189,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 21,
+    "n": 189,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 21,
+    "n": 189,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 23,
+    "n": 191,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 23,
+    "n": 191,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 23,
+    "n": 191,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 23,
+    "n": 191,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 65,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 57,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 57,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 57,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 57,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 31,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 31,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 31,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 31,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 26,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 26,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 26,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "tense",
+    "edit_layer": 11,
+    "n": 26,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 31,
+    "n": 89,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 31,
+    "n": 89,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 31,
+    "n": 89,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 31,
+    "n": 89,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 18,
+    "n": 75,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 18,
+    "n": 75,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 18,
+    "n": 75,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 18,
+    "n": 75,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 21,
+    "n": 61,
+    "acc": 0.01639344262295082
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 21,
+    "n": 61,
+    "acc": 0.01639344262295082
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 21,
+    "n": 61,
+    "acc": 0.01639344262295082
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 21,
+    "n": 61,
+    "acc": 0.01639344262295082
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 33,
+    "n": 58,
+    "acc": 0.017241379310344827
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 33,
+    "n": 58,
+    "acc": 0.017241379310344827
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 33,
+    "n": 58,
+    "acc": 0.017241379310344827
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 33,
+    "n": 58,
+    "acc": 0.017241379310344827
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 14,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 14,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 14,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 14,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 19,
+    "n": 27,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 19,
+    "n": 27,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 19,
+    "n": 27,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 19,
+    "n": 27,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 17,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 17,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 17,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 17,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 11,
+    "n": 19,
+    "acc": 0.0
+  }
+]

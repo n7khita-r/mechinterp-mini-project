@@ -1,0 +1,38 @@
+# Gemma 3 4B base (pretrained, not instruction-tuned) -- IIIT-H Ada cluster.
+#
+# dtype is float16, NOT bfloat16. Ada's GPUs are GTX 1080 Ti (Pascal, SM 6.1)
+# and RTX 2080 Ti (Turing, SM 7.5); bf16 tensor support starts at Ampere/SM 80,
+# so bf16 is unavailable here. Gemma 3 was *trained* in bf16, and the Gemma
+# family has a history of fp16 activation overflow, so scripts/00_env_check.py
+# verifies fp16 numerically against an fp32 CPU reference before anything long
+# runs. If that check fails, move to a bf16-capable GPU and use the
+# gemma3_4b_bf16.yaml config -- do not try to force fp16 through.
+#
+# Always submit with --exclude=gnode[01-42]: those are 1080 Ti nodes, whose fp16
+# throughput is 1/64 rate and would make this run take days instead of hours.
+#
+# Weights are ~8.6 GB on disk; with the vision tower dropped the text stack is
+# ~7.8 GB in fp16, leaving ~3 GB of an 11 GB card for activations and KV cache.
+# Keep HF_HOME under /home (50 GB quota, visible from compute nodes). /share1 is
+# master-node only and /scratch is purged after 7 days -- neither will work.
+name: gemma3_4b
+hf_id: google/gemma-3-4b-pt
+dtype: float16
+device_map: cuda
+prepend_bos: true          # Gemma tokenizers add <bos> themselves
+drop_vision_tower: true    # SigLIP tower is never used; frees ~0.8 GB
+
+expect:
+  n_layers: 34
+  hidden_size: 2560
+  n_heads: 8
+  head_dim: 256            # NOTE 8 * 256 = 2048 != hidden_size 2560
+  n_kv_heads: 4
+
+# Sized for an 11 GB RTX 2080 Ti. `head_batch: 8` evaluates all eight heads of
+# one layer in a single batched forward, which is what turns the AIE sweep from
+# n_layers*n_heads forwards into n_layers forwards.
+batch:
+  score: 8
+  head_batch: 8
+  logitlens: 4

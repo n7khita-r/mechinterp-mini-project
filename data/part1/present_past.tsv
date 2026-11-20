@@ -1,0 +1,166 @@
+id	tier	en_in	en_out	te_in	te_out	rom_in	rom_out	notes
+pp-001	core	eat	ate	తింటాను	తిన్నాను	tintanu	tinnanu	Telugu side is 1sg present -> 1sg past throughout
+pp-002	core	go	went	వెళ్తాను	వెళ్లాను	veltanu	vellanu	
+pp-003	core	come	came	వస్తాను	వచ్చాను	vastanu	vachchanu	
+pp-004	core	see	saw	చూస్తాను	చూశాను	chustanu	chushanu	
+pp-005	core	give	gave	ఇస్తాను	ఇచ్చాను	istanu	ichchanu	
+pp-006	core	write	wrote	రాస్తాను	రాశాను	rastanu	rashanu	
+pp-007	ambiguous	read	read	చదువుతాను	చదివాను	chaduvutanu	chadivanu	English present and past are spelled alike, so copying the input scores correct without doing the task; excluded from headline numbers. The Telugu form does change.
+pp-008	core	speak	spoke	మాట్లాడుతాను	మాట్లాడాను	matladutanu	matladanu	
+pp-009	core	sing	sang	పాడుతాను	పాడాను	padutanu	padanu	
+pp-010	core	drink	drank	తాగుతాను	తాగాను	tagutanu	taganu	
+pp-011	core	buy	bought	కొంటాను	కొన్నాను	kontanu	konnanu	
+pp-012	core	bring	brought	తెస్తాను	తెచ్చాను	testanu	techchanu	
+pp-013	core	make	made	చేస్తాను	చేశాను	chestanu	cheshanu	
+pp-014	core	say	said	చెప్తాను	చెప్పాను	cheptanu	cheppanu	
+pp-015	core	grow	grew	పెరుగుతాను	పెరిగాను	perugutanu	periganu	
+pp-016	core	fall	fell	పడతాను	పడ్డాను	padatanu	paddanu	
+pp-017	core	send	sent	పంపుతాను	పంపాను	pamputanu	pampanu	
+pp-018	core	win	won	గెలుస్తాను	గెలిచాను	gelustanu	gelichanu	
+pp-019	core	walk	walked	నడుస్తాను	నడిచాను	nadustanu	nadichanu	
+pp-020	core	ask	asked	అడుగుతాను	అడిగాను	adugutanu	adiganu	
+pp-021	core	open	opened	తెరుస్తాను	తెరిచాను	terustanu	terichanu	
+pp-022	core	close	closed	మూస్తాను	మూశాను	mustanu	mushanu	
+pp-023	core	play	played	ఆడుతాను	ఆడాను	adutanu	adanu	
+pp-024	core	laugh	laughed	నవ్వుతాను	నవ్వాను	navvutanu	navvanu	
+pp-025	core	cry	cried	ఏడుస్తాను	ఏడ్చాను	edustanu	edchanu	
+pp-026	core	wash	washed	కడుగుతాను	కడిగాను	kadugutanu	kadiganu	
+pp-027	core	run	ran	పరుగెత్తుతాను	పరుగెత్తాను	parugettutanu	parugettanu	
+pp-028	core	sit	sat	కూర్చుంటాను	కూర్చున్నాను	kurchuntanu	kurchunnanu	
+pp-029	core	sleep	slept	పడుకుంటాను	పడుకున్నాను	padukuntanu	padukunnanu	
+pp-030	core	stand	stood	నిలబడుతాను	నిలబడ్డాను	nilabadutanu	nilabaddanu	
+pp-031	core	take	took	తీసుకుంటాను	తీసుకున్నాను	tisukuntanu	tisukunnanu	
+pp-032	core	meet	met	కలుస్తాను	కలిశాను	kalustanu	kalishanu	
+pp-033	core	break	broke	విరుస్తాను	విరిచాను	virustanu	virichanu	
+pp-034	core	leave	left	వదులుతాను	వదిలాను	vadulutanu	vadilanu	
+pp-035	core	lose	lost	ఓడిపోతాను	ఓడిపోయాను	odipotanu	odipoyanu	
+pp-036	core	learn	learnt	నేర్చుకుంటాను	నేర్చుకున్నాను	nerchukuntanu	nerchukunnanu	
+pp-037	core	wait	waited	ఎదురుచూస్తాను	ఎదురుచూశాను	eduruchustanu	eduruchushanu	
+pp-038	core	work	worked	పనిచేస్తాను	పనిచేశాను	panichestanu	panicheshanu	
+pp-039	core	cook	cooked	వండుతాను	వండాను	vandutanu	vandanu	
+pp-040	core	sell	sold	అమ్ముతాను	అమ్మాను	ammutanu	ammanu	
+pp-041	complex	think	thought	ఆలోచిస్తాను	ఆలోచించాను	alochistanu	alochinchanu	
+pp-042	complex	teach	taught	నేర్పుతాను	నేర్పాను	nerputanu	nerpanu	
+pp-043	complex	know	knew	తెలుసుకుంటాను	తెలుసుకున్నాను	telusukuntanu	telusukunnanu	
+pp-044	complex	find	found	కనుగొంటాను	కనుగొన్నాను	kanugontanu	kanugonnanu	
+pp-045	complex	remember	remembered	గుర్తుంచుకుంటాను	గుర్తుంచుకున్నాను	gurtunchukuntanu	gurtunchukunnanu	four suffixes on the Telugu form
+pp-046	complex	forget	forgot	మరచిపోతాను	మరచిపోయాను	marachipotanu	marachipoyanu	
+pp-047	complex	understand	understood	గ్రహిస్తాను	గ్రహించాను	grahistanu	grahinchanu	single-word tatsama alternative to the two-word artham chesukovadam
+pp-048	complex	explain	explained	వివరిస్తాను	వివరించాను	vivaristanu	vivarinchanu	
+pp-049	complex	decide	decided	నిర్ణయించుకుంటాను	నిర్ణయించుకున్నాను	nirnayinchukuntanu	nirnayinchukunnanu	
+pp-050	complex	prepare	prepared	సిద్ధపడతాను	సిద్ధపడ్డాను	siddhapadatanu	siddhapaddanu	
+pp-051	sanskritized	accept	accepted	స్వీకరిస్తాను	స్వీకరించాను	svikaristanu	svikarinchanu	tatsama -inch- causative stem
+pp-052	sanskritized	announce	announced	ప్రకటిస్తాను	ప్రకటించాను	prakatistanu	prakatinchanu	
+pp-053	sanskritized	begin	began	ప్రారంభిస్తాను	ప్రారంభించాను	prarambhistanu	prarambhinchanu	
+pp-054	sanskritized	complete	completed	పూర్తిచేస్తాను	పూర్తిచేశాను	purtichestanu	purticheshanu	
+pp-055	sanskritized	worship	worshipped	పూజిస్తాను	పూజించాను	pujistanu	pujinchanu	
+pp-056	sanskritized	request	requested	ప్రార్థిస్తాను	ప్రార్థించాను	prarthistanu	prarthinchanu	
+pp-057	sanskritized	protect	protected	రక్షిస్తాను	రక్షించాను	rakshistanu	rakshinchanu	
+pp-058	sanskritized	invite	invited	ఆహ్వానిస్తాను	ఆహ్వానించాను	ahvanistanu	ahvaninchanu	
+pp-059	sanskritized	publish	published	ప్రచురిస్తాను	ప్రచురించాను	prachuristanu	prachurinchanu	
+pp-060	sanskritized	establish	established	స్థాపిస్తాను	స్థాపించాను	sthapistanu	sthapinchanu	
+pp-061	rare	weave	wove	నేస్తాను	నేశాను	nestanu	neshanu	
+pp-062	rare	plough	ploughed	దున్నుతాను	దున్నాను	dunnutanu	dunnanu	
+pp-063	rare	grind	ground	విసురుతాను	విసిరాను	visurutanu	visiranu	CHECK
+pp-064	rare	winnow	winnowed	చెరుగుతాను	చెరిగాను	cherugutanu	cheriganu	CHECK
+pp-065	rare	thresh	threshed	నూర్చుతాను	నూర్చాను	nurchutanu	nurchanu	CHECK
+pp-066	literary_en	acquiesce	acquiesced	అంగీకరిస్తాను	అంగీకరించాను	angikaristanu	angikarinchanu	
+pp-067	literary_en	relinquish	relinquished	వదులుకుంటాను	వదులుకున్నాను	vadulukuntanu	vadulukunnanu	
+pp-068	literary_en	disseminate	disseminated	వ్యాపిస్తాను	వ్యాపించాను	vyapistanu	vyapinchanu	
+pp-069	literary_en	corroborate	corroborated	ధ్రువీకరిస్తాను	ధ్రువీకరించాను	dhruvikaristanu	dhruvikarinchanu	
+pp-070	literary_en	obfuscate	obfuscated	గందరగోళపరుస్తాను	గందరగోళపరిచాను	gandaragolaparustanu	gandaragolaparichanu	CHECK
+pp-071	literary_en	expedite	expedited	త్వరపడతాను	త్వరపడ్డాను	tvarapadatanu	tvarapaddanu	
+pp-072	literary_en	extol	extolled	ప్రశంసిస్తాను	ప్రశంసించాను	prashamsistanu	prashamsinchanu	
+pp-073	literary_en	repudiate	repudiated	తిరస్కరిస్తాను	తిరస్కరించాను	tiraskaristanu	tiraskarinchanu	
+pp-074	literary_en	elucidate	elucidated	స్పష్టీకరిస్తాను	స్పష్టీకరించాను	spashtikaristanu	spashtikarinchanu	
+pp-075	literary_en	vacillate	vacillated	సందేహిస్తాను	సందేహించాను	sandehistanu	sandehinchanu	
+pp-076	ambiguous	hit	hit	కొడతాను	కొట్టాను	kodatanu	kottanu	English present and past are identical
+pp-077	ambiguous	set	set	పెడతాను	పెట్టాను	pedatanu	pettanu	English present and past are identical
+pp-078	ambiguous	cut	cut	కోస్తాను	కోశాను	kostanu	koshanu	English present and past are identical
+pp-079	ambiguous	learn	learned	నేర్చుకుంటాను	నేర్చుకున్నాను	nerchukuntanu	nerchukunnanu	English accepts both learnt and learned; cf. pp-036
+pp-080	ambiguous	dream	dreamt	కలగంటాను	కలగన్నాను	kalagantanu	kalagannanu	English accepts both dreamt and dreamed
+pp-081	core	jump	jumped	దూకుతాను	దూకాను	dukutanu	dukanu	
+pp-082	core	swim	swam	ఈదుతాను	ఈదాను	idutanu	idanu	
+pp-083	core	fly	flew	ఎగురుతాను	ఎగిరాను	egurutanu	egiranu	
+pp-084	core	climb	climbed	ఎక్కుతాను	ఎక్కాను	ekkutanu	ekkanu	
+pp-085	core	descend	descended	దిగుతాను	దిగాను	digutanu	diganu	
+pp-086	core	turn	turned	తిరుగుతాను	తిరిగాను	tirugutanu	tiriganu	
+pp-087	core	stop	stopped	ఆపుతాను	ఆపాను	aputanu	apanu	
+pp-088	core	tear	tore	చింపుతాను	చించాను	chimputanu	chinchanu	
+pp-089	core	sew	sewed	కుట్టుతాను	కుట్టాను	kuttutanu	kuttanu	
+pp-090	core	knit	knitted	అల్లుతాను	అల్లాను	allutanu	allanu	
+pp-091	core	dig	dug	తవ్వుతాను	తవ్వాను	tavvutanu	tavvanu	
+pp-092	core	plant	planted	నాటుతాను	నాటాను	natutanu	natanu	
+pp-093	core	pluck	plucked	తెంపుతాను	తెంపాను	temputanu	tempanu	
+pp-094	core	pour	poured	ఒంపుతాను	ఒంపాను	omputanu	ompanu	
+pp-095	core	fill	filled	నింపుతాను	నింపాను	nimputanu	nimpanu	
+pp-096	core	carry	carried	మోస్తాను	మోశాను	mostanu	moshanu	
+pp-097	core	lift	lifted	ఎత్తుతాను	ఎత్తాను	ettutanu	ettanu	
+pp-098	core	push	pushed	తోస్తాను	తోశాను	tostanu	toshanu	
+pp-099	core	pull	pulled	లాగుతాను	లాగాను	lagutanu	laganu	
+pp-100	core	catch	caught	పట్టుకుంటాను	పట్టుకున్నాను	pattukuntanu	pattukunnanu	
+pp-101	core	hide	hid	దాచుతాను	దాచాను	dachutanu	dachanu	
+pp-102	core	search	searched	వెతుకుతాను	వెతికాను	vetukutanu	vetikanu	
+pp-103	core	show	showed	చూపిస్తాను	చూపించాను	chupistanu	chupinchanu	
+pp-104	core	hear	heard	వింటాను	విన్నాను	vintanu	vinnanu	
+pp-105	core	touch	touched	తాకుతాను	తాకాను	takutanu	takanu	
+pp-106	core	measure	measured	కొలుస్తాను	కొలిచాను	kolustanu	kolichanu	
+pp-107	core	build	built	కట్టుతాను	కట్టాను	kattutanu	kattanu	
+pp-108	core	sweep	swept	ఊడుస్తాను	ఊడిచాను	udustanu	udichanu	
+pp-109	core	wipe	wiped	తుడుస్తాను	తుడిచాను	tudustanu	tudichanu	
+pp-110	core	burn	burnt	కాల్చుతాను	కాల్చాను	kalchutanu	kalchanu	
+pp-111	core	mix	mixed	కలుపుతాను	కలిపాను	kaluputanu	kalipanu	
+pp-112	core	stir	stirred	తిప్పుతాను	తిప్పాను	tipputanu	tippanu	
+pp-113	core	chew	chewed	నములుతాను	నమిలాను	namulutanu	namilanu	
+pp-114	core	swallow	swallowed	మింగుతాను	మింగాను	mingutanu	minganu	
+pp-115	core	cough	coughed	దగ్గుతాను	దగ్గాను	daggutanu	dagganu	
+pp-116	core	sneeze	sneezed	తుమ్ముతాను	తుమ్మాను	tummutanu	tummanu	
+pp-117	core	shout	shouted	అరుస్తాను	అరిచాను	arustanu	arichanu	
+pp-118	core	call	called	పిలుస్తాను	పిలిచాను	pilustanu	pilichanu	
+pp-119	core	scold	scolded	తిడుతాను	తిట్టాను	tidutanu	tittanu	
+pp-120	core	praise	praised	పొగుడుతాను	పొగిడాను	pogudutanu	pogidanu	
+pp-121	core	kill	killed	చంపుతాను	చంపాను	champutanu	champanu	
+pp-122	core	die	died	చస్తాను	చచ్చాను	chastanu	chachchanu	
+pp-123	core	live	lived	బతుకుతాను	బతికాను	batukutanu	batikanu	
+pp-124	core	wear	wore	వేసుకుంటాను	వేసుకున్నాను	vesukuntanu	vesukunnanu	
+pp-125	core	remove	removed	తీస్తాను	తీశాను	tistanu	tishanu	
+pp-126	core	comb	combed	దువ్వుతాను	దువ్వాను	duvvutanu	duvvanu	
+pp-127	core	rise	rose	లేస్తాను	లేచాను	lestanu	lechanu	
+pp-128	core	believe	believed	నమ్ముతాను	నమ్మాను	nammutanu	nammanu	
+pp-129	core	agree	agreed	ఒప్పుకుంటాను	ఒప్పుకున్నాను	oppukuntanu	oppukunnanu	
+pp-130	core	refuse	refused	కాదంటాను	కాదన్నాను	kadantanu	kadannanu	
+pp-131	core	fight	fought	పోరాడుతాను	పోరాడాను	poradutanu	poradanu	
+pp-132	core	fear	feared	భయపడతాను	భయపడ్డాను	bhayapadatanu	bhayapaddanu	
+pp-133	core	serve	served	వడ్డిస్తాను	వడ్డించాను	vaddistanu	vaddinchanu	
+pp-134	core	feed	fed	తినిపిస్తాను	తినిపించాను	tinipistanu	tinipinchanu	
+pp-135	core	fry	fried	వేయిస్తాను	వేయించాను	veyistanu	veyinchanu	
+pp-136	core	boil	boiled	మరిగిస్తాను	మరిగించాను	marigistanu	mariginchanu	
+pp-137	core	dry	dried	ఆరబెడతాను	ఆరబెట్టాను	arabedatanu	arabettanu	
+pp-138	core	count	counted	లెక్కిస్తాను	లెక్కించాను	lekkistanu	lekkinchanu	
+pp-139	core	pay	paid	చెల్లిస్తాను	చెల్లించాను	chellistanu	chellinchanu	
+pp-140	core	earn	earned	సంపాదిస్తాను	సంపాదించాను	sampadistanu	sampadinchanu	
+pp-141	core	save	saved	దాచుకుంటాను	దాచుకున్నాను	dachukuntanu	dachukunnanu	
+pp-142	core	throw	threw	విసిరేస్తాను	విసిరేశాను	visirestanu	visireshanu	
+pp-143	core	spit	spat	ఉమ్ముతాను	ఉమ్మాను	ummutanu	ummanu	
+pp-144	core	tie	tied	కట్టుకుంటాను	కట్టుకున్నాను	kattukuntanu	kattukunnanu	
+pp-145	core	return	returned	తిరిగివస్తాను	తిరిగివచ్చాను	tirigivastanu	tirigivachchanu	
+pp-146	core	begin	began	మొదలుపెడతాను	మొదలుపెట్టాను	modalupedatanu	modalupettanu	
+pp-147	core	finish	finished	ముగిస్తాను	ముగించాను	mugistanu	muginchanu	
+pp-148	core	mend	mended	బాగుచేస్తాను	బాగుచేశాను	baguchestanu	bagucheshanu	
+pp-149	core	part	parted	విడిపోతాను	విడిపోయాను	vidipotanu	vidipoyanu	
+pp-151	complex	try	tried	ప్రయత్నిస్తాను	ప్రయత్నించాను	prayatnistanu	prayatninchanu	
+pp-152	complex	doubt	doubted	అనుమానిస్తాను	అనుమానించాను	anumanistanu	anumaninchanu	
+pp-153	complex	allow	allowed	అనుమతిస్తాను	అనుమతించాను	anumatistanu	anumatinchanu	
+pp-154	complex	forbid	forbade	వద్దంటాను	వద్దన్నాను	vaddantanu	vaddannanu	
+pp-155	complex	help	helped	ఆదుకుంటాను	ఆదుకున్నాను	adukuntanu	adukunnanu	
+pp-156	complex	greet	greeted	పలకరిస్తాను	పలకరించాను	palakaristanu	palakarinchanu	
+pp-157	complex	follow	followed	అనుసరిస్తాను	అనుసరించాను	anusaristanu	anusarinchanu	
+pp-158	complex	lead	led	నడిపిస్తాను	నడిపించాను	nadipistanu	nadipinchanu	
+pp-159	complex	fail	failed	విఫలమవుతాను	విఫలమయ్యాను	viphalamavutanu	viphalamayyanu	
+pp-160	complex	whisper	whispered	గుసగుసలాడుతాను	గుసగుసలాడాను	gusagusaladutanu	gusagusaladanu	CHECK
+pp-161	sanskritized	forgive	forgave	క్షమిస్తాను	క్షమించాను	kshamistanu	kshaminchanu	
+pp-162	sanskritized	obey	obeyed	పాటిస్తాను	పాటించాను	patistanu	patinchanu	
+pp-163	sanskritized	rule	ruled	పాలిస్తాను	పాలించాను	palistanu	palinchanu	
+pp-164	sanskritized	achieve	achieved	సాధిస్తాను	సాధించాను	sadhistanu	sadhinchanu	
+pp-165	sanskritized	rest	rested	విశ్రమిస్తాను	విశ్రమించాను	vishramistanu	vishraminchanu	
+pp-166	sanskritized	hope	hoped	ఆశిస్తాను	ఆశించాను	ashistanu	ashinchanu	

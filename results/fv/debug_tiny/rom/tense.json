@@ -1,0 +1,25 @@
+{
+  "task": "tense",
+  "condition": "rom",
+  "model": "debug_tiny",
+  "head_set_scope": "rom",
+  "heads": [
+    [
+      0,
+      2,
+      1e-06
+    ],
+    [
+      0,
+      1,
+      0.0
+    ],
+    [
+      2,
+      3,
+      0.0
+    ]
+  ],
+  "norm": 0.1173800379037857,
+  "resid_dim": 64
+}

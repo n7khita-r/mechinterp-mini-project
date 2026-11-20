@@ -1,0 +1,28 @@
+# Gemma 3 4B base on a bf16-capable GPU (A100 / H100 / L40S / 40-series).
+#
+# Use this instead of gemma3_4b.yaml when running anywhere other than Ada, or if
+# Ada's fp16 numerical check in scripts/00_env_check.py fails. bf16 matches the
+# dtype Gemma 3 was trained in, so there is no overflow question to answer.
+#
+# Results from this config and from the fp16 Ada config are directly comparable
+# only if 00_env_check reported fp16 as numerically safe. Otherwise treat them as
+# separate runs and say which produced which numbers.
+name: gemma3_4b_bf16
+hf_id: google/gemma-3-4b-pt
+dtype: bfloat16
+device_map: cuda
+prepend_bos: true
+drop_vision_tower: true
+
+expect:
+  n_layers: 34
+  hidden_size: 2560
+  n_heads: 8
+  head_dim: 256            # NOTE 8 * 256 = 2048 != hidden_size 2560
+  n_kv_heads: 4
+
+# Assumes >= 40 GB. Drop these if the card is smaller.
+batch:
+  score: 32
+  head_batch: 8
+  logitlens: 16

@@ -71,7 +71,7 @@
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{enumerate}\small\tight
-        \item Research
+        \item Research questions
         \item What a function vector is
         \item Methodology
         \item Dataset
@@ -149,8 +149,8 @@
         \item Todd et al. (ICLR 2024) found that while doing this, the model
               builds a \textbf{single vector} inside itself that stands for
               ``\emph{the task is: give the opposite}''.
-        \item If the vector is \textbf{copied out}, and \textbf{paste it into
-              a fresh prompt} that has no examples or question in it. The model does
+        \item If the vector is \textbf{copied out} and \textbf{pasted into
+              a fresh prompt} that has no examples or question in it, the model does
               the task.
       \end{itemize}
     \end{column}
@@ -699,35 +699,6 @@
   \end{itemize}
 \end{frame}
 
-% ----------------------------------- limitations and negative results -----
-\begin{frame}{Limitations and negative results}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \textbf{Things that did not work}
-      \begin{itemize}\footnotesize\tight
-        \item \textbf{Controls not beaten:} English subject
-              gender exactly matches its shuffled floor;
-              \texttt{extract\_person/rom} is nearly matched by an unrelated
-              task's vector. 
-        \item \textbf{The 12B inversion is unexplained} 
-        \item \textbf{Layer and scaling are tuned one after the other}, not
-              together. A joint search performs slightly better in some cases.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \textbf{Scope}
-      \begin{itemize}\footnotesize\tight
-        \item \textbf{One model family} (Gemma 3), two sizes.
-        \item \textbf{Word order is a confound} when comparing English with
-              Telugu (English is SVO, Telugu SOV).
-              \cond{rom} vs \cond{tg} is our clean comparison.
-        \item \textbf{One romanization convention.} 
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-
 % ------------------------------------------- interpretation ---------------
 \begin{frame}{Interpretation}
   \begin{columns}[T]
@@ -788,35 +759,55 @@
         \item \texttt{subject\_gender}  \hfill 0.00 / 0.00
         \vspace{1mm}
         \item Answers depend on \textbf{word endings}.
+              \tel{కొంటోంది} $\to$ \texttt{kontondi} flattens tense,
+              gender and negation into one undifferentiated string.
       \end{itemize}
     \end{column}
     \begin{column}{0.52\textwidth}
-      \vspace{1mm}
-      {\footnotesize\setlength{\tabcolsep}{4pt}
-      \begin{tabular}{llcc}
-        \toprule
-        task & test & \cond{rom} & \cond{tg} \\
-        \midrule
-        extract verb   & did it form?  & \textbf{0.01} & \textbf{0.00} \\
-                       & can it act?   & \textbf{0.33} & \textbf{0.43} \\
-        \midrule
-        extract person & did it form?  & 0.85 & 0.85 \\
-                       & can it act?   & 0.88 & 0.95 \\
-        \bottomrule
-      \end{tabular}}
       \vspace{2mm}
-      \begin{itemize}\footnotesize\tight
-        \item For verbs, romanization stops the task representation from
-              forming \emph{and} stops the best vector from working.
+      \begin{itemize}\small\tight
+        \item For \textbf{verbs}, romanization stops the task representation
+              from forming \emph{and} stops the best available vector from
+              working --- both stages break.
+        \vspace{1mm}
+        \item For \textbf{names}, neither stage breaks.
         \vspace{1mm}
         \item Romanized answers are \emph{shorter} in tokens yet far
-              worse
+              worse --- tokenization length is not the explanation.
       \end{itemize}
     \end{column}
   \end{columns}
   \bridge{The model keeps the same task-routing machinery in all four
     conditions. What romanization damages is specifically what Telugu stores
     in its grammatical endings.}
+\end{frame}
+
+% ----------------------------------- limitations and negative results -----
+\begin{frame}{Limitations and negative results}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Things that did not work}
+      \begin{itemize}\footnotesize\tight
+        \item \textbf{Controls not beaten:} English subject
+              gender exactly matches its shuffled floor;
+              \texttt{extract\_person/rom} is nearly matched by an unrelated
+              task's vector.
+        \item \textbf{The 12B inversion is unexplained}
+        \item \textbf{Layer and scaling are tuned one after the other}, not
+              together. A joint search performs slightly better in some cases.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Scope}
+      \begin{itemize}\footnotesize\tight
+        \item \textbf{One model family} (Gemma 3), two sizes.
+        \item \textbf{Word order is a confound} when comparing English with
+              Telugu (English is SVO, Telugu SOV).
+              \cond{rom} vs \cond{tg} is our clean comparison.
+        \item \textbf{One romanization convention.}
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % --------------------------------------------------- future work ----------

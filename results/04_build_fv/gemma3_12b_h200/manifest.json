@@ -1,0 +1,15 @@
+{
+  "stage": "04_build_fv",
+  "model": "gemma3_12b_h200",
+  "config_hash": "4b755ba0b500",
+  "git_sha": "unknown",
+  "host": "a4d4370443ed",
+  "slurm_job_id": null,
+  "started": "2026-11-20T03:19:59.733329+00:00",
+  "elapsed_sec": 16.1,
+  "peak_vram_gib": 22.7,
+  "torch": "2.8.0+cu129",
+  "n_vectors": 19,
+  "head_set": "per_condition",
+  "skipped": []
+}

@@ -1,189 +1,199 @@
-# Teammate handoff
+# Teammate handoff — full project record
 
-Everything needed to understand, present, and edit this project. Written for
-someone picking it up cold, to refine the slides without re-deriving the work.
+Everything needed to understand this project, present it, edit the slides, and
+finish the paper, without having been in the room while it was built. Read
+§1–§3 to be able to explain it; §5 for the numbers; §9 before you touch
+anything.
 
 Project: **Where Does Code-Mixing Break the Task? Function Vectors in Telugu,
-Romanized Telugu and Tenglish** (CL3.412 mini-project, 2024114003 / 2025701032).
+Romanized Telugu and Tenglish** (CL3.412, 2024114003 / 2025701032).
 
 ---
 
-## 1. The question, in one paragraph
+## 1. The question, and why it needs interpretability
 
-Multilingual LLMs get worse on code-mixed input. Accuracy alone cannot say
-*why*: the model might have lost the **task representation** (it no longer knows
-what it is being asked), or it might still hold the task but fail to **read the
-input**. Those are different failures with different fixes. We separate them
-using **function vectors** (Todd et al., ICLR 2024): extract a compact vector
-that encodes "the task" from attention-head activations, then inject it into a
-*zero-shot* prompt. If the task representation survives code-mixing, injecting
-it should repair the failure. If it does not, the damage is upstream.
+Models do worse on code-mixed input. Accuracy alone cannot say *why*:
 
-**Our answer: the task representation survives. Reading the input is what
-breaks, and it breaks selectively — morphology is damaged, proper nouns are
-not.**
+* **A** — the model cannot *read* the input, or
+* **B** — it read it, but no longer *knows the task*.
+
+Different failures, different fixes: better tokenisation helps A and does
+nothing for B. Separating them requires looking inside the model.
+
+**Function vectors** (Todd et al., ICLR 2024) make that possible. Show a model
+ten examples of a task and it internally forms a single vector meaning "the
+task is: give the opposite". You can extract that vector and add it to a
+*zero-shot* prompt — one with no examples — and the model performs the task
+anyway.
+
+That gives us a probe: **if we can extract a working task vector under
+code-mixing, the task representation survived.** If injecting a good vector
+*repairs* the failure, what was missing was the task. If it doesn't, the damage
+is upstream, in reading the input.
+
+**Our answer: the task survives; reading breaks — and selectively.**
 
 ---
 
-## 2. The four conditions (the core design)
+## 2. The data
 
-Every item exists in four parallel versions, row-aligned by item id:
+Four parallel versions of every item, aligned by id:
 
 | cond | example (`sen-0001`) |
 |---|---|
-| `en`  | next week kavita is buying upma in guntur |
-| `te`  | వచ్చే వారం కవిత గుంటూరులో ఉప్మా కొంటోంది |
+| `en` | next week kavita is buying upma in guntur |
+| `te` | వచ్చే వారం కవిత గుంటూరులో ఉప్మా కొంటోంది |
 | `rom` | vachche varam kavita guntur lo upma kontondi |
-| `tg`  | **next week** kavita guntur lo upma kontondi |
+| `tg` | **next week** kavita guntur lo upma kontondi |
 
-Two things about this matter a lot and are worth saying out loud in the talk:
+Three design decisions worth saying out loud when presenting:
 
-1. **Tenglish is built on top of `rom`**, by swapping some slots back to
-   English. So `rom`→`tg` isolates **code-mixing** with script held constant,
-   and `te`→`rom` isolates **script** with language held constant. Without that
-   construction the two effects are confounded.
+1. **Tenglish is built on top of `rom`.** So `te`→`rom` changes only *script*,
+   and `rom`→`tg` changes only *code-mixing*. Without that, the two are
+   confounded and no result means anything.
 2. **Conditions are row-aligned**, so every comparison is *paired* — the same
-   sentence tested four ways. That is far more statistical power than four
-   independent samples, and it is why the CIs are as tight as they are.
+   sentence tested four ways. Far more power than four independent samples.
+3. **`subject_gender` is a built-in sanity check.** Telugu marks subject gender
+   on the verb (తిన్నాడు `tinnadu` m. / తింది `tindi` f.); English does not
+   ("ate" either way). English therefore *cannot* beat chance. Any method
+   reporting English success here is broken. This check fired correctly — see §5d.
 
-**`subject_gender` is the built-in sanity check.** Telugu marks subject gender
-on the verb (తిన్నాడు `tinnadu` masc. vs తింది `tindi` fem.); English does not
-("ate" either way). So English *cannot* be above chance on this task by
-construction. Any method that reports English success here is measuring an
-artefact. This check fired correctly — see §5.
+15 tasks in two families: word-level (same tasks as Todd et al., so our setup
+is comparable) and sentence-level (ours). Tiers — `core`, `complex`,
+`sanskritized`, `rare`, `literary_en` — let us add harder items without
+disturbing headline numbers, which use `core` only.
 
 ---
 
-## 3. Method, in the order the pipeline runs
+## 3. Method, stage by stage
 
 | stage | what it does |
 |---|---|
-| 01 | 10-shot and zero-shot baselines; builds the **competence filter** |
+| 01 | baselines; builds the **competence filter** |
 | 02 | mean head activations over 100 ten-shot prompts |
-| 03 | **causal mediation**: indirect effect of every attention head, 50 trials |
-| 04 | builds the function vector: `v = Σ_h W_O^(h) · ā_h` over the top-10 heads |
-| 05 | **intervention**: inject `v` at one layer of a zero-shot prompt |
-| 06 | transfer: apply a vector built in one condition to another condition |
-| 08 | controls (see §4) |
-| 09 | all tables and figures |
+| 03 | **causal mediation** — indirect effect of every head, 50 trials |
+| 04 | `v = Σ_h W_O^(h) ā_h` over the top-10 heads |
+| 05 | inject `v` at one layer of a **zero-shot** prompt |
+| 06 | cross-condition transfer |
+| 07 | logit lens |
+| 08 | controls |
+| 09 | tables and figures |
 
-Key choices, and why:
+### How the three pools work (the "dev slice" question)
 
-- **Competence filter**: an item counts only if the model already answers it
-  correctly at 10 shots. We are testing whether the *vector* works, not whether
-  the model knows the word.
-- **Per-condition head sets** (a deviation from the paper, which uses one
-  universal set). We need to know whether `te`/`rom`/`tg` recruit the *same*
-  heads as `en`; a shared set would assume the answer. This made head overlap a
-  result rather than an assumption.
-- **Layer and scale are chosen on a 30% dev slice**, reported on the held-out
-  remainder. Both are free parameters; tuning them on the test set would be
-  cheating.
-- **Head batching**: all heads of a layer in one batched forward, so mediation
-  costs `n_layers` forwards per trial instead of `n_layers × n_heads`. This is
-  the difference between ~1.5 h and ~50 h.
+Two splits, one after the other. For `extract_verb/en`:
 
-### The residual-scaling discovery (our most portable contribution)
+```
+298 core items
+ ├─ 104  example pool   → the 10 demonstrations are sampled from here
+ └─ 194  evaluation pool
+     ├─  58  tuning slice → pick edit layer ℓ and strength α
+     └─ 136  held-out     → the only number we report (0.98)
+```
 
-Our first full run showed the function vector changing **nothing** — `+0.00` at
-every layer, in every condition, *including English*. The method had not failed;
-the arithmetic had.
+Plain-language version for the slide: **demonstrations come from one pool, we
+tune on a second, we report on a third we never touched.** Both free parameters
+are knobs; tuning them on the test set would be reporting luck.
 
-Gemma scales embeddings by `√d_model` and never renormalises the residual
-stream, so `‖h‖` grows from ~780 at layer 0 to ~10⁵ at layer 33. A function
-vector has norm ~16–22. Adding it raw is a **0.1% nudge** — real, but far too
-small to move an argmax over a 262k vocabulary. GPT-J, which the method was
-built on, has no such gap, so nothing in the original work flags it.
+### What the model actually sees at test time
 
-**Fix**: scale the vector to a fraction `α` of the residual norm at the edit
-layer, `v ← v · α‖h_ℓ‖/‖v‖`, with `α` chosen on the dev slice. Selected
+```
+Q: fast
+A:
+```
+
+That is the *whole* prompt. Nothing says "give the opposite". If the model
+answers `slow`, the only thing that told it the task was the vector added to
+the residual stream.
+
+### Choices that differ from the paper
+
+* **Per-condition head sets**, not one universal set. Whether `te`/`rom`/`tg`
+  recruit the same heads as `en` is one of our questions; a shared set would
+  assume the answer. This made head overlap a result.
+* **Competence filter**: an item counts only if the model already answers it
+  correctly at 10 shots. We test the *vector*, not the model's vocabulary.
+* **Residual-relative scaling** — see below.
+
+### The scaling result (our most portable contribution)
+
+The first full run showed the vector doing **nothing**: `+0.00` at every layer,
+every condition, *including English*. The method hadn't failed; the arithmetic
+had.
+
+Gemma scales embeddings by `√d_model` and never renormalises the stream, so
+`‖h‖` grows ~780 → ~10⁵ with depth. A function vector has norm ~16–26. Raw, it
+is a **0.1% nudge** — real, but far too small to move an argmax over 262k
+tokens. GPT-J, which the method was built on, has no such gap, so nothing in
+the original work flags it.
+
+Fix: `v ← v · α‖h_ℓ‖/‖v‖`, with α chosen on the tuning slice. Selected
 multipliers ran **35× to 1841×**.
 
-> **Function vectors do not transfer to Gemma-class models until they are
-> rescaled relative to the residual norm.** This is the one finding here that
-> generalises beyond our specific question.
+> **Function vectors do not transfer to Gemma-class models until rescaled
+> relative to the residual norm.** This generalises beyond our question.
 
 ---
 
-## 4. Controls — what each one rules out
+## 4. Controls — what each rules out
 
 | control | rules out |
 |---|---|
-| random vector, matched norm | "any large vector at that depth jolts the model" |
-| unrelated-task function vector | "any well-formed function vector helps" |
-| shuffled-label floor | the level reached with the task's *form* but not its content |
-| **majority-class floor** | on 2–3-way label tasks, one label emitted for everything |
+| random vector, matched norm | "any large nudge at that depth works" |
+| unrelated-task vector | "any well-formed function vector helps" |
+| shuffled-label floor | the prompt's *form* without its content |
+| majority-class floor | always guessing the commonest label |
 
-All three injected vectors are scaled to the **same** norm, so only direction
-differs. This matters: before we fixed it, stages 06 and 08 applied the vector
-*raw* while stage 05 applied it scaled, which put every control in the
-invisible regime and made FV ≈ random ≈ unrelated in 52 of 52 rows. That looked
-like "the effect is not task-specific" but was really the same null three times.
+All injected vectors are scaled to the **same** norm, so only direction
+differs. **The professor is specifically attentive to controls — every results
+table in the deck shows them, and cells that fail are reported as not
+demonstrated.**
 
 ---
 
-## 5. Results (Gemma 3 4B, `core` tier unless stated)
+## 5. Results (Gemma 3 4B, `core` tier, held-out)
 
 ### 5a. Baselines — degradation is real and task-dependent
-- Copy-style tasks sit at ceiling everywhere (extract place ≥0.97 in all four).
-- Reasoning-style tasks degrade monotonically `en`→`te`→`rom`→`tg`:
-  negation `0.93 → 0.78 → 0.64 → 0.60`.
-- `subject_gender` **inverts**: `en` 0.50 (chance — no gender marking available)
-  vs `te` 0.96. Exactly as the linguistics predicts.
+Extraction survives everything (`extract_place` ≥0.97 in all four). Grammar
+tasks degrade monotonically: negation `0.93 → 0.78 → 0.64 → 0.60`.
+`subject_gender` **inverts**: `en` 0.50 (chance) vs `te` 0.96.
 
-### 5b. Head sets — the same heads, in every condition
-Top heads `17.4` and `17.6` are top-2 in **all four** conditions, at layer 17 of
-34 (mid-depth — replicating the depth finding from GPT-J in a different
-architecture *and* a different language).
+### 5b. Head sets — the same heads everywhere
+`17.4` and `17.6` are top-2 in **all four** conditions, layer 17 of 34 —
+mid-depth, replicating Todd et al.'s depth finding in a different architecture
+*and* language.
 
-Jaccard overlap: `en–te` 0.43, `en–rom` 0.33, `en–tg` 0.33, **`te–tg` 0.54**.
+Jaccard: `en–te` 0.43, `en–rom` 0.33, `en–tg` 0.33, **`te–tg` 0.54**.
 
-> **English is the outlier, not Tenglish.** The three Telugu-derived conditions
-> resemble each other more than any resembles English. Code-mixing does not
-> recruit a separate mechanism.
+> **English is the outlier, not Tenglish.** Code-mixing does not get routed
+> somewhere else in the model.
 
-### 5c. Intervention — Telugu script recovers, Latin script does not
+### 5c. Intervention — with controls
 
-| task | en | te | rom | tg |
-|---|---|---|---|---|
-| extract place | 0.98 | 0.99 | 0.76 | 0.83 |
-| extract person | 0.84 | 0.96 | 0.85 | 0.93 |
-| extract verb | 0.99 | 0.93 | **0.21** | **0.30** |
-| extract food | 0.80 | 0.81 | **0.33** | **0.39** |
-| subject gender | 0.80 | 0.89 | **0.00** | **0.00** |
-| present past | 0.29 | 1.00 | 0.81 | — |
+| task | cond | +FV | random | unrelated | shuffled | n |
+|---|---|---|---|---|---|---|
+| extract verb | en | **0.98** | 0.00 | 0.00 | 0.22 | 194 |
+| extract verb | te | **0.92** | 0.01 | 0.06 | 0.21 | 179 |
+| extract verb | rom | **0.21** | 0.00 | 0.02 | 0.11 | 189 |
+| extract verb | tg | **0.29** | 0.00 | — | 0.13 | 191 |
+| subject gender | te | **0.93** | 0.00 | 0.00 | 0.63 | 27 |
+| subject gender | en | 0.71 | 0.00 | 0.00 | **0.71** | 14 |
+| extract person | rom | **0.88** | 0.20 | **0.83** | 0.05 | 113 |
 
-### 5d. Majority floors — reading the label tasks honestly
-Of **eight** label-task cells, **exactly one** clears its floor:
-`subject_gender/te` at 0.89 against a 0.58 floor (**+0.32**).
+Two honest failures to keep in: English subject gender *exactly* matches its
+shuffled floor (no real effect — as predicted); `extract_person/rom` is nearly
+matched by the unrelated vector, so part of that gain is prompt **format**, not
+task content.
 
-`subject_gender/en` is at 0.80 against a **0.90** floor — i.e. *below* chance.
-Without the floor beside it, that 0.80 reads as a strong positive result. It is
-the opposite, and it is the sanity check from §2 firing correctly.
-Negation `en` and `rom` match their floors *exactly* — the signature of a model
-emitting one label for everything.
+### 5d. Majority floors
+Of eight label cells, **exactly one** beats its floor: `subject_gender/te`,
+0.89 vs 0.58. English sits *below* its floor (0.80 vs 0.90) — reported as "not
+above chance", not as 80%. Negation `en` and `rom` match their floors to two
+decimals, the fingerprint of emitting one label for everything.
 
-### 5e. Controls (after the fix) — specificity holds
-FV vs random vector, on cells with n ≥ 10:
+> Without this control, that 0.80 would have read as a strong positive result.
 
-| task | cond | FV | random | unrelated |
-|---|---|---|---|---|
-| extract verb | en | 0.98 | 0.00 | 0.00 |
-| extract place | te | 1.00 | 0.05 | 0.06 |
-| **subject gender** | **te** | **0.93** | **0.00** | **0.00** |
-| extract verb | te | 0.92 | 0.01 | 0.06 |
-| choose last | en | 0.95 | 0.00 | 0.69 |
-| extract food | te | 0.82 | 0.07 | 0.67 |
-
-The random-vector control is crushed everywhere — the effect is **not** generic
-perturbation. The unrelated-task vector is usually far below FV but sometimes
-substantial (`choose_last/en` 0.69, `extract_food/te` 0.67), on tasks that share
-output *format* with the unrelated task. Worth stating honestly: the vector is
-clearly task-bearing, but part of what it carries on some tasks is format.
-**The headline cell `subject_gender/te` is perfectly clean** (0.93 vs 0.00 vs 0.00).
-
-### 5f. Transfer — vectors are partly condition-specific
-Rows = FV source, columns = prompt condition. The **diagonal is highest**:
+### 5e. Transfer — diagonal dominates
 
 | from ↓ / to → | en | rom | te | tg |
 |---|---|---|---|---|
@@ -192,11 +202,10 @@ Rows = FV source, columns = prompt condition. The **diagonal is highest**:
 | te | 0.43 | 0.49 | **0.74** | 0.39 |
 | tg | 0.38 | 0.28 | 0.32 | **0.40** |
 
-Vectors transfer substantially but not fully — each condition's own vector is
-best for it.
+Vectors transfer substantially but each condition's own is best for it.
 
-### 5g. Tiers — **rarity hurts, complexity does not**
-Change from `core`, 10-shot accuracy:
+### 5f. Tiers — rarity hurts, complexity does not
+Change from `core`, pooled over all 15 tasks:
 
 | tier | en | te | rom | n |
 |---|---|---|---|---|
@@ -205,118 +214,169 @@ Change from `core`, 10-shot accuracy:
 | rare | −0.25 | −0.35 | −0.32 | 23 |
 | rare English | −0.05 | −0.12 | −0.01 | 20 |
 
-> **Syntactic complexity costs essentially nothing; lexical rarity and
-> sanskritized register cost a lot.** This fits the morphology story in §6.
+> **Syntactic complexity costs nothing; lexical rarity costs a lot.**
 
-Caveat: `sanskritized`/`rare` cells are small (n = 23–37, pooled over tasks).
-Report the *direction*, not the exact value. Also, the tier run evaluates a
-larger item pool than the headline run, so its `core` row is **not** numerically
-comparable to the headline numbers — only compare *within* the tier table.
+Small n on the bottom rows — report direction, not exact values. **This is a
+4B, all-15-tasks result.**
+
+We also ran tiers on 12B, restricted to the 5 subset tasks. Only the `complex`
+row is usable there (n=157), and it **replicates**: +0.01 / +0.01 / +0.03 /
+−0.02. The `sanskritized` (n=10), `rare` (n=3) and `literary_en` (n=8) rows all
+read 1.00 and must not be reported — those tiers live almost entirely in the
+Part-1 word tasks, which the subset excludes.
+
+### 5g. Logit lens — two independent confirmations
+
+Project the vector onto the vocabulary and read what it promotes:
+
+| cell | top tokens |
+|---|---|
+| `extract_verb/en` | ` is`, ` has`, ` was`, ` will`, ` did` — **auxiliary verbs** |
+| `subject_gender/en` | `they`, ` he`, ` she` — **pronouns** |
+| `extract_verb/te` (12B) | `w`, `på`, `getValue` — junk |
+| `subject_gender/rom` | `de`, `te`, `ta` — junk |
+
+Where the vectors work they decode into exactly the right semantic class;
+where they fail, into garbage. Separately, the layer at which the gold token
+enters the top 10 is *later* for weaker conditions (`te` 46 vs `en` 35 on
+`extract_verb`, 12B, 48 layers).
+
+### 5h. 12B — the ordering inverts (unexplained)
+
+| task | 4B te | 12B te | 12B en | 12B rom | 12B tg |
+|---|---|---|---|---|---|
+| extract person | 0.96 | **0.68** | 0.96 | 0.83 | 1.00 |
+| extract verb | 0.93 | **0.19** | 0.78 | 0.51 | 0.66 |
+| negation | 0.49 | **0.07** | 0.49 | 0.50 | 0.67 |
+| present past | 1.00 | **0.25** | 0.90 | 0.88 | — |
+| subject gender | 0.89 | **0.10** | 0.47 | 0.20 | 0.47 |
+
+The method scales fine — every cell improves over zero-shot and controls still
+hold. But Telugu script goes from strongest (4B) to weakest (12B) in all five
+tasks. **We ruled out the easy explanations:**
+
+* 12B reads Telugu *better* — 10-shot 0.86–1.00, its **best** condition
+* Telugu has the **strongest** causal signal (AIE 0.101 vs en 0.075)
+* α optimum is found correctly, not clipped by the grid
+* an exhaustive layer×strength search on `extract_verb/te` finds **nothing
+  better** (−0.02)
+
+Report it as an open result. "We found something we can't explain, and here's
+what we ruled out" is a stronger position than a tidy story, and it pre-empts
+the obvious questions.
 
 ---
 
-## 6. The interpretation (this is the talk's punchline)
+## 6. The interpretation (the punchline)
 
-The dissociation in 5c is the whole argument:
+**Survives romanization** — `extract_person` 0.88, `extract_place` 0.76. These
+targets are **proper nouns**: "kavita", "guntur" romanize losslessly; the
+string is the same object.
 
-**Survives romanization** — `extract_person` 0.85/0.93, `extract_place` 0.76/0.83.
-These targets are **proper nouns**. "kavita", "guntur" romanize essentially
-losslessly; the string is the same object in either script.
-
-**Collapses under romanization** — `extract_verb` 0.21/0.30, `subject_gender`
-0.00/0.00. These targets live in **inflectional morphology**. కొంటోంది →
-`kontondi` is where tense, gender and polarity are encoded, and romanization
-flattens exactly that.
+**Collapses** — `extract_verb` 0.21, `subject_gender` 0.00. These targets live
+in **inflectional morphology**. కొంటోంది → `kontondi` is where tense, gender and
+polarity are encoded, and romanization flattens exactly that.
 
 > Code-mixing breaks the task at the **input-reading** stage, and selectively:
-> it damages what is carried by morphology while leaving what is carried by
-> identifiable substrings intact.
+> it damages what is carried by grammatical endings while leaving what is
+> carried by recognisable names intact.
 
 ---
 
-## 7. What changed from the proposal
+## 7. Changes from the proposal
 
-**Dropped**: incremental ± scoring (would make every number depend on insertion
-order); vLLM (cannot expose or patch intermediate activations — the entire
-experiment); `tense` as a reported task (see below).
+**Dropped:** incremental ± scoring (would make numbers depend on row insertion
+order); vLLM (cannot expose or patch activations — the entire experiment);
+`tense` as a reported task.
 
-**Changed**: 27B → 12B as the second model (cost); per-condition head sets
-(without which head overlap could not be measured); residual-relative scaling
-(not planned — we did not know it was needed); majority-class floors (added
-after noticing `en` subject gender looked like a success).
+**Changed:** 27B → 12B (cost); per-condition head sets; residual-relative
+scaling (unplanned — we didn't know it was needed); majority-class floors
+(added after an English result looked like a success).
 
-**`tense` is excluded from all reported tables.** Its function vector was flat
-at zero in *every* condition including English, at every layer and every scale.
-A condition effect shows up as a *gap between* conditions; an identical zero in
-the control language is a failure of the method on that task. It carries no
-information about code-mixing, so it is excluded rather than over-read. This is
-stated in the Scope section of the deck. Raw numbers remain in `results/`.
+**`tense` is excluded from all tables.** Its vector was flat at zero in *every*
+condition including English, at every layer and scale. A condition effect shows
+as a *gap between* conditions; an identical zero in the control language is a
+failure of the method on that task. Raw numbers remain in `results/`.
 
 ---
 
-## 8. Challenges (the "what went wrong" slide)
+## 8. Challenges (the war-stories slide — keep it short)
 
-**Infrastructure**: cluster docs did not match the cluster (wrong partition,
-modules for the wrong OS, different node-name format); a `venv` built from
-inside an active `venv` resolved its own interpreter and produced
-`No module named torch` only on compute nodes; **fp16 produced NaNs** in Gemma 3
-mediation, forcing a move to a rented H200 in bf16; a concurrent 27B download
-filled the volume mid-run and killed the job.
+**Infrastructure:** cluster docs didn't match the cluster; a venv built inside
+an active venv produced `No module named torch` only on compute nodes; fp16
+produced NaNs on Gemma 3, forcing a move to a rented H200; a model download
+filled the disk mid-run; volumes and SSH ports changed repeatedly.
 
-**Scientific debugging** — three separate bugs all presented identically as
-"the function vector does nothing":
+**Debugging the science — four bugs all looked identical** ("the function
+vector does nothing"):
+
 1. layer selection collapsing to layer 0 on all-zero ties (`max()` returns the
-   first index),
-2. a config hash that did not cover **code** version, so stale cached results
-   were silently replayed,
-3. the residual-scale problem (§3) — the only one that was real science.
+   first index)
+2. a config hash that didn't cover *code* version, so stale results replayed
+3. the residual-scale problem (§3) — the only real science
+4. stages 06 and 08 still applying the vector *raw* while 05 applied it scaled,
+   which made every control equal the function vector and looked like "the
+   effect isn't task-specific"
 
-Later, a fourth of the same family: stages 06 and 08 still applying the vector
-raw, which made every control look identical.
-
-> **Lesson worth saying in the talk:** a result of exactly `+0.00` should be
-> treated as a bug report, not a finding. Every stage now prints the quantity it
-> depends on, and the config hash covers code version so a stale cache cannot be
-> replayed as a result.
+> **Lesson:** a result of exactly `+0.00` is a bug report, not a finding. Every
+> stage now prints the quantity it depends on.
 
 ---
 
-## 9. Practical notes for editing the deck
+## 9. Editing the deck — read before touching anything
 
-Build (**must be `lualatex`** — Telugu needs a Unicode engine; `pdflatex` builds
-but renders Telugu blank):
+Build (**LuaLaTeX only** — pdfLaTeX renders Telugu blank):
 
 ```bash
-cd presentation && lualatex main.tex
+cd presentation && lualatex main.tex     # or: make slides
+make slides-zip                          # sources + PDF as presentation/slides.zip
 ```
 
-- Telugu inline: `\tel{...}`. Condition labels: `\cond{en}`. Fonts are vendored
-  in `presentation/fonts/`, so it builds on any machine.
-- Style macros match the group's existing decks: `\src{}` (grey source line),
-  `\tight`, `\bridge{}` (boxed narrative bridge).
-- Figures come from `presentation/images/` (PNG). The paper uses
-  `paper/figures/` (PDF). Stage 09 writes both.
+* Telugu inline: `\tel{...}`. Conditions: `\cond{en}`. Fonts vendored in
+  `presentation/fonts/`, so it builds anywhere.
+* Macros match the group's existing decks: `\src{}`, `\tight`, `\bridge{}`,
+  plus `\reading{}` — **the interpretation line under every table.**
+* **Do not ship a table without a `\reading{}`.** An unfamiliar audience needs
+  the interpretation, not the numbers.
+* The deck is 26 frames, ordered: question → what an FV is → block-diagram
+  overview → data → method → controls → results by research question → heads →
+  logit lens → 12B → interpretation → limitations → changes → challenges →
+  future work.
 
-**Traps to avoid:**
-- **Do not run `09_report.py` for 12B.** It writes `paper/tables/*.tex` keyed by
-  *stage*, not by model, so it would overwrite the 4B tables the deck cites.
-  `run_subset.sh` now omits it by default; 12B numbers come from
-  `results/05_intervene/gemma3_12b_h200/intervention.json`.
-- `paper/tables/tier.tex` is the **degenerate** one-row table from the core-only
-  run. The real tier result is `paper/tables/tier_accuracy.tex`. Drop `tier.tex`
-  and `tier.pdf`.
-- `logit_lens.pdf/png` are **stale** — stage 07 never produced 4B results. Do
-  not cite that figure.
-- Cells with tiny `n` (romanized word-level tasks keep 2–13 items after the
-  competence filter) are shown but carry no weight. Do not build a claim on them.
-- Word order is a confound for `en`–`te` vector similarity (English SVO, Telugu
-  SOV). `rom`–`tg` is the clean comparison.
+**Traps:**
+
+* **Do not run `09_report.py` for 12B.** It writes `paper/tables/*.tex` keyed
+  by *stage*, not model, and would overwrite the 4B tables the deck cites.
+  `run_subset.sh` omits it by default.
+* `paper/tables/tier.tex` is the **degenerate** one-row table from the core-only
+  run. The real one is `tier_accuracy.tex`. Drop `tier.tex` and `tier.pdf`.
+* `logit_lens.pdf/png` in `paper/figures/` are **stale** — stage 07 never ran
+  for 4B. The 12B logit-lens numbers in §5g come from
+  `results/07_logitlens/gemma3_12b_h200/`.
+* Cells with tiny n (romanized word-level tasks keep 2–13 items) are shown but
+  carry no weight.
+* Word order confounds `en`–`te` comparisons (SVO vs SOV). `rom`–`tg` is clean.
+
+---
 
 ## 10. Status
 
-- **4B: complete.** All stages, controls and transfer rerun post-fix, tiers done.
-- **12B: pending** — subset run (`subject_gender, extract_verb, negation,
-  present_past, extract_person`), all four conditions. Slots into the deck as a
-  second column to test whether scale closes the romanization gap.
-- **Paper**: not started; due 23:59. ACL template, LuaLaTeX, 4–8 pages, tables
-  already generated and `\input{}`-ready.
+* **4B: complete** — all stages, controls and transfer rerun after the scaling
+  fix, tiers done across all 15 tasks.
+* **12B: complete** for the 5-task subset — baselines, mediation, FVs,
+  intervention, transfer, logit lens, controls. No tier run (see §5f).
+* **Presentation: complete**, 26 frames, builds clean.
+* **Paper: not started.** ACL template (`acl.sty`, `acl_natbib.bst` already in
+  `paper/`), LuaLaTeX, 4–8 pages, tables generated and `\input{}`-ready in
+  `paper/tables/`.
+
+### If asked something we didn't do
+
+* *"Did you check layer and scale together?"* — Yes, `scripts/diag_joint.py`.
+  Mixed: on one cell joint search gained +0.29, on the key cell −0.02. Selection
+  is sequential in the reported numbers; this is in Limitations.
+* *"Why not 27B?"* — Compute cost. 12B is the second scale point.
+* *"Why no tier results at 12B?"* — We have them, but only the `complex` row
+  is large enough to report (n=157), and it replicates the 4B result. The
+  harder tiers have n=3–10 in the subset, because those items live in the
+  Part-1 word tasks we did not run at 12B.

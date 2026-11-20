@@ -53,4 +53,4 @@ M="--model $MODEL --exp $EXP --tasks $TASKS"
 
 echo
 echo "log: $LOG"
-echo "pull results to your laptop with:  bash scripts/sync_results.sh"
+echo "results are under results/<stage>/<model>/ -- copy them off before the box goes away"

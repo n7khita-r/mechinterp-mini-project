@@ -1,0 +1,732 @@
+[
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 22,
+    "acc": 0.5,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 21965.9
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 22,
+    "acc": 0.0,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 21965.9
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 22,
+    "acc": 0.0,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 21965.9
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 22,
+    "acc": 0.45454545454545453,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 21965.9
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 26,
+    "n": 28,
+    "acc": 0.75,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55295.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 26,
+    "n": 28,
+    "acc": 0.14285714285714285,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55295.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 26,
+    "n": 28,
+    "acc": 0.75,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55295.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "subject_gender",
+    "edit_layer": 26,
+    "n": 28,
+    "acc": 0.8214285714285714,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55295.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 21,
+    "acc": 0.5238095238095238,
+    "fv_rel_norm": 0.8,
+    "resid_norm_at_layer": 23308.9
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 21,
+    "acc": 0.0,
+    "fv_rel_norm": 0.8,
+    "resid_norm_at_layer": 23308.9
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 21,
+    "acc": 0.23809523809523808,
+    "fv_rel_norm": 0.8,
+    "resid_norm_at_layer": 23308.9
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "subject_gender",
+    "edit_layer": 15,
+    "n": 21,
+    "acc": 0.14285714285714285,
+    "fv_rel_norm": 0.8,
+    "resid_norm_at_layer": 23308.9
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 25,
+    "n": 25,
+    "acc": 0.48,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 51605.0
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 25,
+    "n": 25,
+    "acc": 0.0,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 51605.0
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 25,
+    "n": 25,
+    "acc": 0.0,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 51605.0
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "subject_gender",
+    "edit_layer": 25,
+    "n": 25,
+    "acc": 0.44,
+    "fv_rel_norm": 0.4,
+    "resid_norm_at_layer": 51605.0
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 26,
+    "n": 192,
+    "acc": 0.7708333333333334,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 54455.1
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 26,
+    "n": 192,
+    "acc": 0.005208333333333333,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 54455.1
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 26,
+    "n": 192,
+    "acc": 0.5416666666666666,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 54455.1
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_verb",
+    "edit_layer": 26,
+    "n": 192,
+    "acc": 0.46875,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 54455.1
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 31,
+    "n": 183,
+    "acc": 0.0273224043715847,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 58530.8
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 31,
+    "n": 183,
+    "acc": 0.17486338797814208,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 58530.8
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 31,
+    "n": 183,
+    "acc": 0.0,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 58530.8
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_verb",
+    "edit_layer": 31,
+    "n": 183,
+    "acc": 0.04371584699453552,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 58530.8
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 22,
+    "n": 185,
+    "acc": 0.005405405405405406,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 39852.4
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 22,
+    "n": 185,
+    "acc": 0.0,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 39852.4
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 22,
+    "n": 185,
+    "acc": 0.4810810810810811,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 39852.4
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_verb",
+    "edit_layer": 22,
+    "n": 185,
+    "acc": 0.2594594594594595,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 39852.4
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 24,
+    "n": 191,
+    "acc": 0.16753926701570682,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 50219.8
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 24,
+    "n": 191,
+    "acc": 0.0,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 50219.8
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 24,
+    "n": 191,
+    "acc": 0.6649214659685864,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 50219.8
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_verb",
+    "edit_layer": 24,
+    "n": 191,
+    "acc": 0.6544502617801047,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 50219.8
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 96,
+    "acc": 0.5104166666666666,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 199858.8
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 96,
+    "acc": 0.1875,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 199858.8
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 96,
+    "acc": 0.010416666666666666,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 199858.8
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 96,
+    "acc": 0.5104166666666666,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 199858.8
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 26,
+    "n": 83,
+    "acc": 0.03614457831325301,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55139.6
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 26,
+    "n": 83,
+    "acc": 0.060240963855421686,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55139.6
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 26,
+    "n": 83,
+    "acc": 0.0,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55139.6
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "negation",
+    "edit_layer": 26,
+    "n": 83,
+    "acc": 0.1686746987951807,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 55139.6
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 20,
+    "n": 71,
+    "acc": 0.04225352112676056,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 34696.7
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 20,
+    "n": 71,
+    "acc": 0.2676056338028169,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 34696.7
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 20,
+    "n": 71,
+    "acc": 0.4225352112676056,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 34696.7
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "negation",
+    "edit_layer": 20,
+    "n": 71,
+    "acc": 0.14084507042253522,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 34696.7
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 64,
+    "acc": 0.609375,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 198813.4
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 64,
+    "acc": 0.015625,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 198813.4
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 64,
+    "acc": 0.0,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 198813.4
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "negation",
+    "edit_layer": 47,
+    "n": 64,
+    "acc": 0.609375,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 198813.4
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 27,
+    "n": 69,
+    "acc": 0.927536231884058,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 61469.7
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 27,
+    "n": 69,
+    "acc": 0.057971014492753624,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 61469.7
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "present_past",
+    "edit_layer": 27,
+    "n": 69,
+    "acc": 0.17391304347826086,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 61469.7
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 9,
+    "n": 69,
+    "acc": 0.2898550724637681,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 3413.5
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 9,
+    "n": 69,
+    "acc": 0.2318840579710145,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 3413.5
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "present_past",
+    "edit_layer": 9,
+    "n": 69,
+    "acc": 0.463768115942029,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 3413.5
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 18,
+    "n": 57,
+    "acc": 0.7543859649122807,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 30526.3
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 18,
+    "n": 57,
+    "acc": 0.03508771929824561,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 30526.3
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "present_past",
+    "edit_layer": 18,
+    "n": 57,
+    "acc": 0.8421052631578947,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 30526.3
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 22,
+    "n": 130,
+    "acc": 0.9692307692307692,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 41070.3
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 22,
+    "n": 130,
+    "acc": 0.9846153846153847,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 41070.3
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 22,
+    "n": 130,
+    "acc": 0.9615384615384616,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 41070.3
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "en",
+    "task": "extract_person",
+    "edit_layer": 22,
+    "n": 130,
+    "acc": 0.9538461538461539,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 41070.3
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 19,
+    "n": 130,
+    "acc": 0.7692307692307693,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 29211.6
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 19,
+    "n": 130,
+    "acc": 0.7307692307692307,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 29211.6
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 19,
+    "n": 130,
+    "acc": 0.8,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 29211.6
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "te",
+    "task": "extract_person",
+    "edit_layer": 19,
+    "n": 130,
+    "acc": 0.7769230769230769,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 29211.6
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 124,
+    "acc": 0.8064516129032258,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 52587.4
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 124,
+    "acc": 0.7741935483870968,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 52587.4
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 124,
+    "acc": 0.8467741935483871,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 52587.4
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "rom",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 124,
+    "acc": 0.8064516129032258,
+    "fv_rel_norm": 0.1,
+    "resid_norm_at_layer": 52587.4
+  },
+  {
+    "source_condition": "en",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 129,
+    "acc": 0.9922480620155039,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 52012.8
+  },
+  {
+    "source_condition": "te",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 129,
+    "acc": 0.8062015503875969,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 52012.8
+  },
+  {
+    "source_condition": "rom",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 129,
+    "acc": 0.6201550387596899,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 52012.8
+  },
+  {
+    "source_condition": "tg",
+    "target_condition": "tg",
+    "task": "extract_person",
+    "edit_layer": 24,
+    "n": 129,
+    "acc": 1.0,
+    "fv_rel_norm": 0.2,
+    "resid_norm_at_layer": 52012.8
+  }
+]

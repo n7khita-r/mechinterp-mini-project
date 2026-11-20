@@ -1,7 +1,8 @@
-# Results: keep the directory structure and small artefacts, drop bulk
+# Results: commit the findings (JSON), not the intermediates.
+# Every .pt here -- mean activations, AIE grids, the function vectors themselves
+# -- is regenerable from the JSON plus the configs, and they are hundreds of MB.
 results/cache/
-results/aie/*.pt
-results/fv/**/*.pt
+*.pt
 results/**/*.npz
 
 # Model weights / HF cache if anyone points it here
@@ -38,6 +39,12 @@ slurm_logs/
 *.xdv
 paper/*.pdf
 presentation/*.pdf
+
+# Run logs: machine-specific, and they contain host and path details
+logs/
+
+# Generated bundle (rebuild with: make slides-zip)
+presentation/slides.zip
 
 # OS
 .DS_Store

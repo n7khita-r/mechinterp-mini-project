@@ -36,7 +36,8 @@ CODE_VERSION = 3
 #   06_transfer 2  the transfer matrix applied the source vector raw, for the same
 #                  reason, so every row collapsed onto the target condition's own
 #                  zero-shot behaviour and three rows came out bit-identical
-STAGE_CODE_VERSION = {"08_controls": 2, "06_transfer": 2}
+#   05_intervene 2  layer and scale are now selected jointly, not sequentially
+STAGE_CODE_VERSION = {"08_controls": 2, "06_transfer": 2, "05_intervene": 2}
 
 
 def _load_yaml(path: str | Path) -> dict:

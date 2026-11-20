@@ -1,0 +1,121 @@
+[
+  {
+    "tier": "core",
+    "condition": "en",
+    "n": 524,
+    "acc": 0.9656,
+    "thin": false
+  },
+  {
+    "tier": "core",
+    "condition": "te",
+    "n": 524,
+    "acc": 0.9504,
+    "thin": false
+  },
+  {
+    "tier": "core",
+    "condition": "rom",
+    "n": 524,
+    "acc": 0.8779,
+    "thin": false
+  },
+  {
+    "tier": "core",
+    "condition": "tg",
+    "n": 452,
+    "acc": 0.9181,
+    "thin": false
+  },
+  {
+    "tier": "complex",
+    "condition": "en",
+    "n": 157,
+    "acc": 0.9745,
+    "thin": false
+  },
+  {
+    "tier": "complex",
+    "condition": "te",
+    "n": 157,
+    "acc": 0.9554,
+    "thin": false
+  },
+  {
+    "tier": "complex",
+    "condition": "rom",
+    "n": 157,
+    "acc": 0.9045,
+    "thin": false
+  },
+  {
+    "tier": "complex",
+    "condition": "tg",
+    "n": 147,
+    "acc": 0.898,
+    "thin": false
+  },
+  {
+    "tier": "sanskritized",
+    "condition": "en",
+    "n": 10,
+    "acc": 1.0,
+    "thin": false
+  },
+  {
+    "tier": "sanskritized",
+    "condition": "te",
+    "n": 10,
+    "acc": 1.0,
+    "thin": false
+  },
+  {
+    "tier": "sanskritized",
+    "condition": "rom",
+    "n": 10,
+    "acc": 1.0,
+    "thin": false
+  },
+  {
+    "tier": "rare",
+    "condition": "en",
+    "n": 3,
+    "acc": 1.0,
+    "thin": true
+  },
+  {
+    "tier": "rare",
+    "condition": "te",
+    "n": 3,
+    "acc": 1.0,
+    "thin": true
+  },
+  {
+    "tier": "rare",
+    "condition": "rom",
+    "n": 3,
+    "acc": 1.0,
+    "thin": true
+  },
+  {
+    "tier": "literary_en",
+    "condition": "en",
+    "n": 8,
+    "acc": 1.0,
+    "thin": false
+  },
+  {
+    "tier": "literary_en",
+    "condition": "te",
+    "n": 8,
+    "acc": 1.0,
+    "thin": false
+  },
+  {
+    "tier": "literary_en",
+    "condition": "rom",
+    "n": 8,
+    "acc": 1.0,
+    "thin": false
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "stage": "01_baselines",
+  "model": "gemma3_12b_h200",
+  "config_hash": "4b755ba0b500",
+  "git_sha": "unknown",
+  "host": "a4d4370443ed",
+  "slurm_job_id": null,
+  "started": "2026-11-20T02:44:56.102218+00:00",
+  "elapsed_sec": 201.0,
+  "peak_vram_gib": 30.88,
+  "torch": "2.8.0+cu129",
+  "n_cells": 19,
+  "thin_cells": []
+}

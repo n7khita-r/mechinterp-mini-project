@@ -152,6 +152,57 @@ def layer_sweep(model, tokenizer, info: ModelInfo, items: list[Item], exp: ExpCo
     return LayerSweep(layers=layers, acc=accs, n_items=len(items))
 
 
+@torch.no_grad()
+def joint_select(model, tokenizer, info: ModelInfo, items: list[Item], exp: ExpConfig,
+                 fv: FunctionVector, norms: list[float], alphas: list[float],
+                 stride: int, progress: bool = True) -> tuple[int, float, dict, list]:
+    """Search layer and scale together, on the dev slice.
+
+    Selecting them sequentially -- pick the layer at a fixed scale, then tune the
+    scale at that layer -- assumes the best layer does not depend on the scale.
+    It does: on Gemma 3 12B the best combination for Telugu was an early layer at
+    a larger scale, while at the fixed starting scale those early layers looked
+    dead and a late layer was chosen instead, costing ~0.29 accuracy.
+
+    Cost is about the same as the sequential search, because striding the layers
+    pays for the extra scales: 12 layers x 5 scales = 60 evaluations against
+    48 layers + 5 scales = 53.
+    """
+    layers = list(range(0, info.n_layers, max(1, stride)))
+    base = float(fv.vector.float().norm()) or 1.0
+    grid: dict[tuple[int, float], float] = {}
+
+    for layer in nested(layers, "joint grid", stage="05_intervene",
+                        enabled=progress, label=lambda l: f"layer {l}"):
+        for a in alphas:
+            vec = fv.vector * (a * norms[layer] / base)
+            grid[(layer, a)] = accuracy(
+                score_zero_shot(model, tokenizer, info, items, exp, vec, layer), k=1)
+
+    best = max(grid.values())
+    # Ties go to the smallest scale, then to mid-depth: the least intervention
+    # that achieves the effect, at the depth the literature expects.
+    prior = info.n_layers // 3
+    near = [(l, a) for (l, a), v in grid.items() if v >= best - 1e-9]
+    layer, alpha = min(near, key=lambda la: (la[1], abs(la[0] - prior)))
+
+    # Refine the layer locally at the chosen scale -- the stride may have stepped
+    # over the true peak.
+    lo, hi = max(0, layer - stride + 1), min(info.n_layers - 1, layer + stride - 1)
+    fine = [l for l in range(lo, hi + 1) if l not in layers]
+    for l in fine:
+        vec = fv.vector * (alpha * norms[l] / base)
+        grid[(l, alpha)] = accuracy(
+            score_zero_shot(model, tokenizer, info, items, exp, vec, l), k=1)
+    best_fine = max((v, -abs(l - prior), l) for (l, a), v in grid.items() if a == alpha)
+    layer = best_fine[2]
+
+    # Curve at the chosen scale, for the layer-sweep figure.
+    curve_layers = sorted({l for (l, a) in grid if a == alpha})
+    curve = [grid[(l, alpha)] for l in curve_layers]
+    return layer, alpha, grid, [curve_layers, curve]
+
+
 def dev_test_split(items: list[Item], exp: ExpConfig) -> tuple[list[Item], list[Item]]:
     """Split the evaluation pool into a layer-selection slice and a held-out rest.
 
@@ -185,32 +236,45 @@ def run_cell(model, tokenizer, info: ModelInfo, items: list[Item], exp: ExpConfi
     alpha0 = float(exp.intervene.get("fv_rel_norm", 0.1))
     grid = [float(a) for a in exp.intervene.get("fv_rel_norm_grid",
                                                 [0.05, 0.1, 0.2, 0.4, 0.8])]
-
-    sweep = layer_sweep(model, tokenizer, info, sweep_items, exp, fv.vector,
-                        progress=progress, rel_norm=alpha0)
-
-    requested = int(exp.intervene.get("edit_layer", -1))
-    if requested < 0:
-        layer, reason = sweep.select_layer()
-    else:
-        layer, reason = requested, "fixed by config"
-
     norms = residual_norms(model, tokenizer, info, sweep_items, exp)
     base = float(fv.vector.float().norm()) or 1.0
+    requested = int(exp.intervene.get("edit_layer", -1))
+    # Default ON. Deliberately a code default rather than a config key: a config
+    # change rehashes every stage, and this one only alters stage 05.
+    joint = bool(exp.intervene.get("joint_selection", True))
+
+    if joint and requested < 0:
+        stride = int(exp.intervene.get("joint_layer_stride", 4))
+        layer, alpha, jgrid, curve = joint_select(
+            model, tokenizer, info, sweep_items, exp, fv, norms, grid, stride,
+            progress=progress)
+        reason = f"joint (layer, scale) grid, stride {stride}"
+        sweep = LayerSweep(layers=curve[0], acc=curve[1], n_items=len(sweep_items))
+        alpha_acc = sorted({(a, v) for (l, a), v in jgrid.items() if l == layer})
+    else:
+        sweep = layer_sweep(model, tokenizer, info, sweep_items, exp, fv.vector,
+                            progress=progress, rel_norm=alpha0)
+        if requested < 0:
+            layer, reason = sweep.select_layer()
+        else:
+            layer, reason = requested, "fixed by config"
+
+        def scaled_at(a: float) -> torch.Tensor:
+            return fv.vector * (a * norms[layer] / base)
+
+        # Pick alpha on the dev slice at the chosen layer. Ties go to the
+        # smallest alpha: the least intervention that achieves the effect.
+        alpha_acc = [(a, accuracy(score_zero_shot(model, tokenizer, info, sweep_items,
+                                                  exp, scaled_at(a), layer), k=1))
+                     for a in grid]
+        if alpha_acc:
+            best_acc = max(v for _, v in alpha_acc)
+            alpha = min(a for a, v in alpha_acc if v >= best_acc - 1e-9)
+        else:
+            alpha = alpha0
 
     def scaled(a: float) -> torch.Tensor:
         return fv.vector * (a * norms[layer] / base)
-
-    # Pick alpha on the dev slice at the chosen layer. Ties go to the smallest
-    # alpha: the least intervention that achieves the effect.
-    alpha_acc = [(a, accuracy(score_zero_shot(model, tokenizer, info, sweep_items,
-                                              exp, scaled(a), layer), k=1))
-                 for a in grid]
-    if alpha_acc:
-        best_acc = max(v for _, v in alpha_acc)
-        alpha = min(a for a, v in alpha_acc if v >= best_acc - 1e-9)
-    else:
-        alpha = alpha0
 
     held = test or dev
     with_fv = score_zero_shot(model, tokenizer, info, held, exp, scaled(alpha), layer)
@@ -221,6 +285,7 @@ def run_cell(model, tokenizer, info: ModelInfo, items: list[Item], exp: ExpConfi
         "condition": fv.condition,
         "edit_layer": layer,
         "layer_reason": reason,
+        "selection": "joint" if joint and requested < 0 else "sequential",
         "layer_requested": requested,
         "fv_rel_norm": alpha,
         "fv_scale_multiplier": round(alpha * norms[layer] / base, 2),

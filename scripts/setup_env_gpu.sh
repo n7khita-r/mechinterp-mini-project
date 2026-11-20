@@ -3,7 +3,7 @@
 #
 #   bash scripts/setup_env_gpu.sh
 #
-# This is NOT scripts/slurm/setup_env.sh. That one pins torch 2.3.1+cu118 for
+# For a bf16-capable GPU. An older cluster needing torch 2.3.1+cu118 for
 # Ada's constraints; none of those apply here, and two of them would actively
 # hurt:
 #   * H100/H200 are sm_90. Use a current torch with cu12x -- a cu118 build is

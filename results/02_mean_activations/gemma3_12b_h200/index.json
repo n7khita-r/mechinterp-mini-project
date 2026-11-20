@@ -1,0 +1,21 @@
+{
+  "subject_gender|en": "results/02_mean_activations/gemma3_12b_h200/en/subject_gender.pt",
+  "subject_gender|te": "results/02_mean_activations/gemma3_12b_h200/te/subject_gender.pt",
+  "subject_gender|rom": "results/02_mean_activations/gemma3_12b_h200/rom/subject_gender.pt",
+  "subject_gender|tg": "results/02_mean_activations/gemma3_12b_h200/tg/subject_gender.pt",
+  "extract_verb|en": "results/02_mean_activations/gemma3_12b_h200/en/extract_verb.pt",
+  "extract_verb|te": "results/02_mean_activations/gemma3_12b_h200/te/extract_verb.pt",
+  "extract_verb|rom": "results/02_mean_activations/gemma3_12b_h200/rom/extract_verb.pt",
+  "extract_verb|tg": "results/02_mean_activations/gemma3_12b_h200/tg/extract_verb.pt",
+  "negation|en": "results/02_mean_activations/gemma3_12b_h200/en/negation.pt",
+  "negation|te": "results/02_mean_activations/gemma3_12b_h200/te/negation.pt",
+  "negation|rom": "results/02_mean_activations/gemma3_12b_h200/rom/negation.pt",
+  "negation|tg": "results/02_mean_activations/gemma3_12b_h200/tg/negation.pt",
+  "present_past|en": "results/02_mean_activations/gemma3_12b_h200/en/present_past.pt",
+  "present_past|te": "results/02_mean_activations/gemma3_12b_h200/te/present_past.pt",
+  "present_past|rom": "results/02_mean_activations/gemma3_12b_h200/rom/present_past.pt",
+  "extract_person|en": "results/02_mean_activations/gemma3_12b_h200/en/extract_person.pt",
+  "extract_person|te": "results/02_mean_activations/gemma3_12b_h200/te/extract_person.pt",
+  "extract_person|rom": "results/02_mean_activations/gemma3_12b_h200/rom/extract_person.pt",
+  "extract_person|tg": "results/02_mean_activations/gemma3_12b_h200/tg/extract_person.pt"
+}

@@ -11,8 +11,7 @@
 \setbeamercolor{structure}{fg=black!75}
 \setbeamersize{text margin left=7mm, text margin right=7mm}
 
-% Telugu script needs a Unicode engine. Compile with lualatex; the pdflatex
-% branch still builds, but renders Telugu examples as blanks.
+% Telugu script needs a Unicode engine. Compile with lualatex.
 \usepackage{iftex}
 \ifLuaTeX
   \usepackage{fontspec}
@@ -35,20 +34,18 @@
 
 \graphicspath{{images/}}
 
-% Small grey source line for figure attributions.
 \newcommand{\src}[1]{{\scriptsize\color{black!55} #1}}
-% Slightly tighter item spacing inside frames.
 \newcommand{\tight}{\setlength{\itemsep}{2pt plus 1pt minus 1pt}}
-% Boxed lead-in or hand-off line, for the narrative bridges.
 \newcommand{\bridge}[1]{%
   \vspace{1mm}
   \begin{beamercolorbox}[wd=\textwidth,sep=2mm,rounded=true]{block body}%
     \color{black!80}\small #1
   \end{beamercolorbox}}
-% Telugu script inline.
 \newcommand{\tel}[1]{{\telugufont #1}}
-% Condition labels, so the four conditions always look the same.
 \newcommand{\cond}[1]{\textsc{#1}}
+% Every results table carries its interpretation directly beneath it.
+\newcommand{\reading}[1]{%
+  \vspace{1mm}{\small\textbf{What this says:} #1}}
 
 \title[Where Does Code-Mixing Break the Task?]{Where Does Code-Mixing Break the Task?\\Function Vectors in Telugu, Romanized Telugu and Tenglish}
 \author[2024114003, 2025701032]{Nikhita Ravi (2024114003) \and Krishna Kartheek (2025701032)}
@@ -67,175 +64,202 @@
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{enumerate}\small\tight
-        \item Problem statement
-        \item Background: function vectors
-        \item The four conditions
-        \item Dataset design
-        \item Methodology: causal mediation
-        \item Methodology: building the vector
+        \item The question
+        \item What a function vector is
+        \item How the method works, end to end
+        \item The data: four ways to write one sentence
+        \item Method in detail, and our controls
       \end{enumerate}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{enumerate}\small\tight
-        \setcounter{enumi}{6}
-        \item The scaling problem in Gemma 3
-        \item Protocol and controls
-        \item Results and interpretation
-        \item Limitations and negative results
-        \item Changes from the proposal, challenges
+        \setcounter{enumi}{5}
+        \item Results, one research question at a time
+        \item What we think it means
+        \item Limitations, changes, challenges
+        \item Future work
       \end{enumerate}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ----------------------------------------------------------- 1 motivation --
-\begin{frame}{Problem statement}
+% ----------------------------------------------------------- 1 the question
+\begin{frame}{The question}
   \begin{columns}[T]
     \begin{column}{0.56\textwidth}
       \begin{itemize}\small\tight
-        \item \textbf{Motivation:} Multilingual LLMs degrade on code-mixed
-              input, which is how a very large number of people actually
-              write. \emph{Where} in the computation this degradation happens
-              is not known.
+        \item People write in \textbf{code-mixed} language all the time ---
+              half Telugu, half English, often in Latin script. Models get
+              worse on it.
+        \vspace{1.5mm}
+        \item When a model fails on such input, there are \textbf{two very
+              different reasons}, and the accuracy number looks the same
+              either way:
         \vspace{1mm}
-        \item \textbf{Research question:} When a model fails on code-mixed
-              input, has it lost the \textbf{task representation}, or only the
-              ability to \textbf{read the input}?
-        \vspace{1mm}
-        \item These are different failures with different fixes, and accuracy
-              alone cannot tell them apart.
-        \vspace{1mm}
-        \item \textbf{Our handle:} \textbf{function vectors}, which let us
-              extract a task representation and inject it back. If the task
-              representation survives, injecting it should repair the failure.
+        \begin{itemize}\footnotesize\tight
+          \item[\textbf{A}] It \textbf{cannot read} the input properly.
+          \item[\textbf{B}] It read the input, but \textbf{no longer knows
+                what task} it is being asked to do.
+        \end{itemize}
+        \vspace{1.5mm}
+        \item These need different fixes. Better tokenisation helps A and does
+              nothing for B.
+        \vspace{1.5mm}
+        \item \textbf{So: which one is it?}
       \end{itemize}
     \end{column}
     \begin{column}{0.44\textwidth}
       \centering
       \vspace{3mm}
-      \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.9, transform shape,
-          b/.style={draw, rounded corners=1pt, minimum width=20mm,
+      \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.95, transform shape,
+          b/.style={draw, rounded corners=1pt, minimum width=24mm,
                     minimum height=7mm, align=center}]
-        \node[b] (in) at (0,2.6) {code-mixed\\input};
-        \node[b] (rd) at (0,1.3) {reading\\the input};
-        \node[b] (tk) at (0,0) {task\\representation};
+        \node[b] (in) at (0,2.6) {code-mixed input};
+        \node[b] (rd) at (0,1.3) {read the input};
+        \node[b] (tk) at (0,0) {know the task};
         \node[b] (out) at (0,-1.3) {answer};
         \draw[->] (in) -- (rd);
         \draw[->] (rd) -- (tk);
         \draw[->] (tk) -- (out);
-        \node[anchor=west, color=black!60] at (1.3,1.95) {failure A};
-        \node[anchor=west, color=black!60] at (1.3,0.65) {failure B};
-        \draw[dashed, color=black!50] (-1.6,1.95) -- (1.25,1.95);
-        \draw[dashed, color=black!50] (-1.6,0.65) -- (1.25,0.65);
-      \end{tikzpicture}\\[1mm]
-      \src{Two failure modes a single accuracy number cannot separate.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% ------------------------------------------------------- 2 background ------
-\begin{frame}{Background: function vectors}
-  \begin{columns}[T]
-    \begin{column}{0.56\textwidth}
-      \begin{itemize}\small\tight
-        \item Todd et al. (ICLR 2024) show that in-context learning leaves a
-              compact, \textbf{causal} trace of the task in the residual
-              stream.
-        \item A small set of attention heads carries it. Averaging their
-              outputs over many prompts of one task gives a single vector.
-        \item Adding that vector to a \textbf{zero-shot} prompt makes the model
-              perform the task with no demonstrations at all.
-        \item That is the property we need: it is a \emph{measurement} of
-              whether the task representation exists, independent of whether
-              the prompt is readable.
-      \end{itemize}
-      \vspace{1mm}
-      \begin{itemize}\footnotesize\tight
-        \item \textbf{Related work:} causal mediation / activation patching
-              (Vig et al., Meng et al.); task vectors (Hendel et al.);
-              multilingual interpretability work largely studies clean
-              single-language input, not code-mixing.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.44\textwidth}
-      \centering
-      \vspace{1mm}
-      \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.88, transform shape,
-          b/.style={draw, rounded corners=1pt, minimum width=26mm,
-                    minimum height=6.5mm, align=center}]
-        \node[b] (p) at (0,3.0) {10-shot prompts\\of one task};
-        \node[b] (h) at (0,1.7) {mean output of\\top-10 heads};
-        \node[b, fill=black!6] (v) at (0,0.5) {function vector $v_t$};
-        \node[b] (z) at (0,-1.0) {zero-shot prompt\\$+\;v_t$ at layer $\ell$};
-        \node[b] (a) at (0,-2.3) {correct answer};
-        \draw[->] (p) -- (h);
-        \draw[->] (h) -- (v);
-        \draw[->] (v) -- (z);
-        \draw[->] (z) -- (a);
+        \node[anchor=west, color=black!60] at (1.5,1.95) {\textbf{A} breaks here};
+        \node[anchor=west, color=black!60] at (1.5,0.65) {\textbf{B} breaks here};
+        \draw[dashed, color=black!50] (-1.5,1.95) -- (1.45,1.95);
+        \draw[dashed, color=black!50] (-1.5,0.65) -- (1.45,0.65);
       \end{tikzpicture}
     \end{column}
   \end{columns}
+  \bridge{To tell A from B we need to look \textbf{inside} the model, not just at
+    its answers. That is what a \textbf{function vector} lets us do.}
 \end{frame}
 
-% -------------------------------------------------- 3 the four conditions --
-\begin{frame}{The four conditions}
-  Every item exists in four parallel versions. One row of the dataset
+% ------------------------------------------- 2 what a function vector is ---
+\begin{frame}{What a function vector is}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \begin{itemize}\small\tight
+        \item Show a model ten examples of a task and it picks up the pattern:
+      \end{itemize}
+      {\footnotesize\texttt{Q: big \\ A: small \\[1mm] Q: hot \\ A: cold \\[1mm]
+        \ldots \\[1mm] Q: fast \\ A: \underline{\ \ \ \ }}}
+      \begin{itemize}\small\tight
+        \item Todd et al. (ICLR 2024) found that while doing this, the model
+              builds a \textbf{single vector} inside itself that stands for
+              ``\emph{the task is: give the opposite}''.
+        \item You can \textbf{copy that vector out}, and \textbf{paste it into
+              a fresh prompt} that has no examples at all. The model then does
+              the task anyway.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \vspace{2mm}
+      \begin{itemize}\small\tight
+        \item \textbf{Why this is exactly the tool we need:}
+      \end{itemize}
+      \vspace{1mm}
+      \begin{itemize}\footnotesize\tight
+        \item If we can \emph{extract} a usable task vector from code-mixed
+              prompts, the model still represents the task $\Rightarrow$ not
+              failure \textbf{B}.
+        \item If \emph{pasting} a good vector in \emph{repairs} the failure,
+              then what was missing was the task, not the reading.
+        \item If pasting it in \emph{does not} help, the problem is further
+              upstream --- the model could not recover the question from the
+              text.
+      \end{itemize}
+      \bridge{A function vector turns ``is the task still in there?'' into
+        something we can measure.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --------------------------------------- 3 methodology overview (diagram) --
+\begin{frame}{How the method works, end to end}
+  \centering
+  \vspace{1mm}
+  \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.92, transform shape,
+      b/.style={draw, rounded corners=2pt, minimum width=30mm,
+                minimum height=11mm, align=center},
+      n/.style={align=center, font=\scriptsize\itshape, color=black!60}]
+    \node[b] (a) at (0,0) {\textbf{1. Find the heads}\\which attention heads\\carry the task?};
+    \node[b] (b) at (3.9,0) {\textbf{2. Build the vector}\\average those heads\\over 100 prompts};
+    \node[b] (c) at (7.8,0) {\textbf{3. Inject it}\\add it to a prompt\\with \emph{no} examples};
+    \node[b] (d) at (11.7,0) {\textbf{4. Measure}\\did the model\\do the task?};
+    \draw[->] (a) -- (b); \draw[->] (b) -- (c); \draw[->] (c) -- (d);
+    \node[n] at (0,-1.3) {causal mediation\\(stage 03)};
+    \node[n] at (3.9,-1.3) {$v=\sum_h W_O^{(h)}\bar a_h$\\(stage 04)};
+    \node[n] at (7.8,-1.3) {one layer,\\one scale (stage 05)};
+    \node[n] at (11.7,-1.3) {held-out accuracy\\+ four controls};
+  \end{tikzpicture}
+  \vspace{3mm}
+  \begin{itemize}\small\tight
+    \item We do all four steps \textbf{separately in each of four language
+          conditions}, and compare.
+    \item Everything is \textbf{paired}: the same sentence, written four ways,
+          so differences cannot come from different content.
+  \end{itemize}
+  \bridge{Next: what those four conditions are.}
+\end{frame}
+
+% -------------------------------------------------- 4 the four conditions --
+\begin{frame}{The data: one sentence, four ways}
+  Every item in our dataset exists in four parallel versions. Here is one
   (\texttt{sen-0001}):
   \vspace{2mm}
 
   {\small
-  \begin{tabular}{@{}p{22mm}p{95mm}@{}}
+  \begin{tabular}{@{}p{30mm}p{88mm}@{}}
     \toprule
-    \cond{en} & next week kavita is buying upma in guntur \\
-    \cond{te} & \tel{వచ్చే వారం కవిత గుంటూరులో ఉప్మా కొంటోంది} \\
-    \cond{rom} & vachche varam kavita guntur lo upma kontondi \\
-    \cond{tg} & \textbf{next week} kavita guntur lo upma kontondi \\
+    \cond{en} English & next week kavita is buying upma in guntur \\
+    \cond{te} Telugu script & \tel{వచ్చే వారం కవిత గుంటూరులో ఉప్మా కొంటోంది} \\
+    \cond{rom} Romanized & vachche varam kavita guntur lo upma kontondi \\
+    \cond{tg} Tenglish & \textbf{next week} kavita guntur lo upma kontondi \\
     \bottomrule
   \end{tabular}}
 
-  \vspace{2mm}
+  \vspace{2.5mm}
   \begin{itemize}\small\tight
-    \item \cond{te} is Telugu in its own script; \cond{rom} is the same Telugu
-          written in Latin script; \cond{tg} is Tenglish, built \textbf{on top
-          of \cond{rom}} by swapping some slots back to English.
-    \item That construction is deliberate: \cond{rom} and \cond{tg} share a
-          script, so \cond{rom}$\to$\cond{tg} isolates \textbf{code-mixing},
-          and \cond{te}$\to$\cond{rom} isolates \textbf{script}.
+    \item \cond{rom} is the \emph{same Telugu}, just typed in English letters ---
+          which is how most people actually text.
+    \item \cond{tg} (Tenglish) is built \textbf{from \cond{rom}}, by switching
+          a few slots back to English.
   \end{itemize}
-  \bridge{Conditions are \textbf{row-aligned by item id}, so every comparison is
-    paired. The same sentence is tested four ways, which is far more
-    statistical power than four independent samples.}
+  \vspace{1mm}
+  \begin{itemize}\small\tight
+    \item \textbf{Why build it that way:} \cond{te}$\to$\cond{rom} changes
+          \emph{only the script}. \cond{rom}$\to$\cond{tg} changes
+          \emph{only the code-mixing}. So when something breaks, we know which
+          of the two did it.
+  \end{itemize}
 \end{frame}
 
-% ------------------------------------------------------- 4 dataset design --
-\begin{frame}{Dataset design}
+% ------------------------------------------------------- 5 dataset design --
+\begin{frame}{The data: what is in it}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      \textbf{Two families of tasks}
+    \begin{column}{0.54\textwidth}
+      \textbf{15 tasks, hand-written, in two families}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Part 1 -- word level} (after Todd et al., so our setup is
+        \item \textbf{Word level} (same tasks as Todd et al., so our setup is
               comparable to theirs): antonym, present$\to$past,
-              singular$\to$plural, next item, and four category/extraction
-              tasks. A single word cannot be code-mixed, so these have three
-              conditions.
-        \item \textbf{Part 2 -- sentence level} (ours): from a sentence, extract
-              the \textbf{person}, \textbf{place}, \textbf{food} or
-              \textbf{verb}; or label its \textbf{tense},
-              \textbf{polarity} or \textbf{subject gender}. All four
-              conditions.
+              singular$\to$plural, next item, category tasks.
+        \item \textbf{Sentence level} (ours): from a sentence, pull out the
+              \textbf{person} / \textbf{place} / \textbf{food} / \textbf{verb};
+              or label its \textbf{tense} / \textbf{negation} /
+              \textbf{subject gender}.
       \end{itemize}
-      \vspace{1mm}
-      \textbf{Tiers, to test degradation on purpose}
+      \vspace{1.5mm}
+      \textbf{Difficulty tiers, written on purpose}
       \begin{itemize}\footnotesize\tight
-        \item \texttt{core}, \texttt{complex}, \texttt{sanskritized},
-              \texttt{rare}, \texttt{literary\_en}, \texttt{ambiguous}.
-        \item Headline numbers use \texttt{core} only; the harder tiers are
-              held back so difficulty never silently drives a result.
+        \item \texttt{core} --- everyday words and simple sentences
+        \item \texttt{complex} --- longer, multi-clause, heavier morphology
+        \item \texttt{sanskritized} --- formal, high register Telugu
+        \item \texttt{rare} --- uncommon vocabulary
+        \item Main numbers use \texttt{core}; the rest are a separate test
+              (research question 2).
       \end{itemize}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.46\textwidth}
       \centering
-      \src{Items per task and tier (abridged)}\\[1mm]
+      \src{Items per task (abridged); every row exists in 3--4 conditions}\\[1mm]
       {\scriptsize\setlength{\tabcolsep}{3.0pt}
       \begin{tabular}{lrrrr}
         \toprule
@@ -253,309 +277,340 @@
         subject gender   &  48 & 26 & 0 &  74 \\
         \bottomrule
       \end{tabular}}
-      \\[1.5mm]
-      \src{Hand-written TSV, no code in \texttt{data/}, extensible by adding
-        rows: splits are content-addressed so they do not move.}
+      \\[2mm]
+      \src{Plain TSV files, no code. A teammate can add rows by hand and the
+        existing train/test splits do not move.}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ------------------------------------------- 5 what romanization costs -----
-\begin{frame}{What the conditions actually cost the model}
+% ------------------------------------------- 6 what the conditions cost ----
+\begin{frame}{Why script matters: two concrete examples}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
-      \textbf{Romanization is lossy and inconsistent}
+      \textbf{1. Romanization throws information away}
       \begin{itemize}\footnotesize\tight
-        \item Telugu distinguishes length and aspiration that Latin script,
-              as people actually type it, does not: \tel{వేడి} /
-              \tel{చల్లని} become \texttt{vedi} / \texttt{challani}.
-        \item Morphology survives as an opaque string:
-              \tel{గుర్తుంచుకోవడం} $\to$ \texttt{gurtunchukovadam}, a
-              multi-suffix verbal noun with no visible boundaries.
-        \item We fix one convention and document its losses, rather than
-              pretend it is reversible.
+        \item Telugu writes distinctions that English letters do not:
+              \tel{వేడి} and \tel{చల్లని} both flatten to plain
+              \texttt{vedi} / \texttt{challani}.
+        \item Grammar that was visible becomes one long opaque string:\\
+              \tel{గుర్తుంచుకోవడం} $\to$ \texttt{gurtunchukovadam}.
+        \item We pick one spelling convention and document what it loses.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
-      \textbf{Why subject gender is the sharp test}
+      \textbf{2. Telugu carries information English does not}
       \vspace{1mm}
       {\footnotesize
-      \begin{tabular}{@{}llp{18mm}@{}}
+      \begin{tabular}{@{}llp{14mm}@{}}
         \toprule
-        gender & Telugu & English \\
+        subject is & Telugu verb & English \\
         \midrule
-        masc. & \tel{తిన్నాడు} \,(\texttt{tinnadu}) & ate \\
-        fem.  & \tel{తింది} \,(\texttt{tindi}) & ate \\
+        male   & \tel{తిన్నాడు} \,(\texttt{tinnadu}) & ate \\
+        female & \tel{తింది} \,(\texttt{tindi}) & ate \\
         \bottomrule
       \end{tabular}}
       \vspace{1.5mm}
       \begin{itemize}\footnotesize\tight
-        \item The Telugu verb marks the subject's gender; the English verb does
-              not. Same meaning, different information content.
-        \item So \cond{en} \textbf{cannot} be above chance on this task, by
-              construction. It is our built-in sanity check: a method that
-              reports success on \cond{en} here is measuring an artefact.
+        \item The Telugu verb tells you the subject's gender. The English verb
+              does not --- ``ate'' either way.
+        \item So on our \textbf{subject gender} task, English \emph{cannot} beat
+              a coin flip. The information is simply not in the sentence.
+        \item That makes it a \textbf{free sanity check}: if our method ever
+              reports success on English here, our method is broken.
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ------------------------------------------- 6 methodology: mediation ------
-\begin{frame}{Methodology: finding the heads by causal mediation}
+% ------------------------------------------- 7 methodology: mediation ------
+\begin{frame}{Step 1: which heads carry the task?}
   \begin{itemize}\small\tight
-    \item For each attention head, we measure its \textbf{indirect effect}:
-          how much of the task behaviour it is responsible for.
+    \item A model has hundreds of attention heads. We want the few that are
+          actually responsible for ``doing the task''.
+    \item So we \textbf{break the prompt on purpose, then repair one head at a
+          time} and see which repair brings the right answer back.
   \end{itemize}
-  \vspace{1mm}
+  \vspace{2mm}
   \centering
-  \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.92, transform shape,
-      b/.style={draw, rounded corners=1pt, minimum width=30mm,
-                minimum height=7mm, align=center}]
-    \node[b] (c) at (0,0) {\textbf{corrupted} prompt\\(labels shuffled)};
-    \node[b] (p) at (4.6,0) {patch in head $h$'s\\\emph{clean} mean output};
-    \node[b] (m) at (9.6,0) {does the gold answer\\recover?};
+  \begin{tikzpicture}[font=\scriptsize, >=Latex, scale=0.9, transform shape,
+      b/.style={draw, rounded corners=2pt, minimum width=32mm,
+                minimum height=9mm, align=center}]
+    \node[b] (c) at (0,0) {\textbf{break it}\\shuffle the example\\labels, so the
+      prompt\\no longer teaches the task};
+    \node[b] (p) at (5.0,0) {\textbf{repair one head}\\paste head $h$'s activity\\from a
+      \emph{clean} prompt};
+    \node[b] (m) at (10.0,0) {\textbf{measure}\\how much did the\\right answer
+      come back?};
     \draw[->] (c) -- (p);
     \draw[->] (p) -- (m);
-    \node[anchor=west, font=\scriptsize, color=black!65] at (-1.9,-1.25)
-      {AIE$(h)$ = mean recovery in gold-token probability, over 50 trials};
   \end{tikzpicture}
   \vspace{2mm}
   \begin{itemize}\small\tight
-    \item Rank heads by AIE, keep the \textbf{top 10} (as in Todd et al.).
-    \item \textbf{Our deviation:} we compute a head set \textbf{per condition},
-          not one universal set. That is the whole point --- we want to know
-          whether \cond{te}, \cond{rom} and \cond{tg} recruit the same
-          mechanism as \cond{en}, and a shared set would assume the answer.
-    \item \textbf{Cost control:} all heads of a layer are patched in one
-          batched forward, so a trial costs $n_{\text{layers}}$ forwards
-          instead of $n_{\text{layers}}\times n_{\text{heads}}$. Without this
-          the sweep is ${\sim}50$ hours instead of ${\sim}1.5$.
+    \item Repeat for every head, over 50 trials. Keep the \textbf{top 10}.
+          This is standard \emph{causal mediation}, as in Todd et al.
+    \item \textbf{Our change:} we do this \textbf{separately for each
+          language condition}. The paper uses one shared set of heads --- but
+          ``does Tenglish use the same machinery as English?'' is one of our
+          questions, and a shared set would assume the answer.
   \end{itemize}
 \end{frame}
 
-% --------------------------------------- 7 methodology: building the vector
-\begin{frame}{Methodology: building and injecting the vector}
+% --------------------------------------- 8 methodology: building the vector
+\begin{frame}{Steps 2--3: build the vector, then paste it in}
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
       \begin{itemize}\footnotesize\tight
-        \item For each task $t$ and condition $c$, average each selected head's
-              output over 100 ten-shot prompts, giving $\bar a_h$.
-        \item Sum those through the output projection:
+        \item Take 100 different ten-example prompts of one task. Record what
+              each of the 10 chosen heads outputs, and average it: $\bar a_h$.
+        \item Averaging over many different prompts keeps what they have in
+              common --- \emph{the task} --- and cancels the particular words.
+        \item Push those through the head's output matrix and add them up:
       \end{itemize}
-      \vspace{-1mm}
+      \vspace{-2mm}
       \begin{equation*}\small
         v_{t,c} \;=\; \sum_{h \in \mathcal{H}_c} W_O^{(h)}\, \bar a_h
       \end{equation*}
       \begin{itemize}\footnotesize\tight
-        \item Then add $v_{t,c}$ to the residual stream at \textbf{one} layer
-              $\ell$ of a \textbf{zero-shot} prompt and read the next token.
-        \item \textbf{Scoring:} first-token exact match against the gold
-              answer. Every answer in the dataset was linted to be
-              single-token-decidable.
-        \item \textbf{Competence filter:} an item counts only if the model
-              already gets it right at 10 shots (gold-token rank 0). We are
-              asking whether the \emph{vector} works, not whether the model
-              knows the word.
+        \item Now take a \textbf{zero-shot} prompt --- no examples at all --- and
+              add $v$ to the model's internal state at one layer $\ell$:
       \end{itemize}
+      \vspace{-2mm}
+      \begin{equation*}\small
+        h^{(\ell)} \;\leftarrow\; h^{(\ell)} + v_{t,c}
+      \end{equation*}
     \end{column}
     \begin{column}{0.46\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{layer_sweep.png}\\[1mm]
-      \src{Zero-shot accuracy with the vector injected at each layer. The
-        effect is mid-depth, as reported for GPT-J.}
+      \vspace{1mm}
+      \textbf{What the model actually sees}
+      \vspace{1mm}
+
+      {\footnotesize\texttt{Q: fast \\ A: \underline{\ \ \ \ }}}
+      \vspace{1.5mm}
+      \begin{itemize}\footnotesize\tight
+        \item That is the \emph{whole} prompt. Nothing in it says ``give me the
+              opposite''.
+        \item If the model now answers \texttt{slow}, the \textbf{only} thing
+              that told it the task was the vector we added.
+      \end{itemize}
+      \vspace{1mm}
+      \begin{itemize}\footnotesize\tight
+        \item \textbf{Fair-test rule:} an item only counts if the model already
+              gets it right \emph{with} ten examples. We are testing the
+              vector, not the model's vocabulary.
+      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ------------------------------------- 8 the scaling problem (key slide) ---
-\begin{frame}{The scaling problem in Gemma 3}
-  \bridge{Our first full run showed the function vector changing
-    \textbf{nothing}: $+0.00$ at every layer, in every condition, including
-    English. The method had not failed --- the arithmetic had.}
+% ------------------------------------- 9 the scaling problem (short) ------
+\begin{frame}{One thing we had to fix first}
+  \begin{itemize}\small\tight
+    \item Our first run showed the vector doing \textbf{absolutely nothing}:
+          $+0.00$ everywhere, including English.
+    \item The reason is size. In Gemma the model's internal state grows
+          enormously with depth (norm ${\sim}780$ early, ${\sim}100{,}000$
+          late), while our vector has norm ${\sim}16$. Adding it raw is a
+          \textbf{0.1\% nudge} --- real, but far too small to change the answer.
+  \end{itemize}
+  \vspace{1mm}
+  \begin{equation*}
+    v \;\leftarrow\; v \cdot \frac{\alpha \, \lVert h^{(\ell)} \rVert}{\lVert v \rVert}
+    \qquad\text{\small so the vector is always a fixed fraction $\alpha$ of
+    the state it is added to}
+  \end{equation*}
+  \vspace{-1mm}
+  \begin{itemize}\small\tight
+    \item We scale \emph{relative} to the model's own state rather than using a
+          fixed multiplier, so the same recipe works at any model size.
+  \end{itemize}
+  \bridge{\textbf{This is our most portable finding:} function vectors do not
+    transfer to Gemma-style models until they are rescaled this way. The
+    original method was built on GPT-J, which does not have this problem.}
+\end{frame}
+
+% ------------------------------------------- 10 honest protocol -----------
+\begin{frame}{Keeping the test fair}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \begin{itemize}\footnotesize\tight
-        \item Gemma scales embeddings by $\sqrt{d_{\text{model}}}$ and never
-              renormalises the stream, so $\|h_\ell\|$ grows from ${\sim}780$
-              at layer 0 to ${\sim}10^5$ at layer 33.
-        \item A function vector has norm ${\sim}16$--$22$. Adding it raw is a
-              \textbf{0.1\% nudge}: real, but far too small to move an argmax
-              over a 262k vocabulary.
-        \item GPT-J, which the method was built on, does not have this gap --- so
-              nothing in the original work flags it.
-        \item \textbf{Fix:} scale the vector to a fraction $\alpha$ of the
-              residual norm at the edit layer,
-              $v \leftarrow v \cdot \alpha\|h_\ell\| / \|v\|$, with $\alpha$
-              chosen on a dev slice.
+      \begin{itemize}\small\tight
+        \item We have two knobs: \textbf{which layer} to inject at, and
+              \textbf{how strong} to make it ($\alpha$).
+        \vspace{1mm}
+        \item If we tried every setting on our test items and reported the best
+              one, we would be reporting \textbf{luck}.
+        \vspace{1mm}
+        \item So we split the evaluation items in two:
+        \begin{itemize}\footnotesize\tight
+          \item a \textbf{tuning slice} (30\%) --- used \emph{only} to pick the
+                layer and the strength;
+          \item the \textbf{held-out rest} (70\%) --- never looked at while
+                tuning, and the only thing we report.
+        \end{itemize}
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
       \centering
-      \src{Effect of the fix, held-out accuracy}\\[1mm]
-      {\footnotesize\setlength{\tabcolsep}{4pt}
-      \begin{tabular}{llcc}
-        \toprule
-        task & cond. & raw & scaled \\
-        \midrule
-        extract verb   & \cond{en} & 0.00 & \textbf{0.99} \\
-        extract place  & \cond{en} & 0.00 & \textbf{0.98} \\
-        subject gender & \cond{te} & 0.00 & \textbf{0.89} \\
-        present past   & \cond{te} & 0.00 & \textbf{1.00} \\
-        \bottomrule
-      \end{tabular}}
-      \\[2mm]
-      \begin{itemize}\footnotesize\tight
-        \item Selected multipliers run from $35\times$ to $1841\times$.
-        \item \textbf{This is a transferable finding:} function vectors do not
-              port to Gemma-class models until they are rescaled relative to
-              the residual norm.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% ------------------------------------------- 9 protocol and controls -------
-\begin{frame}{Protocol and controls}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \textbf{Keeping ourselves honest}
-      \begin{itemize}\footnotesize\tight
-        \item Both free parameters --- the edit layer $\ell$ and the scale
-              $\alpha$ --- are chosen on a \textbf{30\% dev slice} and reported
-              on the held-out remainder.
-        \item Layer selection uses a smoothed curve with a mid-depth
-              tie-break. A plain argmax silently resolved all-zero ties to
-              layer 0.
-        \item Splits are content-addressed hashes, so adding dataset rows
-              does not reshuffle existing splits.
-        \item Every number is stamped with a config hash covering configs
-              \emph{and} code version, so a stale cache cannot be replayed as
-              a result.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \textbf{Four controls, each closing one story}
-      \begin{itemize}\footnotesize\tight
-        \item \textbf{Random vector, matched norm} --- rules out ``any large
-              vector at that depth jolts the model''.
-        \item \textbf{Unrelated-task function vector} --- rules out ``any
-              well-formed function vector helps''.
-        \item \textbf{Shuffled-label floor} --- the level reached when the
-              prompt has the task's form but not its content.
-        \item \textbf{Majority-class floor} --- on 2- and 3-way label tasks, an
-              accuracy without its floor is not interpretable.
-      \end{itemize}
-      \vspace{1mm}
-      \src{All three injected vectors are scaled to the \emph{same} norm, so
-        the only thing that differs is direction.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% --------------------------------------------------- 10 results: baselines -
-\begin{frame}{Results: the degradation is real, and task-dependent}
-  \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{baselines.png}\\[1mm]
-      \src{10-shot accuracy, Gemma 3 4B, \texttt{core} tier.}
-    \end{column}
-    \begin{column}{0.54\textwidth}
-      \begin{itemize}\small\tight
-        \item \textbf{Copy-style tasks sit at ceiling everywhere.} Extracting a
-              place or a person is ${\ge}0.97$ in all four conditions ---
-              romanization does not hurt at all.
-        \item \textbf{Reasoning-style tasks degrade monotonically}
-              \cond{en}$\to$\cond{te}$\to$\cond{rom}$\to$\cond{tg}:
-              negation $0.93 \to 0.78 \to 0.64 \to 0.60$.
-        \item \textbf{Subject gender inverts}, exactly as the linguistics
-              predicts: \cond{en} $0.50$ (chance, no gender marking available)
-              against \cond{te} $0.96$.
-        \item \textbf{Romanized word-level tasks lose most of their items} to
-              the competence filter: antonym keeps 4 of 167. Those cells are
-              reported but carry no weight.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% ------------------------------------------------- 11 results: head sets ---
-\begin{frame}{Results: the same heads, in every condition}
-  \begin{columns}[T]
-    \begin{column}{0.44\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{head_overlap.png}\\[1mm]
-      \src{Jaccard overlap of the top-10 head sets.}
-    \end{column}
-    \begin{column}{0.56\textwidth}
-      {\scriptsize\setlength{\tabcolsep}{3pt}
-      \begin{tabular}{ll}
-        \toprule
-        condition & top heads (layer.head) \\
-        \midrule
-        \cond{en}  & \texttt{17.4, 17.6, 13.2, 22.3, 17.5, 18.7, \ldots} \\
-        \cond{te}  & \texttt{17.4, 17.6, 17.5, 13.2, 22.3, 18.1, \ldots} \\
-        \cond{rom} & \texttt{17.6, 17.4, 22.3, 17.5, 13.2, 21.7, \ldots} \\
-        \cond{tg}  & \texttt{17.4, 17.6, 22.3, 17.5, 18.1, 23.1, \ldots} \\
-        \bottomrule
-      \end{tabular}}
       \vspace{2mm}
+      \begin{tikzpicture}[font=\scriptsize, scale=0.95, transform shape,
+          b/.style={draw, rounded corners=1pt, minimum height=7mm, align=center}]
+        \node[b, minimum width=20mm] (tr) at (0,1.4) {\textbf{example pool}\\(35\%)};
+        \node[b, minimum width=20mm] (dv) at (0,0) {\textbf{tuning slice}\\(30\% of rest)};
+        \node[b, minimum width=20mm, fill=black!8] (te) at (0,-1.4) {\textbf{held-out}\\(what we report)};
+        \node[anchor=west, font=\scriptsize, color=black!60] at (1.4,1.4)
+          {the 10 examples come from here};
+        \node[anchor=west, font=\scriptsize, color=black!60] at (1.4,0)
+          {pick layer $\ell$ and strength $\alpha$};
+        \node[anchor=west, font=\scriptsize, color=black!60] at (1.4,-1.4)
+          {touched once, at the end};
+      \end{tikzpicture}
+      \\[2mm]
+      \src{Example: \texttt{extract\_verb/en} --- 298 items $\to$ 104 examples,
+        58 tuning, 136 held-out.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ------------------------------------------- 11 controls ------------------
+\begin{frame}{Our four controls}
+  A number only means something if we know what it would look like when
+  \emph{nothing real} is happening. So every result is reported against four
+  comparisons:
+  \vspace{2mm}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
       \begin{itemize}\small\tight
-        \item \textbf{Heads 17.4 and 17.6 are top-2 in all four conditions},
-              at layer 17 of 34 --- mid-depth, replicating the depth finding
-              from GPT-J in a different architecture and a different language.
-        \item Overlap: \cond{en}--\cond{te} $0.43$,
-              \cond{en}--\cond{rom} $0.33$, \cond{en}--\cond{tg} $0.33$,
-              \cond{te}--\cond{tg} $\mathbf{0.54}$.
-        \item \textbf{English is the outlier}, not Tenglish. The three
-              Telugu-derived conditions resemble each other more than any
-              resembles English.
+        \item \textbf{Random vector} (same size)\\
+              \src{Rules out: ``any big nudge at that depth shakes the model
+                into the right answer.''}
+        \vspace{1.5mm}
+        \item \textbf{Unrelated-task vector}\\
+              \src{A vector built the same way, for a task nobody asked for.
+                Rules out: ``any well-formed vector helps.''}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{itemize}\small\tight
+        \item \textbf{Shuffled-label floor}\\
+              \src{Ten examples with the answers scrambled: the prompt has the
+                task's \emph{shape} but not its content.}
+        \vspace{1.5mm}
+        \item \textbf{Majority-class floor}\\
+              \src{On yes/no tasks, the score you get by always guessing the
+                commonest answer.}
       \end{itemize}
     \end{column}
   \end{columns}
-  \bridge{So code-mixing does \textbf{not} recruit a separate mechanism. Whatever
-    breaks, it is not that the model routes Tenglish somewhere else.}
+  \vspace{2mm}
+  \begin{itemize}\small\tight
+    \item All injected vectors are scaled to the \textbf{same size}, so the only
+          thing that differs between them is \emph{direction}.
+  \end{itemize}
+  \bridge{A result that does not beat all four has not been shown to carry the
+    task. We report which ones clear that bar --- and which do not.}
 \end{frame}
 
-% ------------------------------------------------ 12 results: FV efficacy --
-\begin{frame}{Results: does the injected vector repair the failure?}
+% ====================== RESULTS =========================================== %
+
+% ------------------------------------------- RQ1: degradation -------------
+\begin{frame}{RQ1: where does performance actually drop?}
   \centering
-  \src{Held-out accuracy of a zero-shot prompt plus the function vector,
-    Gemma 3 4B. 95\% bootstrap CIs in the report.}\\[1.5mm]
-  {\small\setlength{\tabcolsep}{5pt}
+  \src{Accuracy with 10 examples in the prompt (no intervention), Gemma 3 4B,
+    \texttt{core} tier}\\[1.5mm]
+  {\small\setlength{\tabcolsep}{5.5pt}
   \begin{tabular}{lcccc}
     \toprule
     task & \cond{en} & \cond{te} & \cond{rom} & \cond{tg} \\
     \midrule
-    extract place   & 0.98 & 0.99 & 0.76 & 0.83 \\
-    extract person  & 0.84 & 0.96 & 0.85 & 0.93 \\
+    extract place & 0.98 & 1.00 & 0.97 & 0.97 \\
+    extract verb & 1.00 & 0.92 & 0.97 & 0.98 \\
     \midrule
-    extract verb    & 0.99 & 0.93 & \textbf{0.21} & \textbf{0.30} \\
-    extract food    & 0.80 & 0.81 & \textbf{0.33} & \textbf{0.39} \\
+    negation & 0.93 & 0.78 & 0.64 & 0.60 \\
+    present past & 0.99 & 0.93 & 0.73 & -- \\
+    antonym & 0.81 & 0.23 & 0.05 & -- \\
     \midrule
-    subject gender  & 0.80 & 0.89 & \textbf{0.00} & \textbf{0.00} \\
-    present past    & 0.29 & 1.00 & 0.81 & -- \\
+    subject gender & \textbf{0.50} & \textbf{0.96} & 0.61 & 0.68 \\
     \bottomrule
   \end{tabular}}
-  \vspace{2mm}
-  \begin{itemize}\small\tight
-    \item \textbf{Telugu script recovers; Latin script does not.} For
-          \texttt{extract\_verb} the vector takes \cond{te} to $0.93$ but
-          \cond{rom} only to $0.21$ --- from the \emph{same} sentences, differing
-          only in script.
-    \item But the collapse is \textbf{not uniform}: person and place extraction
-          survive romanization fine. Only some tasks fall off the cliff.
-  \end{itemize}
+  \reading{Pulling a \emph{word out} of a sentence survives everything --- all
+    four conditions stay near 1.00. Tasks needing \emph{grammar} fall off
+    steadily as we move English $\to$ Telugu $\to$ romanized $\to$ Tenglish
+    (negation: 0.93 $\to$ 0.60). And subject gender runs \emph{backwards},
+    exactly as predicted: English is at chance (0.50) because English verbs
+    carry no gender, while Telugu reaches 0.96.}
+  \vspace{1mm}
+  \src{The 0.50 is our sanity check behaving correctly --- it confirms the task
+    measures Telugu morphology and not something else.}
 \end{frame}
 
-% ------------------------------------------ 13 results: majority floors ----
-\begin{frame}{Results: reading the label tasks honestly}
+% ------------------------------------------- RQ2: tiers -------------------
+\begin{frame}{RQ2: do harder words make it worse?}
+  \centering
+  \src{Change in accuracy relative to the \texttt{core} tier, pooled over all
+    15 tasks, Gemma 3 4B}\\[1.5mm]
+  {\small\setlength{\tabcolsep}{6pt}
+  \begin{tabular}{lcccr}
+    \toprule
+    tier & \cond{en} & \cond{te} & \cond{rom} & $n$ \\
+    \midrule
+    \texttt{complex} (longer, heavier grammar) & $-0.01$ & $+0.04$ & $+0.05$ & 372 \\
+    \midrule
+    \texttt{sanskritized} (formal register) & $-0.22$ & $-0.09$ & $-0.25$ & 37 \\
+    \texttt{rare} (uncommon words) & $-0.25$ & $-0.35$ & $-0.32$ & 23 \\
+    \texttt{rare English} & $-0.05$ & $-0.12$ & $-0.01$ & 20 \\
+    \bottomrule
+  \end{tabular}}
+  \reading{Making sentences \emph{grammatically harder} costs essentially
+    nothing ($-0.01$ to $+0.05$). Making the \emph{words rarer} costs a great
+    deal ($-0.22$ to $-0.35$). So what hurts these models is not complexity of
+    structure --- it is unfamiliar vocabulary. \textbf{The \texttt{complex}
+    result replicates on 12B} ($+0.01$, $+0.01$, $+0.03$; $n=157$).}
+  \vspace{1mm}
+  \src{Control for this table: the \texttt{core} row is the same model, same
+    tasks, same prompts --- only the items differ, so the comparison is
+    like-for-like. Caveat: \texttt{sanskritized} and \texttt{rare} are small
+    ($n=23$--$37$), so read the direction, not the exact value.}
+\end{frame}
+
+% ------------------------------------------- RQ3: does FV recover? --------
+\begin{frame}{RQ3: does pasting the vector in repair the failure?}
+  \centering
+  \src{Accuracy on held-out zero-shot prompts, with the function vector added.
+    All controls shown. Gemma 3 4B}\\[1mm]
+  {\footnotesize\setlength{\tabcolsep}{4.5pt}
+  \begin{tabular}{llccccr}
+    \toprule
+    task & cond. & \textbf{+FV} & random vec. & unrelated FV & shuffled floor & $n$ \\
+    \midrule
+    extract verb & \cond{en} & \textbf{0.98} & 0.00 & 0.00 & 0.22 & 194 \\
+    extract verb & \cond{te} & \textbf{0.92} & 0.01 & 0.06 & 0.21 & 179 \\
+    extract verb & \cond{rom} & \textbf{0.21} & 0.00 & 0.02 & 0.11 & 189 \\
+    extract verb & \cond{tg} & \textbf{0.29} & 0.00 & -- & 0.13 & 191 \\
+    \midrule
+    subject gender & \cond{te} & \textbf{0.93} & 0.00 & 0.00 & 0.63 & 27 \\
+    subject gender & \cond{en} & 0.71 & 0.00 & 0.00 & \textbf{0.71} & 14 \\
+    \midrule
+    extract person & \cond{rom} & \textbf{0.88} & 0.20 & 0.83 & 0.05 & 113 \\
+    \bottomrule
+  \end{tabular}}
+  \reading{For \texttt{extract\_verb}, the vector takes English to 0.98 and
+    Telugu script to 0.92 --- but the \emph{same sentences} in Latin script
+    only reach 0.21. The controls are flat (0.00--0.06) wherever the vector
+    works, so the effect is the vector's \emph{direction}, not the nudge. Two
+    honest exceptions: English subject gender exactly matches its shuffled
+    floor (0.71 vs 0.71) --- no real effect, as it should be; and
+    \texttt{extract\_person/rom} is nearly matched by the unrelated vector
+    (0.83), so part of that gain is prompt \emph{format}, not task content.}
+\end{frame}
+
+% ------------------------------------------- label tasks honestly ---------
+\begin{frame}{Reading the yes/no tasks honestly}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.5\textwidth}
       {\footnotesize\setlength{\tabcolsep}{4pt}
       \begin{tabular}{llrrr}
         \toprule
-        task & cond. & $n$ & major. & +FV \\
+        task & cond. & $n$ & always-guess & \textbf{+FV} \\
         \midrule
         negation & \cond{en} & 62 & 0.53 & 0.53 \\
         negation & \cond{rom} & 43 & 0.77 & 0.77 \\
@@ -564,215 +619,323 @@
         subj. gender & \cond{en} & 10 & 0.90 & 0.80 \\
         subj. gender & \cond{te} & 19 & 0.58 & \textbf{0.89} \\
         subj. gender & \cond{rom} & 12 & 0.75 & 0.00 \\
-        subj. gender & \cond{tg} & 13 & 0.54 & 0.00 \\
         \bottomrule
       \end{tabular}}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.5\textwidth}
       \begin{itemize}\footnotesize\tight
-        \item An accuracy equal to the majority rate is the signature of a
-              model emitting \textbf{one label for everything}. Negation
-              \cond{en} and \cond{rom} match their floors exactly.
-        \item \textbf{Of eight label-task cells, exactly one clears its
-              floor:} subject gender in \cond{te}, $0.89$ against $0.58$.
-        \item That one is the cell where the linguistics says the information
-              is actually present --- and \cond{en} at $0.80$ sits
-              \emph{below} its $0.90$ floor, which is the sanity check firing
-              correctly.
-        \item \textbf{We therefore report the other label cells as ``not above
-              chance'', not as accuracies.}
+        \item On a yes/no task, a model that just says ``yes'' every time still
+              scores the \textbf{majority rate}. That is the number in the
+              ``always-guess'' column.
+        \item An accuracy \emph{equal} to it is the fingerprint of exactly that
+              behaviour --- see negation \cond{en} and \cond{rom}, matching to
+              two decimals.
       \end{itemize}
     \end{column}
   \end{columns}
-  \bridge{Without the floor beside it, \cond{en} subject gender at $0.80$ would
-    have read as a strong positive result. It is the opposite.}
+  \reading{Of eight yes/no cells, \textbf{exactly one} genuinely beats guessing:
+    Telugu subject gender, 0.89 against a 0.58 floor. And that is precisely the
+    cell where the grammar actually contains the answer. English sits
+    \emph{below} its own floor (0.80 vs 0.90) --- so we report it as
+    ``not above chance'', not as 80\% accuracy.}
+  \vspace{1mm}
+  \src{Without this control, that 0.80 would have looked like a strong positive
+    result. It is the opposite.}
 \end{frame}
 
-% ---------------------------------------------------- 14 interpretation ----
-\begin{frame}{Interpretation: what breaks is reading, not the task}
-  \begin{itemize}\small\tight
-    \item \textbf{The task representation survives code-mixing.} The same
-          mid-layer heads carry it in all four conditions (overlap peaks
-          between \cond{te} and \cond{tg}, not within English), and a vector
-          extracted under code-mixing is built from the same mechanism.
-    \vspace{1mm}
-    \item \textbf{What fails is recovering the argument from the surface
-          form.} The dissociation in our own results makes this concrete:
-  \end{itemize}
+% ------------------------------------------- heads ------------------------
+\begin{frame}{Which heads? The same ones, in every condition}
+  \begin{columns}[T]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{head_overlap.png}\\[1mm]
+      \src{Overlap between the top-10 head sets (Jaccard).}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      {\scriptsize\setlength{\tabcolsep}{3pt}
+      \begin{tabular}{ll}
+        \toprule
+        condition & top heads (layer.head) \\
+        \midrule
+        \cond{en}  & \texttt{\textbf{17.4}, \textbf{17.6}, 13.2, 22.3, 17.5, \ldots} \\
+        \cond{te}  & \texttt{\textbf{17.4}, \textbf{17.6}, 17.5, 13.2, 22.3, \ldots} \\
+        \cond{rom} & \texttt{\textbf{17.6}, \textbf{17.4}, 22.3, 17.5, 13.2, \ldots} \\
+        \cond{tg}  & \texttt{\textbf{17.4}, \textbf{17.6}, 22.3, 17.5, 18.1, \ldots} \\
+        \bottomrule
+      \end{tabular}}
+      \vspace{2mm}
+      \begin{itemize}\footnotesize\tight
+        \item Heads \textbf{17.4} and \textbf{17.6} are the top two in
+              \textbf{all four} conditions --- layer 17 of 34, the middle of the
+              model.
+        \item That matches what Todd et al. found in a different model
+              (GPT-J) on English, so the finding replicates across
+              architecture \emph{and} language.
+        \item Overlap: \cond{en}--\cond{te} 0.43, \cond{en}--\cond{rom} 0.33,
+              \cond{te}--\cond{tg} \textbf{0.54}.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \reading{Code-mixed input does \textbf{not} get routed somewhere else in the
+    model --- it uses the same machinery. If anything \textbf{English} is the
+    odd one out: the three Telugu-based conditions resemble each other more
+    than any of them resembles English.}
+\end{frame}
+
+% ------------------------------------------- logit lens -------------------
+\begin{frame}{A second, independent check: what is in the vector?}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \textbf{Read the vector as vocabulary.} Project it onto the output layer
+      and ask: which words does it push for?
+      \vspace{1.5mm}
+
+      {\footnotesize\setlength{\tabcolsep}{3pt}
+      \begin{tabular}{@{}llp{36mm}@{}}
+        \toprule
+        task & cond. & top words it promotes \\
+        \midrule
+        extract verb & \cond{en} & \texttt{is, has, was, will, did} \\
+        subj. gender & \cond{en} & \texttt{they, he, she} \\
+        \midrule
+        extract verb & \cond{te} & \texttt{w, på, getValue} \\
+        subj. gender & \cond{rom} & \texttt{de, te, ta} \\
+        \bottomrule
+      \end{tabular}}
+      \vspace{1.5mm}
+      \begin{itemize}\footnotesize\tight
+        \item The English verb vector promotes \textbf{auxiliary verbs}. The
+              English gender vector promotes \textbf{pronouns}.
+        \item Nobody told it to. That is the task, written in vocabulary.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Where the answer appears across depth}
+      \vspace{1mm}
+
+      \src{Layer where the correct word first enters the top 10
+        (Gemma 3 12B, 48 layers).}\\[1mm]
+      {\footnotesize\setlength{\tabcolsep}{5pt}
+      \begin{tabular}{lcccc}
+        \toprule
+        task & \cond{en} & \cond{te} & \cond{rom} & \cond{tg} \\
+        \midrule
+        extract verb & 35 & \textbf{46} & 41 & 41 \\
+        present past & 42 & \textbf{46} & 41 & -- \\
+        negation & 30 & 33 & 33 & 31 \\
+        \bottomrule
+      \end{tabular}}
+    \end{column}
+  \end{columns}
+  \reading{Two separate measurements agree. Where our vectors work they decode
+    into exactly the right kind of word; where they fail they decode into junk.
+    And the answer surfaces \emph{later} in the network for the conditions that
+    score worse.}
+\end{frame}
+
+% ------------------------------------------- 12B -------------------------
+\begin{frame}{Does it hold on a bigger model? Gemma 3 12B}
+  \centering
+  \src{Held-out accuracy with the function vector, 4B vs 12B, same five tasks}\\[1mm]
+  {\footnotesize\setlength{\tabcolsep}{5pt}
+  \begin{tabular}{lcccc|cccc}
+    \toprule
+    & \multicolumn{4}{c|}{\textbf{4B}} & \multicolumn{4}{c}{\textbf{12B}} \\
+    task & \cond{en} & \cond{te} & \cond{rom} & \cond{tg} & \cond{en} & \cond{te} & \cond{rom} & \cond{tg} \\
+    \midrule
+    extract person & 0.84 & 0.96 & 0.85 & 0.93 & 0.96 & \textbf{0.68} & 0.83 & 1.00 \\
+    extract verb & 0.99 & 0.93 & 0.21 & 0.30 & 0.78 & \textbf{0.19} & 0.51 & 0.66 \\
+    negation & 0.53 & 0.49 & 0.77 & 0.39 & 0.49 & \textbf{0.07} & 0.50 & 0.67 \\
+    present past & 0.29 & 1.00 & 0.81 & -- & 0.90 & \textbf{0.25} & 0.88 & -- \\
+    subject gender & 0.80 & 0.89 & 0.00 & 0.00 & 0.47 & \textbf{0.10} & 0.20 & 0.47 \\
+    \bottomrule
+  \end{tabular}}
+  \reading{The method itself scales fine --- every 12B cell improves over
+    zero-shot, and the controls still hold (random vector 0.00--0.06 where the
+    vector works). But the \emph{ordering flips}: at 4B Telugu script is the
+    strongest condition, at 12B it is the weakest in all five tasks.}
   \vspace{1mm}
+  \begin{itemize}\footnotesize\tight
+    \item \textbf{We checked the obvious explanations and none of them hold.}
+          12B reads Telugu \emph{better} than 4B does (10-shot: 0.86--1.00, its
+          best condition). Telugu also has the \emph{strongest} causal signal of
+          any condition. And an exhaustive layer$\times$strength search on the
+          worst cell finds nothing better.
+    \item \textbf{We do not have an explanation yet.} We report it as an open
+          result rather than smoothing it over.
+  \end{itemize}
+\end{frame}
+
+% ------------------------------------------- interpretation ---------------
+\begin{frame}{What we think is going on}
+  \begin{itemize}\small\tight
+    \item \textbf{The task representation survives code-mixing.} Same heads, same
+          mid-layer machinery, in all four conditions --- and the Telugu-based
+          conditions look more like each other than like English.
+    \item \textbf{What breaks is getting the answer out of the surface form.}
+          And it breaks \emph{selectively}:
+  \end{itemize}
+  \vspace{1.5mm}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \textbf{Survives romanization}
       \begin{itemize}\footnotesize\tight
-        \item \texttt{extract\_person} $0.85$ / $0.93$
-        \item \texttt{extract\_place} \; $0.76$ / $0.83$
-        \item These targets are \textbf{proper nouns}. ``kavita'', ``guntur''
-              romanize essentially losslessly --- the string is the same object.
+        \item \texttt{extract\_person} 0.85 / 0.93
+        \item \texttt{extract\_place} \; 0.76 / 0.83
+        \vspace{1mm}
+        \item These answers are \textbf{names}: ``kavita'', ``guntur''. A name
+              spelled in English letters is still the same recognisable string.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
       \textbf{Collapses under romanization}
       \begin{itemize}\footnotesize\tight
-        \item \texttt{extract\_verb} \; $0.21$ / $0.30$
-        \item \texttt{subject\_gender} $0.00$ / $0.00$
-        \item These targets live in \textbf{inflectional morphology}.
+        \item \texttt{extract\_verb} \; 0.21 / 0.30
+        \item \texttt{subject\_gender} 0.00 / 0.00
+        \vspace{1mm}
+        \item These answers live inside \textbf{word endings}.
               \tel{కొంటోంది} $\to$ \texttt{kontondi} is where tense, gender and
-              polarity are encoded, and romanization flattens it.
+              negation are stored --- and romanization smears it into one
+              undifferentiated string.
       \end{itemize}
     \end{column}
   \end{columns}
-  \bridge{\textbf{Answer to the research question:} code-mixing breaks the task at
-    the \emph{input-reading} stage, and selectively --- it damages what is
-    carried by morphology while leaving what is carried by identifiable
-    substrings intact.}
+  \bridge{\textbf{Answer to our question: it is failure A, not failure B} --- and
+    specifically, code-mixing damages what Telugu keeps in its
+    \emph{grammatical endings}, while leaving what it keeps in
+    \emph{recognisable names} intact.}
 \end{frame}
 
-% ----------------------------------- 15 limitations and negative results ---
+% ----------------------------------- limitations and negative results -----
 \begin{frame}{Limitations and negative results}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
-      \textbf{Negative results we are reporting}
+      \textbf{Things that did not work}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Function vectors are not uniformly specific.} The
-              random-vector and unrelated-task controls tell us how much of
-              each gain is task content rather than perturbation --- see the
-              controls slide for which cells survive.
-        \item \textbf{Small cells dominate the word-level romanized
-              results.} Where the competence filter leaves fewer than ten
-              items we report the number but draw nothing from it.
+        \item \textbf{Not every cell beats every control.} English subject
+              gender exactly matches its shuffled floor;
+              \texttt{extract\_person/rom} is nearly matched by an unrelated
+              task's vector. We report those as not demonstrated.
+        \item \textbf{The 12B inversion is unexplained} (previous slide).
+        \item \textbf{Our two knobs are tuned one after the other}, not
+              together. On one cell a joint search would have done better by
+              $+0.29$; on others it changes nothing.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
       \textbf{Scope}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{One model family} (Gemma 3), one size reported here.
-              The scaling finding is specifically about Gemma-class residual
-              growth.
-        \item \textbf{Small cells.} Romanized word-level tasks keep 2--13 items
-              after the competence filter. We show them, but draw no
-              conclusions from them.
-        \item \textbf{Word order is a confound} for \cond{en}--\cond{te}
-              similarity: English is SVO and Telugu SOV, so the vectors differ
-              for a reason unrelated to script. \cond{rom}--\cond{tg} is the
-              clean comparison.
-        \item \textbf{One romanization convention}, chosen and documented.
-              Real users are inconsistent in ways we do not model.
-        \item \textbf{\texttt{tense} was dropped} from the reported results.
-              Its vector was flat at zero in \emph{every} condition including
-              English, at every layer and scale --- an anomaly in the method on
-              that task, not a code-mixing effect, so it tells us nothing about
-              the question and is excluded rather than over-read.
+        \item \textbf{One model family} (Gemma 3), two sizes.
+        \item \textbf{Small cells.} Romanized word-level tasks keep as few as
+              2--13 items after the fairness filter. Shown, but nothing is
+              built on them.
+        \item \textbf{Word order is a confound} when comparing English with
+              Telugu (English is SVO, Telugu SOV).
+              \cond{rom} vs \cond{tg} is our clean comparison.
+        \item \textbf{One romanization convention.} Real people spell
+              inconsistently; we do not model that.
+        \item \textbf{\texttt{tense} was dropped}: its vector was flat at zero
+              in \emph{every} condition including English, so it measured
+              nothing about code-mixing.
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-% --------------------------------------------- 16 changes from proposal ----
-\begin{frame}{What changed from the proposal}
+% --------------------------------------------- changes from proposal ------
+\begin{frame}{What changed from our proposal}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
       \textbf{Dropped}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Incremental $\pm$ scoring} of newly added dataset rows.
-              Refitting from scratch is cheap enough with caching, and
-              incremental scoring would have made every number depend on
-              insertion order.
-        \item \textbf{vLLM for the Gemma runs.} vLLM cannot expose or patch
-              intermediate activations, which is the entire experiment. Plain
-              \texttt{transformers} with hooks it is.
-        \item \textbf{The \texttt{tense} task as a headline result} --- kept in
-              the tables, reported as a method limitation.
+        \item \textbf{Incremental scoring} of newly added data rows --- it would
+              have made every number depend on the order rows were added.
+        \item \textbf{vLLM} for the model runs. It is fast, but it cannot expose
+              or edit the model's internal activations, which is the entire
+              experiment.
+        \item \textbf{The \texttt{tense} task}, for the reason on the previous
+              slide.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
       \textbf{Changed or added}
       \begin{itemize}\footnotesize\tight
         \item \textbf{27B $\to$ 12B} as the second model, on compute cost.
-        \item \textbf{Per-condition head sets} instead of one universal set ---
-              without this we could not have measured head overlap, which
-              turned out to be a main result.
-        \item \textbf{Residual-relative scaling}, which was not in the plan
-              because we did not know it was needed. It is now arguably the
-              most portable contribution.
-        \item \textbf{Majority-class floors}, added after noticing that
-              \cond{en} subject gender looked like a success.
+        \item \textbf{Per-condition head sets} instead of one shared set ---
+              without this we could not have measured head overlap, which became
+              a main result.
+        \item \textbf{Residual-relative scaling}, which was not planned because
+              we did not know it was needed.
+        \item \textbf{Majority-class floors}, added after noticing that an
+              English result looked like a success when it was not.
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-% --------------------------------------------------- 17 challenges ---------
-\begin{frame}{Challenges faced}
+% --------------------------------------------------- challenges -----------
+\begin{frame}{Challenges}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
-      \textbf{Infrastructure}
+      \textbf{Getting it to run at all}
       \begin{itemize}\footnotesize\tight
-        \item The cluster's documentation did not match the cluster: wrong
-              partition name, modules that do not exist on its actual OS,
-              node names in a different format.
-        \item A \texttt{venv} built from inside an active \texttt{venv}
-              resolved its own interpreter and produced
-              \texttt{No module named torch} only on compute nodes.
-        \item \textbf{fp16 produced NaNs} in Gemma 3 mediation on the
-              available GPUs, so the whole project moved to a rented H200 in
-              bf16.
-        \item A concurrent 27B download filled the volume mid-run and killed
-              the job; the fetch script now pre-checks free space.
+        \item Cluster documentation did not match the cluster; half-precision
+              produced \texttt{NaN}s on Gemma 3, so the whole project moved to
+              a rented GPU.
+        \item A model download filled the disk mid-run and killed the job.
+        \item Volumes, ports and environments changed under us more than once.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
-      \textbf{Scientific debugging}
+      \textbf{Debugging the science}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Three separate bugs all presented as ``the function
-              vector does nothing''}: layer selection collapsing to layer 0 on
-              ties, a config hash that did not cover code version so stale
-              results replayed, and the residual-scale problem.
-        \item Only the last was real science. Finding it needed a purpose-built
-              diagnostic that printed
-              $\|v\|$ against $\|h_\ell\|$ --- the ratio was $0.001$.
-        \item \textbf{Lesson we would keep:} make every stage print the
-              quantity it depends on. A result of exactly $+0.00$ should be
-              treated as a bug report, not a finding.
+        \item \textbf{Four different bugs all looked identical} --- ``the
+              function vector does nothing'': a tie-break silently choosing
+              layer 0; a cache replaying old results after we changed the
+              algorithm; the scaling problem; and two later stages still
+              applying the vector unscaled, which made every control look
+              identical to the real thing.
+        \item Only one of those was real science. Finding it needed a
+              diagnostic that printed the vector's size next to the thing it
+              was being added to --- the ratio was \textbf{0.001}.
       \end{itemize}
     \end{column}
   \end{columns}
+  \bridge{\textbf{What we would keep:} a result of exactly $+0.00$ is a bug
+    report, not a finding. Every stage now prints the quantity it depends on.}
 \end{frame}
 
-% --------------------------------------------------- 18 conclusion --------
-\begin{frame}{Conclusion}
-  \bridge{\textbf{Code-mixing does not give the model a different task
-    representation. It makes the input harder to read --- and specifically, it
-    damages what Telugu encodes in morphology while leaving what it encodes in
-    identifiable substrings intact.}}
-  \vspace{1mm}
+% --------------------------------------------------- future work ----------
+\begin{frame}{Future work}
   \begin{columns}[T]
     \begin{column}{0.32\textwidth}
-      \textbf{What we showed}
+      \textbf{Finish the open question}
       \begin{itemize}\footnotesize\tight
-        \item The same mid-layer heads carry the task in all four conditions;
-              English is the outlier, not Tenglish.
-        \item Injecting the vector repairs Telugu script but not Latin script,
-              on the same sentences.
-        \item Proper-noun targets survive; morphology-borne targets collapse.
+        \item Explain the 12B inversion --- is it tokenisation of Telugu script
+              at that scale, or something about how the vector is built?
+        \item Add a third model size to see whether it is a trend or a
+              one-off.
+        \item Select layer and strength \emph{jointly} throughout.
       \end{itemize}
     \end{column}
     \begin{column}{0.32\textwidth}
-      \textbf{Methods contribution}
+      \textbf{Extend the method}
       \begin{itemize}\footnotesize\tight
-        \item Function vectors do not transfer to Gemma-class models until
-              rescaled relative to the residual norm --- a $35$--$1841\times$
-              correction.
-        \item A paired, four-condition dataset with explicit difficulty tiers,
-              hand-editable and extensible.
+        \item Test whether a vector built from \emph{English} can repair a
+              romanized prompt --- a practical fix if it works.
+        \item Go below the word: is the damage at the tokeniser, and would a
+              morphology-aware tokeniser recover it?
+        \item More code-mixing levels, not just one.
       \end{itemize}
     \end{column}
     \begin{column}{0.32\textwidth}
-      \textbf{In progress}
+      \textbf{Extend the data}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Gemma 3 12B} on the subset of tasks where 4B degraded,
-              to test whether scale closes the romanization gap.
-        \item Recomputed transfer matrix and specificity controls.
-        \item Pooling the small romanized word-level cells.
+        \item More \texttt{sanskritized} and \texttt{rare} items --- the tier
+              result is the clearest finding sitting on the smallest counts.
+        \item Several romanization conventions, including inconsistent ones.
+        \item Other Indian languages with rich morphology, to test whether the
+              name-vs-ending split generalises.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -783,10 +946,9 @@
   \vfill
   \centering
   {\Large Thank you}\\[6mm]
-  {\large Questions?}\\[12mm]
+  {\large Questions?}\\[10mm]
   {\small Todd, Li, Sharma, Mueller, Wallace, Bau.\\
-   Function Vectors in Large Language Models. ICLR 2024.\\[2mm]
-   Code and dataset: \texttt{github.com/<user>/MechInterp-final-project}}
+   Function Vectors in Large Language Models. ICLR 2024.}
   \vfill
 \end{frame}
 

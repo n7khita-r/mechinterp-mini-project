@@ -1,20 +1,5 @@
-"""Log-friendly progress reporting.
-
-`tqdm` is built for a terminal: it redraws one line with carriage returns. In a
-SLURM log that is useless -- you either get a single unreadable line of
-accumulated redraws, or (with `disable=True`) total silence for hours and no way
-to distinguish a slow job from a hung one.
-
-This emits plain, timestamped lines on a fixed wall-clock interval instead, so
-`tail -f` on a job log reads like a status feed:
-
-    [01_baselines] cells        7/52   13%  elapsed 2m14s  eta 14m52s  rate 3.1/min  (antonym/te)
-    [01_baselines] cells       14/52   27%  elapsed 4m31s  eta 12m18s  rate 3.1/min  (next_item/en)
-
-One line every `interval` seconds regardless of how fast the loop runs, plus a
-line for the first and last item, so a 4-hour job produces a few hundred lines
-rather than a few hundred thousand. Nested loops report at a longer interval so
-an inner bar cannot drown the outer one.
+"""Log-friendly progress reporting: one plain line per wall-clock interval,
+rather than tqdm's carriage-return redraws, which are unreadable in a job log.
 """
 
 from __future__ import annotations
@@ -52,9 +37,7 @@ def track(
 ) -> Iterator[T]:
     """Iterate `items`, printing a progress line every `interval` seconds.
 
-    `label` is an optional callable mapping an item to a short string shown in
-    parentheses -- use it to name the cell currently being worked on, which is
-    what makes a stalled job diagnosable rather than merely late.
+    `label` maps an item to a short string shown in parentheses.
     """
     stream = stream or sys.stdout
     if total is None:
@@ -88,7 +71,7 @@ def track(
         if label is not None and item is not None:
             try:
                 parts.append(f"({label(item)})")
-            except Exception:  # noqa: BLE001  -- a label must never break a run
+            except Exception:  # noqa: BLE001
                 pass
         print("  ".join(parts), file=stream, flush=True)
 
@@ -98,7 +81,7 @@ def track(
 
     for item in items:
         if n == 0:
-            emit(item)           # confirm the loop actually started
+            emit(item)
         yield item
         n += 1
         now = time.monotonic()
@@ -115,11 +98,7 @@ def nested(items, desc, **kw) -> Iterator:
 
 
 class Heartbeat:
-    """Periodic 'still alive' line for a long stretch with no natural loop.
-
-    Used where the work is one opaque call (loading a 9 GB checkpoint, say) and
-    the alternative is a silent terminal.
-    """
+    """Periodic 'still alive' line for a long stretch with no natural loop."""
 
     def __init__(self, desc: str, stage: str = "", interval: float = 60.0):
         self.desc, self.stage, self.interval = desc, stage, interval

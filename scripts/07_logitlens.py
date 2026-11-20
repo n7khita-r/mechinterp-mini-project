@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
-"""Stage 07 -- logit-lens cross-check.
+"""Stage 07 -- logit-lens cross-check: per-layer rank of the gold first token.
 
-An independent readout on ordinary n-shot prompts, with no intervention: at each
-layer, how highly ranked is the gold answer's first token? If the function
-vectors say Tenglish carries a weaker task representation, the answer should
-also emerge later or more weakly here. Agreement between two unrelated readouts
-is the consistency check; disagreement is worth reporting too.
-
-Early layers are shaded and not interpreted -- the lens is unreliable there.
+No intervention. Early layers are shaded and not interpreted.
 """
 
 from __future__ import annotations

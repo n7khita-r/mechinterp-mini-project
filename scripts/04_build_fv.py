@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 """Stage 04 -- build function vectors.
 
-    v_t = sum over the condition's top heads of  W_O^(L) [ e_H * ā_{L,H,last} ]
-
-The head *set* comes from that condition's mediation sweep and is shared across
-tasks; the *values* are the task's own mean activations. So the vector is
-task-specific while the circuit carrying it is not.
+    v_t = sum over the condition's top heads of  W_O^(L) [ e_H * a_bar_{L,H,last} ]
 """
 
 from __future__ import annotations

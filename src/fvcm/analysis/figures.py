@@ -1,12 +1,4 @@
-"""Figure generation. Each function takes plain dicts and writes one PDF + PNG.
-
-Form is chosen by the job the data does, not by habit:
-
-* magnitude across a few labelled groups -> grouped bars with CIs
-* magnitude across depth -> lines (depth is ordered and continuous)
-* magnitude across a matrix of pairs -> single-hue heat grid
-* a signed effect across a matrix -> diverging heat grid, neutral grey midpoint
-"""
+"""Figure generation. Each function takes plain dicts and writes one PDF + PNG."""
 
 from __future__ import annotations
 
@@ -48,9 +40,6 @@ def fv_strength(rows: list[dict], out: Path, title: str = "") -> Path:
     """Zero-shot accuracy with the function vector added, by task and condition.
 
     `rows`: {task, condition, acc_with_fv, acc_zero_shot, lo, hi, n}
-    Grouped bars because the comparison is between a handful of labelled
-    categories; the zero-shot floor is drawn as a tick on each bar so the
-    function vector's contribution is read as a distance, not an absolute.
     """
     use_paper_style()
     tasks = sorted({r["task"] for r in rows})
@@ -75,7 +64,6 @@ def fv_strength(rows: list[dict], out: Path, title: str = "") -> Path:
                label=CONDITION_LABEL[cond], zorder=3, linewidth=0)
         ax.errorbar(pos, vals, yerr=[los, his], fmt="none", ecolor=INK_2,
                     elinewidth=0.7, capsize=1.6, zorder=4)
-        # Zero-shot floor: a short horizontal tick, not a second axis.
         for p, f in zip(pos, floors):
             if np.isfinite(f):
                 ax.plot([p - w * 0.44, p + w * 0.44], [f, f], color=INK,
@@ -96,8 +84,7 @@ def fv_strength(rows: list[dict], out: Path, title: str = "") -> Path:
 def layer_sweep(curves: list[dict], out: Path, title: str = "") -> Path:
     """Accuracy against the layer the function vector is added at.
 
-    `curves`: {condition, layers, acc}. Lines, because depth is ordered; the
-    peak's position is the thing being read.
+    `curves`: {condition, layers, acc}
     """
     use_paper_style()
     fig, ax = plt.subplots(figsize=(COL_W, 2.0))
@@ -144,7 +131,7 @@ def logit_lens(curves: list[dict], out: Path, title: str = "",
     ax.set_xlabel("layer")
     ax.set_ylabel("mean rank of gold token")
     if interpret_from:
-        # The lens is unreliable in early layers; shade what we do not interpret.
+        # The lens is unreliable in early layers.
         ax.axvspan(0, interpret_from, color=GRID, alpha=0.7, zorder=1, linewidth=0)
         ax.text(interpret_from * 0.5, ax.get_ylim()[1] * 0.4, "not\ninterpreted",
                 fontsize=6, color=INK_2, ha="center", va="top")
@@ -167,7 +154,6 @@ def _heat(matrix, row_labels, col_labels, out: Path, *, cmap, vmin, vmax,
     ax.set_yticks(range(len(row_labels)), row_labels)
     ax.set_xticks(np.arange(-0.5, len(col_labels), 1), minor=True)
     ax.set_yticks(np.arange(-0.5, len(row_labels), 1), minor=True)
-    # 2px surface gap between cells, so adjacent fills never touch.
     ax.grid(which="minor", color="#fcfcfb", linewidth=1.4)
     ax.tick_params(which="minor", length=0)
     for sp in ax.spines.values():
@@ -180,8 +166,6 @@ def _heat(matrix, row_labels, col_labels, out: Path, *, cmap, vmin, vmax,
             for j in range(m.shape[1]):
                 if not np.isfinite(m[i, j]):
                     continue
-                # Direct labels satisfy the relief rule and make the grid legible
-                # in greyscale print.
                 strong = abs(m[i, j] - mid) / span > 0.55
                 ax.text(j, i, fmt.format(m[i, j]), ha="center", va="center",
                         fontsize=5.6, color="#ffffff" if strong else INK)
@@ -197,11 +181,9 @@ def _heat(matrix, row_labels, col_labels, out: Path, *, cmap, vmin, vmax,
 
 def similarity_grid(keys: list[tuple[str, str]], sim, out: Path,
                     title: str = "") -> Path:
-    """Cosine similarity between function vectors: do they group by task or language?
+    """Cosine similarity between function vectors, ordered task-major.
 
-    Magnitude, so a single hue light-to-dark. Rows are ordered task-major, which
-    makes task clustering appear as blocks on the diagonal and language
-    clustering as a stripe pattern -- the two hypotheses are visually distinct.
+    Task clustering then reads as diagonal blocks, language clustering as stripes.
     """
     labels = [f"{t.replace('_', ' ')} / {c}" for t, c in keys]
     return _heat(np.asarray(sim), labels, labels, out, cmap=SEQ, vmin=0, vmax=1,
@@ -225,11 +207,7 @@ def transfer_grid(sources: list[str], targets: list[str], acc, out: Path,
 
 
 def aie_heatmap(aie, out: Path, condition: str = "", top_heads=None) -> Path:
-    """Indirect effect per (layer, head).
-
-    Signed, so a diverging map with a neutral grey midpoint at zero and a
-    symmetric range -- otherwise the sign of a head's effect is unreadable.
-    """
+    """Indirect effect per (layer, head); diverging map, symmetric about zero."""
     use_paper_style()
     m = np.asarray(aie, dtype=float)
     lim = float(np.nanmax(np.abs(m))) or 1.0
@@ -242,7 +220,6 @@ def aie_heatmap(aie, out: Path, condition: str = "", top_heads=None) -> Path:
 
     if top_heads:
         ls, hs = zip(*[(l, h) for l, h, _ in top_heads])
-        # 2px surface ring on overlapping marks, so the highlight reads over any fill.
         ax.scatter(ls, hs, s=26, facecolors="none", edgecolors="#ffffff",
                    linewidths=1.6, zorder=3)
         ax.scatter(ls, hs, s=26, facecolors="none", edgecolors=INK,
@@ -258,11 +235,7 @@ def aie_heatmap(aie, out: Path, condition: str = "", top_heads=None) -> Path:
 
 
 def tier_degradation(rows: list[dict], out: Path, title: str = "") -> Path:
-    """Accuracy by complexity/register tier, one line per condition.
-
-    Tiers are ordered by intended difficulty, so this is a profile across an
-    ordered factor -- lines, not bars.
-    """
+    """Accuracy by tier, one line per condition; tiers ordered by difficulty."""
     use_paper_style()
     tiers = [t for t in TIER_ORDER if any(r["tier"] == t for r in rows)]
     conds = [c for c in CONDITION_ORDER if any(r["condition"] == c for r in rows)]
@@ -294,10 +267,7 @@ def tier_degradation(rows: list[dict], out: Path, title: str = "") -> Path:
 
 
 def baseline_bars(rows: list[dict], out: Path, title: str = "") -> Path:
-    """10-shot accuracy and how many items survive the competence filter.
-
-    Two panels sharing an x-axis rather than one chart with two y-scales.
-    """
+    """10-shot accuracy and items surviving the competence filter, in two panels."""
     use_paper_style()
     tasks = sorted({r["task"] for r in rows})
     conds = [c for c in CONDITION_ORDER if any(r["condition"] == c for r in rows)]

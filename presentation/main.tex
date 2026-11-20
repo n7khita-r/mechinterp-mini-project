@@ -92,15 +92,13 @@
 \end{frame}
 
 % ----------------------------------------------------------- 1 the question
-% ----------------------------------------------------------- 1 the question
-% ----------------------------------------------------------- 1 the question
 \begin{frame}{The question}
   \begin{columns}[T]
     \begin{column}{0.56\textwidth}
       \begin{itemize}\small\tight
         \vspace{1.5mm}
         \item We use \textbf{function vectors} to
-              ask four things:
+              test 4 things:
         \vspace{1mm}
         \begin{itemize}\footnotesize\tight
           \item Do the \textbf{same heads and layers} carry the task across
@@ -109,12 +107,10 @@
                 across conditions?
           \item Can a vector built in one condition \textbf{transfer} to
                 another?
-          \item What determines whether a task \textbf{survives}
+          \item What kind of tasks \textbf{do not degrade} with
                 romanization?
         \end{itemize}
         \vspace{1.5mm}
-        \item We ask: \textbf{what does the
-              model preserve, and what does romanization damage?}
       \end{itemize}
     \end{column}
     \begin{column}{0.44\textwidth}
@@ -141,7 +137,7 @@
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
       \begin{itemize}\small\tight
-        \item Show a model ten examples of a task and it understands what to do:
+        \item Given ten examples of a task, a model understands what to do:
       \end{itemize}
       {\footnotesize\texttt{Q: big \\ A: small \\[1mm] Q: hot \\ A: cold \\[1mm]
         \ldots \\[1mm] Q: fast \\ A: \underline{\ \ \ \ }}}
@@ -161,8 +157,7 @@
       \begin{itemize}\footnotesize\tight
         \item We build vectors from code-mixed prompts and inject them into
               zero-shot prompts, in every condition separately.
-        \item If the vector works, the task representation survived the
-              script change. If it does not, something upstream broke.
+        \item If the vector works, the task representation was extracted from a low resource or code mixed language.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -189,8 +184,7 @@
   \vspace{3mm}
   \begin{itemize}\small\tight
     \item We do all four steps \textbf{separately in each of four language
-          conditions}, and compare.
-    \item Everything is \textbf{paired}: The same sentence is translated across languages
+          conditions}.
   \end{itemize}
 \end{frame}
 
@@ -226,11 +220,11 @@
       \vspace{1.5mm}
       \textbf{Difficulty tiers}
       \begin{itemize}\footnotesize\tight
-        \item \texttt{core} --- everyday words and simple sentences
-        \item \texttt{complex} --- longer, multi-clause, heavier morphology
-        \item \texttt{sanskritized} --- formal, high register Telugu
-        \item \texttt{rare} --- uncommon vocabulary
-        \item Main numbers use \texttt{core}; the rest are tested separately
+        \item \texttt{core}: everyday words and simple sentences
+        \item \texttt{complex}: longer, multi-clause, heavier morphology
+        \item \texttt{sanskritized}: formal, high register Telugu
+        \item \texttt{rare}: uncommon vocabulary
+        \item Main numbers evaluate on core, while the rest are tested separately
       \end{itemize}
     \end{column}
     \begin{column}{0.46\textwidth}
@@ -262,7 +256,7 @@
 \begin{frame}{Methodology: Which heads carry the task?}
   \begin{itemize}\small\tight
     \item We want to find the heads responsible for ``doing the task''.
-    \item So we corrupt the prompt on purpose, then repair one head at a
+    \item So we corrupt the prompt, then repair one head at a
           time and see which repair brings the right answer back.
   \end{itemize}
   \vspace{2mm}
@@ -284,27 +278,27 @@
     \item Repeat for every head, over 50 trials. Keep the top 10 (causal mediation)
     \item We do this \textbf{separately for each
           language condition}. Answers the question
-          ``does Telugu use the same heads as English?'' 
+          ``does Telugu use the same heads as English?''
   \end{itemize}
 \end{frame}
 
 % --------------------------------------- 8 methodology: building the vector
-\begin{frame}{Methodology: build the vector, then paste it in}
+\begin{frame}{Methodology: Building the task vector}
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
       \begin{itemize}\footnotesize\tight
-        \item Take 100 different ten-example prompts of one task. Record what
+        \item Taking 100 different ten-example prompts of one task, we record what
               each of the 10 chosen heads outputs, and average it: $\bar a_h$.
         \item Averaging over many different prompts keeps what they have in
-              common (the task) and cancels the particular words.
-        \item Push those through the head's output matrix and add them up (scaled):
+              common (the task).
+        \item Then we send them through the head's output matrix and add them up (scaled):
       \end{itemize}
       \vspace{-2mm}
       \begin{equation*}
         v_{t,c} \;=\; \sum_{h \in \mathcal{H}_c} W_O^{(h)}\, \bar a_h
       \end{equation*}
       \begin{itemize}\footnotesize\tight
-        \item Now take a \textbf{zero-shot} prompt and
+        \item We then take a \textbf{zero-shot} prompt and
               add $v$ to the model's internal state at one layer $\ell$:
       \end{itemize}
       \vspace{-2mm}
@@ -322,11 +316,11 @@
       \begin{itemize}\footnotesize\tight
         \item The prompt does not explicitly say ``give me the
               opposite''.
-        \item If the model now answers "slow", the task was inferred from the vector
+        \item If the model now answers ``slow'', the task was inferred from the vector
       \end{itemize}
       \vspace{1mm}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{Fair-test rule:} an item only counts if the model already
+        \item \textbf{Fair-test rule:} an item is tested on if the model already
               gets it right with ten examples. Prevents vocabulary/information based errors.
       \end{itemize}
     \end{column}
@@ -389,8 +383,7 @@
     \begin{column}{0.49\textwidth}
       \begin{itemize}\small\tight
         \item \textbf{Shuffled-label floor}\\
-              \src{Ten examples with the answers scrambled: the prompt has the
-                task's idea but not its content.}
+              \src{Examples with the answers scrambled}
         \vspace{1.5mm}
         \item \textbf{Majority-class floor}\\
               \src{On yes/no tasks, the score of always guessing the
@@ -400,14 +393,14 @@
   \end{columns}
   \vspace{2mm}
   \begin{itemize}\small\tight
-    \item All injected vectors are scaled to the \textbf{same size}
+    \item All injected vectors are scaled to the same size.
   \end{itemize}
 \end{frame}
 
 % ====================== RESULTS =========================================== %
 
 % ------------------------------------------- RQ1: degradation -------------
-\begin{frame}{RQ1: Where does performance actually drop?}
+\begin{frame}{RQ1: Where does performance drop?}
   \centering
   \src{Accuracy with 10 examples in the prompt (no intervention), Gemma 3 4B}\\[1.5mm]
   {\small\setlength{\tabcolsep}{5.5pt}
@@ -427,13 +420,13 @@
   \end{tabular}}
   \reading{Identifying a word of a sentence is the easiest task. Tasks needing grammar fall off
     steadily as we move English $\to$ Telugu $\to$ romanized $\to$ Tenglish
-    (sentence negation: 0.93 $\to$ 0.60). And subject gender is the opposite: English is at chance (0.50) because English verbs
+    (sentence negation: 0.93 $\to$ 0.60). But subject gender is the opposite: English is at chance (0.50) because English verbs
     carry no gender, while Telugu reaches 0.96.}
   \vspace{1mm}
 \end{frame}
 
 % ------------------------------------------- RQ2: tiers -------------------
-\begin{frame}{RQ2: Do harder words make it worse?}
+\begin{frame}{RQ2: Performance on harder words}
   \centering
   \src{Change in accuracy relative to the \texttt{core} tier, pooled over all
     15 tasks, Gemma 3 4B}\\[1.5mm]
@@ -449,7 +442,7 @@
     \texttt{rare English} & $-0.05$ & $-0.12$ & $-0.01$ & 20 \\
     \bottomrule
   \end{tabular}}
-  \reading{Making sentences grammatically harder does not make a difference. Unfamiliar vocabulary hurts performance. Results are similar on 12B.}
+  \reading{Making sentences grammatically harder does not make a difference, but unfamiliar vocabulary hurts performance. Results are similar on 12B.}
   \vspace{1mm}
 \end{frame}
 
@@ -477,7 +470,7 @@
     Telugu script to 0.92, but much less in romanized. This implies task vectors may not be getting extracted as well from Tenglish and Romanized examples.}
 \end{frame}
 
-% ------------------------------------------- label tasks honestly ---------
+% ------------------------------------------- transfer ---------------------
 \begin{frame}{RQ4: Transfer (does a vector built in one condition work in another?)}
   \begin{columns}[T]
     \begin{column}{0.56\textwidth}
@@ -490,7 +483,7 @@
     \end{column}
     \begin{column}{0.44\textwidth}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{The diagonal wins everywhere.} Each condition's own
+        \item Each condition's own
               vector is the best vector for it.
         \item An English vector still
               reaches 0.50 on Telugu prompts, against 0.74 for Telugu's own.
@@ -499,12 +492,12 @@
       \end{itemize}
     \end{column}
   \end{columns}
-  \reading{Task vectors are \textbf{partly} shared across conditions: enough
-    overlap that a foreign vector helps, but does not substitute}
+  \reading{Task vectors are \textbf{partly} shared across conditions: they have enough
+    overlap that a different vector helps, but does not fully substitute or improve}
 \end{frame}
 
 % ------------------------------------------- heads ------------------------
-\begin{frame}{Which heads?}
+\begin{frame}{Which heads carry the task representation?}
   \begin{columns}[T]
     \begin{column}{0.44\textwidth}
       \centering
@@ -534,16 +527,15 @@
     \end{column}
   \end{columns}
   \reading{Code-mixed input does not get routed somewhere else in the
-    model, it uses the same machinery. \textbf{English} is the
-    odd one out: the three Telugu-based conditions resemble each other.}
+    model, it uses the same machinery. Also, \textbf{English} is the most different while the three Telugu-based conditions resemble each other.}
 \end{frame}
 
 % ------------------------------------------- logit lens -------------------
-\begin{frame}{Logit lens: an independent check on the vector}
+\begin{frame}{Logit lens: an additional check on the vector}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \textbf{1. Read the vector as vocabulary.} Project it onto the output
-      layer and ask: which words does it push for?
+      layer and see which words are promoted.
       \vspace{1.5mm}
 
       {\footnotesize\setlength{\tabcolsep}{3pt}
@@ -562,11 +554,10 @@
       \begin{itemize}\footnotesize\tight
         \item The English verb vector promotes \textbf{auxiliary verbs}. The
               English gender vector promotes \textbf{pronouns}.
-        
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{2. Where the answer appears across depth}
+      \textbf{2. Where the answer appears across layers}
       \vspace{1mm}
 
       \src{Layer where the correct word first enters the top 10
@@ -583,14 +574,14 @@
       \end{tabular}}
     \end{column}
   \end{columns}
-  \reading{ Where the vectors work, they decode
+  \reading{ If the vectors work, they decode
     into the right kind of word. If they fail, they decode into junk.
-    The answer surfaces \emph{later} in the network for the conditions that
+    The answer surfaces \textbf{later} in the network for the conditions that
     score worse.}
 \end{frame}
 
 % ------------------------------------------- 12B -------------------------
-\begin{frame}{Does it hold on a bigger model? Gemma 3 12B}
+\begin{frame}{Experiments with Gemma 3 12B (bigger model)}
   \centering
   \src{Held-out accuracy with the function vector, 4B vs 12B, same five tasks}\\[1mm]
   {\footnotesize\setlength{\tabcolsep}{5pt}
@@ -607,12 +598,11 @@
     \bottomrule
   \end{tabular}}
   \reading{Every 12B cell improves over
-    zero-shot. At 4B Telugu script is the
-    strongest condition, at 12B it is the weakest in all five tasks.}
+    zero-shot. Romanized and code-mixed Telugu performs significantly better. At 4B Telugu script is the
+    strongest condition, at 12B it is the weakest in all five tasks (open question).}
 \end{frame}
 
-
-\begin{frame}{Where in the model the task lives}
+\begin{frame}{Where the task lives in the model}
   \centering
   \includegraphics[width=0.62\linewidth,height=0.56\textheight,keepaspectratio]{layer_sweep.png}\\[0.5mm]
   \src{Zero-shot accuracy against the layer the function vector is injected at.}
@@ -621,19 +611,18 @@
     the answer is already decided.}
 \end{frame}
 
-\begin{frame}{How similar are the vectors themselves?}
+\begin{frame}{How similar are the vectors?}
   \vspace{2mm}
   \begin{itemize}\small\tight
-    \item We compared every function vector against every other one (cosine
+    \item We compared the function vectors against each other (cosine
           similarity between the vectors).
     \vspace{1mm}
     \item \textbf{Vectors group by task:} The
-          \emph{same} task in two different conditions is more alike than two
-          \emph{different} tasks in the same condition.
+          same task in two different conditions is more alike than two
+          different tasks in the same condition.
     \vspace{1mm}
     \item \textbf{Word order:} English is SVO and Telugu is
-          SOV, so \cond{en} and \cond{te} vectors differ partly because the
-          word order differs.
+          SOV, so \cond{en} and \cond{te} vectors differ partly because of the word orders
   \end{itemize}
 \end{frame}
 
@@ -642,18 +631,17 @@
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \begin{itemize}\small\tight
-        \item We saw heads 17.4 and 17.6 are top two in all four
+        \item We see that heads 17.4 and 17.6 are top 2 in all four
               conditions. Code-mixed input \textbf{does not get rerouted}.
         \vspace{1.5mm}
-        \item \textbf{Vectors group by task first,
-              language second}. The same task in two different scripts is more
+        \item \textbf{Vectors group by task:} The same task in two different scripts is more
               similar to itself than to any other task in the same script.
         \vspace{1.5mm}
         \item An English vector
               still reaches 0.50 on Telugu prompts, 0.33 on romanized.
         \vspace{1.5mm}
-        \item So there is a \textbf{shared core}, and a smaller
-              language-specific part on top. 
+        \item This implies that there is a \textbf{shared task representation}, and a smaller
+              language-specific part.
       \end{itemize}
     \end{column}
     \begin{column}{0.48\textwidth}
@@ -671,7 +659,7 @@
       \end{tabular}}
       \vspace{3mm}
       \begin{itemize}\footnotesize\tight
-        \item More head overlap $\to$ better transfer. 
+        \item More head overlap leads to better transfer.
         \item Telugu-based conditions resemble each other more than any
               resembles English.
       \end{itemize}
@@ -679,7 +667,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Interpretation: What romanization damages}
+\begin{frame}{Interpretation: Effects of romanization and code mixing}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \textbf{Survives} \hfill {\footnotesize rom / tg}
@@ -687,8 +675,8 @@
         \item \texttt{extract\_person} \hfill 0.85 / 0.93
         \item \texttt{extract\_place}  \hfill 0.76 / 0.83
         \vspace{1mm}
-        \item Answers are \textbf{names}: ``kavita'', ``guntur''.
-              Same string in any script, so nothing is lost.
+        \item Answers are names like ``kavita'', ``guntur''.
+              Same string in any script.
       \end{itemize}
       \vspace{3mm}
       \textbf{Collapses} \hfill {\footnotesize rom / tg}
@@ -698,26 +686,24 @@
         \vspace{1mm}
         \item Answers depend on \textbf{word endings}.
               \tel{కొంటోంది} $\to$ \texttt{kontondi} flattens tense,
-              gender and negation into one undifferentiated string.
+              gender and negation.
       \end{itemize}
     \end{column}
     \begin{column}{0.52\textwidth}
       \vspace{2mm}
       \begin{itemize}\small\tight
-        \item For \textbf{verbs}, romanization stops the task representation
-              from forming \emph{and} stops the best available vector from
-              working --- both stages break.
+        \item For \textbf{verbs}, romanization hurts the task representation
+              while forming and also stops the best available vector from
+              working on zero-shot input.
         \vspace{1mm}
-        \item For \textbf{names}, neither stage breaks.
+        \item For names, both stages work
         \vspace{1mm}
-        \item Romanized answers are \emph{shorter} in tokens yet far
-              worse --- tokenization length is not the explanation.
+        \item Romanized answers are shorter in tokens, but are worse.
       \end{itemize}
     \end{column}
   \end{columns}
   \bridge{The model keeps the same task-routing machinery in all four
-    conditions. What romanization damages is specifically what Telugu stores
-    in its grammatical endings.}
+    conditions. Romanization damages grammatical information}
 \end{frame}
 
 % ----------------------------------- limitations and negative results -----
@@ -727,10 +713,10 @@
       \textbf{Things that did not work}
       \begin{itemize}\footnotesize\tight
         \item \textbf{Controls not beaten:} English subject
-              gender exactly matches its shuffled floor;
+              gender exactly matches its shuffled floor, and
               \texttt{extract\_person/rom} is nearly matched by an unrelated
               task's vector.
-        \item \textbf{The 12B inversion is unexplained}
+        \item \textbf{The 12B Telugu performance inversion is unexplained}
         \item \textbf{Layer and scaling are tuned one after the other}, not
               together. A joint search performs slightly better in some cases.
       \end{itemize}
@@ -741,7 +727,6 @@
         \item \textbf{One model family} (Gemma 3), two sizes.
         \item \textbf{Word order is a confound} when comparing English with
               Telugu (English is SVO, Telugu SOV).
-              \cond{rom} vs \cond{tg} is our clean comparison.
         \item \textbf{One romanization convention.}
       \end{itemize}
     \end{column}
@@ -754,7 +739,7 @@
     \begin{column}{0.32\textwidth}
       \textbf{Finish the open question}
       \begin{itemize}\footnotesize\tight
-        \item Explain the 12B failure on Telugu: is it tokenisation of Telugu script
+        \item Investigate the 12B failure on Telugu: is it tokenisation of Telugu script
               at that scale, or something about how the vector is built?
       \end{itemize}
     \end{column}
@@ -762,8 +747,7 @@
       \textbf{Extend the method}
       \begin{itemize}\footnotesize\tight
         \item Test repair methods
-        \item Check if the damage is due to the tokenizer, and would a
-              morphology-aware tokeniser recover it?
+        \item Check if the damage is due to the tokenizer, and how it can be recovered
         \item More code-mixing levels and languages
       \end{itemize}
     \end{column}
@@ -793,7 +777,7 @@
 % ============================================================ APPENDIX === %
 \appendix
 
-\begin{frame}{Appendix: All 15 tasks --- baseline accuracy}
+\begin{frame}{Appendix: All 15 tasks, baseline accuracy}
   \centering
   \src{10-shot accuracy and items kept by the competence filter, Gemma 3 4B,
     \texttt{core} tier. ``kept'': items the model already gets right with
@@ -802,11 +786,11 @@
    \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
      \input{tables/baselines.tex}}}
   \reading{Extraction tasks stay near ceiling in every condition. Word-level
-    tasks (antonym, next item) lose most items under romanization --- the
+    tasks (antonym, next item) lose most items under romanization. The
     model cannot perform the task there at all.}
 \end{frame}
 
-\begin{frame}{Appendix: All 15 tasks --- does the vector restore the task?}
+\begin{frame}{Appendix: All 15 tasks, does the vector restore the task?}
   \centering
   \src{Held-out zero-shot accuracy with the function vector, 95\% bootstrap
     CIs, Gemma 3 4B}\\[1mm]
@@ -843,9 +827,9 @@
     \bottomrule
   \end{tabular}}
   \readingsm{Extraction passes every control. Yes/no questions fail
-    everywhere --- with only two possible answers the shuffled floor is
+    everywhere. With only two possible answers, the shuffled floor is
     already ${\sim}0.6$.
-    \textbf{Romanized word pairs fail} on 3--4 surviving items.}
+    \textbf{Romanized word pairs fail} on 3-4 surviving items.}
 \end{frame}
 
 \end{document}

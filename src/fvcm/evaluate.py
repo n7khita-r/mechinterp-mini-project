@@ -1,16 +1,8 @@
 """Scoring, the competence filter, and bootstrap confidence intervals.
 
-The headline metric is the reference's: the **rank of the gold answer's first
-token** in the next-token distribution, from which top-1 and top-10 accuracy
-follow.
-
-We additionally log a **full-answer mean log-probability**. First-token rank is
-a weak metric for Telugu script and romanized Telugu, where the gold first token
-is often a short prefix shared by many words -- a model can rank that token
-first while having no idea of the full answer, and conversely. Reporting only
-first-token accuracy would confound "Telugu is harder" with "Telugu tokenizes
-differently". Both numbers are recorded for every item so the paper can show
-whether they agree.
+Headline metric is the rank of the gold answer's first token. A full-answer mean
+log-probability is logged alongside it, since first-token rank is weak where the
+gold first token is a prefix shared by many words.
 """
 
 from __future__ import annotations
@@ -54,16 +46,10 @@ class Score:
 @torch.no_grad()
 def score_batch(model, tokenizer, prompts: list[Prompt], device,
                 ctx=None) -> list[Score]:
-    """Score a batch of prompts in one forward pass.
+    """Score a batch of prompts in one forward pass, left-padded to position -1.
 
-    Left-padded so that position -1 is the last real token of every sequence,
-    which is where the task representation lives and where every intervention in
-    this project is applied.
-
-    `ctx` is a zero-argument callable returning a context manager -- used to hold
-    an intervention open (e.g. adding a function vector at a layer) for both the
-    first-token forward pass and the full-answer pass, so the two metrics always
-    describe the same intervened model.
+    `ctx` is a zero-argument callable returning a context manager, so an
+    intervention stays open for both the first-token and full-answer passes.
     """
     if not prompts:
         return []
@@ -75,7 +61,7 @@ def score_batch(model, tokenizer, prompts: list[Prompt], device,
     enc = tokenizer(texts, return_tensors="pt", padding=True,
                     padding_side="left").to(device)
     with ctx():
-        last = M.last_logits(model, enc)                    # (B, V), last position only
+        last = M.last_logits(model, enc)                    # (B, V)
     last = torch.log_softmax(last, dim=-1)
 
     out = []
@@ -85,10 +71,6 @@ def score_batch(model, tokenizer, prompts: list[Prompt], device,
         rank = int((lp > lp[first]).sum().item())
         prob = float(lp[first].exp().item())
 
-        # Full-answer score: teacher-force the gold answer after the prompt and
-        # average its token log-probs. A second forward pass per item, but only
-        # for the handful of items in this batch, and it buys the check that the
-        # first-token metric is not a tokenization artefact.
         full = _full_answer_logprob(model, tokenizer, p.text, ans, device, ctx)
 
         out.append(Score(
@@ -134,11 +116,8 @@ def batched(seq: list, n: int):
 def competence_filter(scores: list[Score]) -> set[str]:
     """Item ids the model already answers correctly from n-shot demonstrations.
 
-    The reference keeps items whose gold token has rank 0 under the clean
-    n-shot prompt. Everything downstream is restricted to these: a function
-    vector cannot be blamed for failing on a task the model cannot do even when
-    shown examples. For us this filter is also the main consumer of evaluation
-    items, so `01_baselines` reports how many survive per cell.
+    Everything downstream is restricted to these, so a function vector is never
+    blamed for a task the model cannot do even when shown examples.
     """
     return {s.item_id for s in scores if s.rank == 0}
 
@@ -167,13 +146,7 @@ def bootstrap_ci(scores: list[Score], k: int = 1, n_boot: int = 2000,
 
 def paired_delta(a: list[Score], b: list[Score], k: int = 1, n_boot: int = 2000,
                  seed: int = 0, alpha: float = 0.05) -> dict:
-    """Paired comparison of two conditions on the same items.
-
-    Conditions are row-aligned by construction (see data.py), so the comparison
-    is paired and the bootstrap resamples *items*, not conditions independently.
-    This is where the statistical power comes from: with ~30 shared items a
-    paired test resolves a ~0.2 gap that unpaired would need ~80 items to see.
-    """
+    """Paired comparison of two conditions on the same items; bootstrap resamples items."""
     ba = {s.item_id: s for s in a}
     bb = {s.item_id: s for s in b}
     shared = sorted(set(ba) & set(bb))
@@ -207,8 +180,6 @@ def summarise(scores: list[Score], exp: ExpConfig) -> dict:
         out[f"top{k}_lo"], out[f"top{k}_hi"] = lo, hi
     if scores:
         out["mean_full_logprob"] = float(np.mean([s.full_logprob for s in scores]))
-        # Token lengths per condition: the diagnostic that separates a genuine
-        # language effect from romanized Telugu simply costing more tokens.
         out["mean_prompt_tokens"] = float(np.mean([s.n_prompt_tokens for s in scores]))
         out["mean_answer_tokens"] = float(np.mean([s.n_answer_tokens for s in scores]))
     return out

@@ -1,25 +1,8 @@
-"""Dataset loading and item construction.
+"""Dataset loading and item construction from the TSVs in `data/`.
 
-Three kinds of task, three sources:
-
-* Part 1 abstractive -- read directly from `data/part1/<task>.tsv`.
-* Part 1 extractive  -- built combinatorially from the word pools in
-  `data/part1/categories.tsv`, so adding a word extends every task that uses
-  its category. Nothing is hand-written per task.
-* Part 2            -- built from `lexicon.tsv` + `verbs.tsv` + `templates.tsv`;
-  the realised sentences are written to `data/part2/sentences.tsv` and committed
-  so a run reproduces without regenerating.
-
-Two invariants the rest of the pipeline relies on:
-
-1. **Conditions are row-aligned.** An item id present in one condition is
-   present in all of them, with the same tier. This makes every cross-condition
-   comparison paired, which is where the statistical power comes from given
-   hand-authored data. Combinatorial construction therefore draws its random
-   choices *once*, condition-independently, and only then realises the words.
-2. **Splits are stable under row insertion.** Items are ordered by content hash,
-   not file position, so appending to a TSV does not reshuffle which existing
-   items are train and which are valid.
+Two invariants the pipeline relies on: conditions are row-aligned, so every
+cross-condition comparison is paired; and splits are keyed by content hash, so
+appending rows does not reshuffle existing train/valid assignments.
 """
 
 from __future__ import annotations
@@ -71,7 +54,7 @@ class Item:
 
     @property
     def uid(self) -> str:
-        """Content hash. Editing any field makes a different item, by design."""
+        """Content hash; editing any field makes a different item."""
         blob = f"{self.task}|{self.condition}|{self.tier}|{self.inp}|{self.out}"
         return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:16]
 
@@ -106,8 +89,7 @@ def _abstractive_items(task: str, condition: str) -> list[Item]:
     in_col, out_col = f"{condition}_in", f"{condition}_out"
     items = []
     for _, r in df.iterrows():
-        # A row missing any condition is dropped from every condition, keeping
-        # the conditions row-aligned (invariant 1).
+        # A row missing any condition is dropped from all of them, to stay aligned.
         if any(r[f"{c}_{s}"] == "" for c in conditions_for(task) for s in ("in", "out")):
             continue
         items.append(Item(r["id"], task, condition, r["tier"], r[in_col], r[out_col]))
@@ -132,16 +114,7 @@ def _category_pools() -> tuple[dict[str, list[str]], dict[str, dict]]:
 
 
 def _extractive_plan(task: str, seed: int) -> list[dict]:
-    """Decide the word *ids* for every item, independently of condition.
-
-    Drawn once so that `en`, `te` and `rom` get exactly the same items with the
-    same tiers -- otherwise the tier of an item could differ by condition and the
-    paired comparison would silently break.
-
-    `choose_last` ignores categories: its answer is the final element, so it
-    needs no understanding of meaning and acts as the control isolating script
-    and tokenization effects from semantic ones.
-    """
+    """Decide the word ids for every item, drawn once so all conditions get the same items."""
     pools, rows = _category_pools()
     rng = random.Random(f"{task}|{seed}")
 
@@ -206,9 +179,7 @@ def _is_telugu(s: str) -> bool:
 def _realise(order: str, fillers: dict[str, str]) -> str:
     """Turn a '+'-joined template order into a sentence.
 
-    Tokens are slot names, `lit:<text>` literals, or `place.loc` -- place
-    carrying the locative, attached when the place is in Telugu script and
-    written as a separate word when it is in Latin script.
+    Tokens are slot names, `lit:<text>` literals, or `place.loc` (place + locative).
     """
     parts = []
     for tok in order.split("+"):
@@ -224,17 +195,10 @@ def _realise(order: str, fillers: dict[str, str]) -> str:
 
 
 def generate_sentences(seed: int = 42, n: int = N_SENTENCES) -> pd.DataFrame:
-    """Build Part 2 sentences from the three source tables.
+    """Build Part 2 sentences, balanced across (template, tense, polarity, gender).
 
-    Balanced across (template, tense, polarity, gender) by walking the
-    cross-product in a fixed shuffled order and sampling only the lexical
-    fillers, so no grammatical cell is starved.
-
-    Tenglish is built on the **romanized** base, not the Telugu-script one: real
-    Tenglish is written in Latin script throughout (`ninna nenu chala tired
-    ayyanu`). Holding script constant between `rom` and `tg` is also what makes
-    the design work -- `te` vs `rom` isolates script, `rom` vs `tg` isolates
-    code-mixing. Mixing scripts within a sentence would confound both.
+    Tenglish is built on the romanized base, so `te` vs `rom` isolates script
+    and `rom` vs `tg` isolates code-mixing.
     """
     lex = read_tsv("part2/lexicon.tsv")
     verbs = read_tsv("part2/verbs.tsv")
@@ -285,9 +249,7 @@ def generate_sentences(seed: int = 42, n: int = N_SENTENCES) -> pd.DataFrame:
                 slot: rec["en" if (cond == "tg" and slot in switched) else base]
                 for slot, rec in src.items()
             }
-            # The verb is never switched to English: tense, negation and subject
-            # gender are all read off Telugu verb morphology, so switching it
-            # would delete the very signal those three tasks are about.
+            # Never switched to English: the label tasks read Telugu verb morphology.
             fill["verb"] = verb[base]
             if not has_person:
                 fill["person"] = ""
@@ -316,11 +278,8 @@ def _part2_items(task: str, condition: str, seed: int) -> list[Item]:
     for _, r in df.iterrows():
         if task not in tpls.loc[r["template"], "tasks"].split("+"):
             continue
-        # Telugu marks subject gender only on affirmative verbs: the negative
-        # past and present are gender-neutral, and the negative future forms
-        # differ in script but romanize identically. Negated sentences are
-        # therefore unanswerable for this task, so they are excluded rather than
-        # scored as failures. Reported as a finding in its own right.
+        # Telugu marks subject gender only on affirmative verbs, so negated
+        # sentences are unanswerable here rather than wrong.
         if task == "subject_gender" and r["polarity"] != "aff":
             continue
 
@@ -375,20 +334,12 @@ class Split:
 
 
 def split_items(items: list[Item], exp: ExpConfig) -> Split:
-    """Deterministic split, stable under row insertion (invariant 2).
+    """Deterministic split, ordered by a seeded hash of each item's own identity.
 
-    The reference holds out 30% for evaluation. We hold out far more, because
-    the train pool only needs enough variety to build distinct n-shot prompts
-    while evaluation items are the scarce resource in hand-authored data. The
-    train pool is floored at `min_train` so a small cell cannot end up with
-    fewer items than `n_shots`, which would make prompt construction impossible.
+    Keying on the item rather than its position keeps existing assignments
+    stable when rows are appended, so cached results stay valid. The train pool
+    is floored at `min_train` so a small cell still supports `n_shots` prompts.
     """
-    # Order by a seeded hash of each item's own identity. Shuffling a
-    # position-indexed list would reorder everything the moment the list length
-    # changed, so appending a row to a TSV would reassign existing items between
-    # train and valid and invalidate every cached result. Keying on the item
-    # instead means new rows slot into a fixed ordering, and only items sitting
-    # at the train/valid boundary can move.
     def key(i: Item) -> str:
         return hashlib.sha1(f"{exp.seed}|{i.pair_uid}".encode()).hexdigest()
 

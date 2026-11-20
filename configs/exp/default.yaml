@@ -1,5 +1,5 @@
-# Experiment defaults. Values follow Todd et al. (ICLR 2024) exactly except where
-# a comment says otherwise; see CONTEXT.md for the reference hyperparameter table.
+# Experiment defaults. Values follow Todd et al. (ICLR 2024) except where
+# a comment says otherwise.
 name: default
 seed: 42
 
@@ -41,7 +41,7 @@ mediation:
 fv:
   n_top_heads: 10
   # Head sets are computed per condition (en/te/rom/tenglish) plus one pooled
-  # set over all conditions. See CONTEXT.md for why this differs from the paper.
+  # set over all conditions.
   head_set_scope: per_condition
 
 # ---- intervention

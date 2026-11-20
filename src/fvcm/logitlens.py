@@ -1,22 +1,9 @@
 """Logit lens: where across depth does the answer become available?
 
-Read each decoder layer's output at the last token, push it through the model's
-**final norm** and its unembedding, and record the rank and probability of the
-gold answer's first token. No intervention -- this is an independent readout on
-ordinary n-shot prompts, used as a consistency check on the function-vector
-story: if Tenglish really has a weaker task representation, the answer should
-emerge later or more weakly across layers.
+    rank_l(gold) from  unembed(final_norm(h_l))
 
-Gemma specifics that make or break this:
-
-* The final norm **must** be applied before the unembedding. Gemma's RMSNorm is
-  `(1 + w)`-parameterised and the residual stream is scaled by sqrt(d_model) at
-  the embedding, so unembedding a raw hidden state yields noise at every layer.
-* The unembedding is **tied** to the input embedding matrix, so it is read via
-  `get_output_embeddings()` rather than assumed to be a separate `lm_head`.
-
-Early layers are not interpreted: the lens is known to be unreliable there, and
-we report mid-to-late layers only.
+Gemma ties the unembedding to the input embeddings and needs the final norm
+applied first, or every layer reads as noise. Early layers are not interpreted.
 """
 
 from __future__ import annotations
@@ -41,11 +28,7 @@ def _unembed(model, info: ModelInfo):
 @torch.no_grad()
 def lens_curve(model, tokenizer, info: ModelInfo, split, items: list[Item],
                exp: ExpConfig, task: str, condition: str) -> dict:
-    """Per-layer rank and probability of the gold first token, averaged over items.
-
-    Prompts are ordinary n-shot prompts, built the same way as everywhere else so
-    the curve is comparable with the function-vector results on the same cell.
-    """
+    """Per-layer rank and probability of the gold first token, averaged over items."""
     norm, head = _unembed(model, info)
     rng = rng_for("lens", task, condition, exp.seed)
 
@@ -82,8 +65,7 @@ def lens_curve(model, tokenizer, info: ModelInfo, split, items: list[Item],
         "layers": list(range(info.n_layers)),
         "mean_rank": (ranks / n).tolist(),
         "mean_prob": (probs / n).tolist(),
-        # Depth at which the gold token first enters the top 10, as a single
-        # comparable number per cell. None if it never does.
+        # Layer where the gold token first enters the top 10; None if never.
         "emergence_layer": _emergence(ranks / n),
         "interpret_from_layer": info.n_layers // 4,
     }
@@ -99,12 +81,7 @@ def _emergence(mean_ranks: torch.Tensor, threshold: float = 10.0) -> int | None:
 @torch.no_grad()
 def decode_vector(model, info: ModelInfo, vec: torch.Tensor, tokenizer,
                   k: int = 10) -> list[tuple[str, float]]:
-    """Top tokens a function vector promotes, read through the same lens.
-
-    The reference's `fv_to_vocab`. A sanity check on what a vector "means":
-    an antonym vector that promotes antonym-ish tokens is doing what its name
-    says.
-    """
+    """Top-k tokens a function vector promotes, read through the same lens."""
     norm, head = _unembed(model, info)
     h = vec.to(next(model.parameters()).dtype).to(model.device).reshape(1, 1, -1)
     logits = head(norm(h)).float()[0, 0]

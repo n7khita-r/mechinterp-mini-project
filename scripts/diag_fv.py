@@ -1,21 +1,7 @@
 #!/usr/bin/env python3
-"""Diagnose a function vector that is having no effect.
+"""Diagnose a function vector with no effect: is it too small to move the residual?
 
-Runs on ONE cell and takes ~2 minutes. Answers one question: is the vector too
-small to move the residual stream?
-
-Gemma scales its embeddings by sqrt(d_model) (~50 for 4B), so its residual
-stream carries a much larger norm than GPT-J's, which is what Todd et al. built
-and tuned this method on. A function vector is a sum of ten attention-head
-outputs pushed through W_O; if that sum is tiny relative to the residual it is
-added to, the intervention is arithmetically real but numerically invisible --
-which looks exactly like `+0.00` deltas at every layer.
-
-Prints the norm ratio, then sweeps a scale factor and reports zero-shot accuracy
-at each, so you can see directly whether the effect is there but under-scaled.
-
-    python scripts/diag_fv.py --model configs/model/gemma3_4b_h200.yaml \
-        --task present_past --condition te
+Prints the norm ratio, then sweeps a scale factor over one cell.
 """
 
 from __future__ import annotations

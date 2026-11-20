@@ -1,8 +1,6 @@
 """Function vectors under code-mixing: Telugu, romanized Telugu and Tenglish.
 
-Implementation follows Todd et al., "Function Vectors in Large Language Models"
-(ICLR 2024) and its reference code at github.com/ericwtodd/function_vectors.
-Deviations from the reference are listed in CONTEXT.md and flagged in-line.
+Follows Todd et al., "Function Vectors in Large Language Models" (ICLR 2024).
 """
 
 __version__ = "0.1.0"

@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 """Stage 01 -- n-shot and zero-shot baselines, and the competence filter.
 
-For every (task, condition) cell: score the validation items with a clean
-n-shot prompt and with no prompt at all, then record which items the model gets
-right from demonstrations. Everything downstream runs on that filtered set --
-a function vector cannot be blamed for failing a task the model cannot do even
-when shown examples.
-
-Read the `kept` column first. It is simultaneously the headline question (can
-Gemma do these tasks in Telugu at all?) and the thing that decides whether any
-downstream number has enough items behind it to mean anything.
+The `kept` count per cell is what decides whether any downstream number has
+enough items behind it.
 """
 
 from __future__ import annotations

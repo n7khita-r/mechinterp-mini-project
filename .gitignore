@@ -16,7 +16,6 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
-.pytest_cache/
 .ipynb_checkpoints/
 
 # SLURM logs
@@ -37,14 +36,10 @@ slurm_logs/
 *.toc
 *.vrb
 *.xdv
-paper/*.pdf
-presentation/*.pdf
 
 # Run logs: machine-specific, and they contain host and path details
 logs/
 
-# Generated bundles (rebuild with: make slides-zip)
-presentation/slides.zip
 presentation.zip
 # Hand-made copies of the deck (the canonical source is presentation/main.tex)
 presentation/mechinterp project ppt/

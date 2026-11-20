@@ -1,22 +1,8 @@
 #!/usr/bin/env python3
 """Stage 00 -- fail fast before a long job starts.
 
-Checks, in the order they would bite:
-
-1. GPU present, with enough memory for the configured dtype.
-2. Hugging Face auth works and the (gated) Gemma weights are reachable.
-3. The model loads and its shapes match the config's `expect` block.
-4. The three hooks actually do something -- patching a head changes the logits,
-   adding a vector to the residual stream changes the logits, and the logit lens
-   at the final layer reproduces the model's own output.
-5. fp16 numerical safety, against an fp32 CPU reference. Ada has no bf16 (its
-   1080/2080 Ti predate Ampere), and Gemma was trained in bf16, so fp16 has to
-   be verified rather than assumed.
-6. A measured head-batch size recommendation, so a long job does not OOM at
-   hour three with nothing to show.
-
-Run this with `--model configs/model/debug_tiny.yaml` to exercise the whole path
-on CPU, with no GPU and no gated weights.
+Checks the GPU, HF auth, model shapes against the config's `expect` block, that
+all three hooks change the logits, fp16 numerical safety, and a safe batch size.
 """
 
 from __future__ import annotations
@@ -56,13 +42,9 @@ def main() -> int:
         total = (torch.cuda.get_device_properties(0).total_memory / 2**30) if has_cuda else 0
         check("cuda available", has_cuda,
               f"{torch.cuda.get_device_name(0)} {total:.0f} GiB" if has_cuda else "no GPU")
-        # ~2 bytes per parameter in fp16/bf16, plus headroom for activations and
-        # KV cache. 4B with the vision tower dropped is ~7.8 GB, so an 11 GB
-        # 2080 Ti clears 10 GB; 27B needs an 80 GB card (see its config).
+        # ~2 bytes per parameter, plus headroom for activations and KV cache.
         need = {"gemma3_4b": 10, "gemma3_4b_bf16": 10, "gemma3_27b": 62}.get(mcfg.name, 0)
-        # torch.cuda.is_bf16_supported() counts *emulated* bf16, so it returns True
-        # on Turing (sm_75) even though there are no bf16 tensor cores. Judge by
-        # compute capability instead: real bf16 needs sm_80+.
+        # is_bf16_supported() counts emulated bf16; real bf16 needs sm_80+.
         cc = torch.cuda.get_device_capability(0) if has_cuda else (0, 0)
         bf16_native = cc[0] >= 8
         check("dtype appropriate for this GPU",
@@ -108,7 +90,6 @@ def main() -> int:
           f"resid {minfo.resid_dim}")
     check("module paths discovered", True,
           f"{minfo.layer_prefix}.* / norm={minfo.norm_name}")
-    # The Gemma 3 trap: the reference would compute resid_dim // n_heads here.
     naive = minfo.resid_dim // minfo.n_heads
     check("head_dim read from config, not derived", True,
           f"head_dim={minfo.head_dim}; resid_dim//n_heads would give {naive}"
@@ -139,8 +120,7 @@ def main() -> int:
     check("residual add changes logits", float((added - clean).abs().max()) > 0,
           f"max delta {float((added - clean).abs().max()):.4g}")
 
-    # Logit lens at the last layer must reproduce the model's own logits,
-    # which is the check that the final norm and tied unembedding are right.
+    # Must reproduce the model's own logits: checks the norm and tied unembedding.
     resid: dict[int, torch.Tensor] = {}
     with M.capture_residual(model, minfo, resid):
         model(**enc)
@@ -151,13 +131,8 @@ def main() -> int:
     tol = 0.2 if model.dtype != torch.float32 else 1e-3
     check("logit lens reproduces final logits", err < tol, f"max abs error {err:.4g}")
 
-    # 5. fp16 numerical safety.
-    # Gemma 3 was trained in bf16 and the Gemma family has a history of fp16
-    # activation overflow. Ada has no bf16, so fp16 is the only fast option
-    # there -- but it has to be *verified*, not assumed. Compare last-token
-    # logits against an fp32 CPU reference on real prompts from every condition.
-    # If this fails, move to a bf16-capable GPU with gemma3_4b_bf16.yaml rather
-    # than trying to force fp16 through.
+    # 5. fp16 numerical safety, against an fp32 CPU reference. Gemma 3 was
+    # trained in bf16 and has a history of fp16 activation overflow.
     if model.dtype == torch.float16 and not mcfg.random_init and not args.skip_fp16_check:
         from transformers import AutoModelForCausalLM
 

@@ -1,27 +1,6 @@
-"""Causal mediation: the average indirect effect (AIE) of every attention head.
-
-For a head (L, H): run a **shuffled-label** n-shot prompt, where the task cannot
-be inferred from the demonstrations, replace that one head's output at the last
-token with its clean mean, and measure how much the gold answer's probability
-rises:
+"""Causal mediation: average indirect effect (AIE) of every attention head.
 
     AIE(L, H) = E_prompts [ p_patched(gold) - p_corrupted(gold) ]
-
-Two departures from the reference, both deliberate:
-
-1. **One sweep per condition, not per (task, condition).** The paper averages AIE
-   over tasks anyway to obtain a single universal head set, so each trial here
-   samples a random task from the condition. That makes the per-condition head
-   sets a first-class result -- "do Telugu and English recruit the same heads?"
-   is exactly the overlap between these sets -- and cuts the sweep cost by the
-   number of tasks (~8x).
-
-2. **Batched over heads.** Every patch for a given layer applies to the same
-   prompt, so the prompt is replicated across the batch and each element carries
-   a different head. Forwards per trial drop from n_layers x n_heads to
-   n_layers: 1,984 -> 62 on the 27B model. The reference has a `batched_input`
-   path that does this, but its own sweep does not use it; that single choice is
-   the difference between a ~4-hour and a ~50-hour run.
 """
 
 from __future__ import annotations
@@ -42,12 +21,10 @@ def indirect_effects(model, tokenizer, info: ModelInfo,
                      cells: dict[str, tuple[Split, torch.Tensor, set[str]]],
                      exp: ExpConfig, condition: str,
                      progress: bool = True) -> torch.Tensor:
-    """AIE for every head, averaged over trials that span all tasks.
+    """AIE for every head, over trials spanning all tasks in one condition.
 
-    `cells` maps task -> (split, mean_activations, competence_filtered_ids) for
-    this condition. Returns a (n_trials, n_layers, n_heads) float32 tensor; the
-    caller averages over trials, keeping the per-trial values so the variability
-    of a head's effect can be inspected.
+    `cells` maps task -> (split, mean_activations, kept_ids). Returns
+    (n_trials, n_layers, n_heads) float32; the caller averages over trials.
     """
     n_trials = int(exp.mediation["n_trials"])
     tasks = sorted(cells)
@@ -57,9 +34,6 @@ def indirect_effects(model, tokenizer, info: ModelInfo,
     rng = rng_for("aie", condition, exp.seed)
     out = torch.zeros(n_trials, info.n_layers, info.n_heads, dtype=torch.float32)
 
-    # The dominant cost of the whole project: n_trials * n_layers batched
-    # forwards per condition. Report on a wall-clock interval so a stalled sweep
-    # is distinguishable from a merely slow one.
     for t in track(range(n_trials), f"AIE[{condition}]", stage="03_mediation",
                    enabled=progress, total=n_trials):
         task = tasks[rng.randrange(len(tasks))]
@@ -100,11 +74,7 @@ def top_heads(aie: torch.Tensor, n_top: int) -> list[tuple[int, int, float]]:
 
 
 def head_overlap(a: list[tuple[int, int, float]], b: list[tuple[int, int, float]]) -> dict:
-    """Jaccard overlap between two head sets, ignoring effect sizes.
-
-    This is the direct readout for "are the same heads carrying the task in
-    both conditions?", and the reason AIE is computed per condition.
-    """
+    """Jaccard overlap between two head sets, ignoring effect sizes."""
     sa = {(l, h) for l, h, _ in a}
     sb = {(l, h) for l, h, _ in b}
     inter = len(sa & sb)

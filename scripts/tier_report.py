@@ -1,18 +1,7 @@
 #!/usr/bin/env python3
-"""Accuracy by complexity tier. No GPU needed; reads stage 01's per-item scores.
+"""Accuracy by complexity tier, pooled over tasks, from stage 01's per-item scores.
 
-The headline run evaluates `core` only, so it cannot say whether harder
-registers degrade. This aggregates the tier sweep (scripts/run_tiers.sh) into
-one table: tier x condition, pooled over tasks.
-
-Pooling over tasks is the only way these cells are large enough to mean
-anything -- sanskritized has ~61 items spread over four tasks -- so the table
-reports n alongside every accuracy and drops cells below a floor.
-
-    python scripts/tier_report.py --model configs/model/gemma3_4b_h200.yaml \
-        --exp configs/exp/tiers.yaml
-
-Writes paper/tables/tier_accuracy.tex and presentation-ready numbers.
+Reports n alongside every accuracy and drops cells below a floor.
 """
 
 from __future__ import annotations
@@ -73,7 +62,7 @@ def main() -> int:
         mark = "  (thin)" if r["thin"] else ""
         print(f"{r['tier']:14s} {r['condition']:5s} {r['n']:5d} {r['acc']:8.2f}{mark}")
 
-    # Relative drop from core, per condition: the quantity the claim is about.
+    # Relative drop from core, per condition.
     core = {r["condition"]: r["acc"] for r in rows if r["tier"] == "core"}
     print(f"\n{'change from core':24s}" + "".join(f"{COND_NAME[c]:>12s}"
                                                   for c in COND_ORDER if c in core))
@@ -107,14 +96,13 @@ def main() -> int:
             if not r:
                 cells.append("-- & --")
             else:
-                # A thin cell is printed in grey so it cannot be read as evidence.
+                # Thin cells are greyed out.
                 acc = (rf"\textcolor{{black!45}}{{{r['acc']:.2f}}}" if r["thin"]
                        else f"{r['acc']:.2f}")
                 cells.append(f"{acc} & {r['n']}")
         tex.append(f"{TIER_NAME[tier]} & " + " & ".join(cells) + r" \\")
     tex += [r"\bottomrule", r"\end{tabular}"]
-    # Model-suffixed: this table is per-model, and a shared filename means a
-    # second model silently overwrites the first model's numbers.
+    # Model-suffixed, or a second model overwrites the first's numbers.
     tex_path = REPO_ROOT / "paper" / "tables" / f"tier_accuracy_{mcfg.name}.tex"
     tex_path.parent.mkdir(parents=True, exist_ok=True)
     tex_path.write_text("\n".join(tex) + "\n", encoding="utf-8")

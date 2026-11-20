@@ -1,22 +1,7 @@
 """Shared figure style for the paper and the slides.
 
-Palette and rules follow the project's data-visualisation method:
-
-* The four conditions are a **categorical** encoding, so they get a fixed hue
-  order that is never cycled. The chosen four -- blue, orange, aqua, violet --
-  were validated with the all-pairs colour-vision-deficiency check (worst CVD
-  Delta E 9.2, worst normal-vision Delta E 16.3 against a light surface), because
-  in line charts and heat grids every series is on screen at once, so the
-  adjacent-pair relaxation does not apply.
-* Aqua sits below 3:1 contrast on a light surface, which obliges **relief**:
-  every figure here is emitted alongside the same numbers as a LaTeX table, and
-  line charts carry distinct markers and dash patterns. That also makes the
-  figures readable in greyscale print, which matters for a paper.
-* Magnitude (cosine similarity, head overlap, transfer) uses a **single hue,
-  light to dark**. Signed quantities (indirect effects, which can be negative)
-  use a **diverging** pair with a neutral grey midpoint -- never a rainbow, and
-  never a hue at the midpoint.
-* No figure in this project has two y-axes.
+Conditions carry a fixed hue, marker and dash pattern, so no series is
+identified by colour alone and the figures survive greyscale print.
 """
 
 from __future__ import annotations
@@ -33,7 +18,7 @@ INK_2 = "#52514e"
 INK_MUTED = "#8a8982"
 GRID = "#e3e2dd"
 
-# Fixed categorical order. Index by condition name, never by position in a loop.
+# Index by condition name, never by position in a loop.
 CONDITION_COLOR = {
     "en": "#2a78d6",     # blue
     "te": "#eb6834",     # orange
@@ -68,7 +53,7 @@ DIV = LinearSegmentedColormap.from_list(
 
 
 def use_paper_style() -> None:
-    """Serif, small, recessive chrome -- sized to drop into an ACL column."""
+    """Serif, small, sized to drop into an ACL column."""
     plt.rcParams.update({
         "figure.facecolor": SURFACE,
         "axes.facecolor": SURFACE,
@@ -118,7 +103,6 @@ def finish(fig, path, also_png: bool = True):
 
 
 def condition_legend(ax, conditions, **kw):
-    """Legend is always present for two or more series, so identity is never
-    carried by colour alone."""
+    """Legend for two or more series, so identity is never colour alone."""
     if len(conditions) >= 2:
         ax.legend(loc=kw.pop("loc", "best"), ncols=kw.pop("ncols", 1), **kw)

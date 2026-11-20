@@ -1,15 +1,6 @@
 #!/usr/bin/env python3
-"""Stage 08 -- controls.
-
-Each one closes an alternative explanation for a function vector that works:
-
-* random vector of matched norm -- "any big vector at that depth jolts the model"
-* unrelated-task function vector -- "any well-formed function vector helps"
-* shuffled-label n-shot floor -- the level reached when the prompt has the
-  task's form but not its content
-
-A function vector that does not clearly beat all three has not been shown to
-carry task-specific content.
+"""Stage 08 -- controls: random vector of matched norm, unrelated-task vector,
+and the shuffled-label n-shot floor. A function vector must beat all three.
 """
 
 from __future__ import annotations
@@ -36,8 +27,7 @@ def main() -> int:
     interv = RESULTS / "05_intervene" / mcfg.name / "intervention.json"
     if not interv.exists():
         raise SystemExit("run 05_intervene first (it chooses the edit layer)")
-    # Reuse both the layer and the scale stage 05 chose on its dev slice, so the
-    # controls are measured in the same regime as the result they are testing.
+    # Reuse stage 05's layer and scale, so controls sit in the same regime.
     med_rows = read_json(interv)
     layers = {f"{r['task']}|{r['condition']}": r["edit_layer"] for r in med_rows}
     alphas = {f"{r['task']}|{r['condition']}": float(r.get("fv_rel_norm", 0.0))
@@ -51,8 +41,6 @@ def main() -> int:
 
     model, tok, info = M.load_model(mcfg)
 
-    # The unrelated-task vector is built here rather than in stage 04 because it
-    # exists only as a control and is never part of the main results.
     unrelated: dict[str, FunctionVector] = {}
     for cond in ("en", "te", "rom"):
         if cond not in head_sets:
@@ -93,9 +81,7 @@ def main() -> int:
     print(hdr)
     for r in sorted(rows, key=lambda r: (r["task"], r["condition"])):
         gap = r["acc_fv"] - r["acc_random"]
-        # Identical FV and random columns mean the comparison is uninformative,
-        # not that the vector is generic -- flag it rather than let it pass as a
-        # result.
+        # Identical FV and random columns mean the comparison is uninformative.
         flag = "  <- identical" if abs(gap) < 1e-9 else ""
         print(f"{r['task']:20s} {r['condition']:5s} {r['acc_fv']:6.2f} "
               f"{r['acc_random']:6.2f} {r['acc_unrelated']:6.2f} "

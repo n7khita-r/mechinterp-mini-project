@@ -1,20 +1,6 @@
 #!/usr/bin/env python3
-"""Check the hand-edited TSVs under data/.
-
-Run after editing anything in data/ (`make lint`). Catches the mistakes that are
-easy to make by hand and expensive to discover after a GPU run:
-
-* duplicate or missing ids, unknown tiers, missing condition columns
-* Telugu characters sitting in a `rom_`/`en_` column, or Latin text in a `te_`
-  column -- the single most likely copy-paste error
-* romanization that uses characters outside the documented convention
-* rows that are incomplete in one condition, which silently drop the item from
-  *every* condition (conditions are kept row-aligned so comparisons are paired)
-* multi-word answers on word-level tasks, where only the first token is scored
-* answers that collide under romanization, which should be tier `ambiguous`
-* Part 2: unknown slots, tense/polarity/gender values, template references
-
-Exit status is 1 if anything is an error, 0 if only warnings.
+"""Check the hand-edited TSVs under data/: ids, tiers, script mixing, romanization,
+row alignment across conditions, answer tokenization. Exit 1 on any error.
 """
 
 from __future__ import annotations
@@ -32,10 +18,8 @@ from fvcm import PART1_ABSTRACTIVE, PART2_TASKS, TIERS  # noqa: E402
 from fvcm.data import read_tsv  # noqa: E402
 
 TELUGU = range(0x0C00, 0x0C80)
-# Letters the documented romanization convention can produce, plus space/hyphen.
-# `w` and `z` are included because proper nouns are conventionally spelled with
-# them (vijayawada, warangal, nizamabad, swapna) even though Telugu has no such
-# phonemes -- the convention governs common words, not names.
+# Letters the romanization convention can produce, plus space/hyphen. `w` and
+# `z` are allowed for proper nouns (vijayawada, nizamabad).
 ROM_OK = set("abcdefghijklmnoprstuvwyzh -")
 
 errors: list[str] = []
@@ -120,13 +104,12 @@ def check_part1() -> None:
             if blanks:
                 err(tag, f"incomplete row, blank {blanks} -- this drops the item "
                          "from EVERY condition, not just that one")
-            # Only the answer's first token is scored, so a multi-word answer
-            # makes the metric meaningless.
+            # Only the answer's first token is scored.
             for c in ("en_out", "te_out", "rom_out"):
                 if " " in r[c]:
                     warn(tag, f"{c} is multi-word ({r[c]!r}); only its first token "
                               "is scored")
-            # Input and output identical under romanization => unanswerable there.
+            # Identical under romanization => unanswerable there.
             if r["rom_in"] and r["rom_in"] == r["rom_out"] and r["tier"] != "ambiguous":
                 err(tag, f"rom_in == rom_out ({r['rom_in']!r}) but tier is "
                          f"{r['tier']!r}; this is a romanization collapse and "
@@ -152,7 +135,6 @@ def check_part1() -> None:
             err(where, f"category {cat!r} is empty but tasks depend on it")
         elif counts[cat] < 10:
             warn(where, f"category {cat!r} has only {counts[cat]} words")
-    # A word in two categories makes the extractive tasks ambiguous.
     seen = defaultdict(set)
     for _, r in df.iterrows():
         seen[r["en"]].add(r["category"])
@@ -194,7 +176,7 @@ def check_part2() -> None:
         bad = sorted(set(verbs[col]) - allowed)
         if bad:
             err("part2/verbs.tsv", f"unknown {col} value(s) {bad}")
-    # The paradigm must be complete, or sentence generation starves a cell.
+    # An incomplete paradigm starves a sentence-generation cell.
     for lemma, g in verbs.groupby("lemma"):
         cells = {(r["tense"], r["polarity"], r["gender"]) for _, r in g.iterrows()}
         if len(cells) != 12:
@@ -223,7 +205,6 @@ def check_part2() -> None:
             if s == "verb":
                 err(tag, "verb must not be mixable: tense, negation and subject "
                          "gender are all read off Telugu verb morphology")
-        # The tense task must have no lexical time cue; the gender task no name.
         tasks = set(r["tasks"].split("+"))
         if "tense" in tasks and "time" in r["te_order"]:
             err(tag, "declares the tense task but the template has a time slot, "

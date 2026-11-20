@@ -1,16 +1,6 @@
 """Mean attention-head activations.
 
-For each (task, condition) we average every head's output at the last token over
-`n_trials` clean n-shot prompts. This is the `ā_{l,h}` of the method: the
-"this is what this head does when the task is clear" reference value, used both
-as the patch in causal mediation and as the raw material of the function vector.
-
-Simplification against the reference: it stores means for *every* token position
-of a canonical template layout, which requires mapping multi-token words onto
-shared slots (`compute_duplicated_labels` / `idx_map`). Every use in this
-project -- the mediation patch and the function vector -- reads only the last
-token, so we store only that. This drops a few hundred lines of index mapping
-that could go wrong without being noticed, and changes no result.
+    ā_{l,h} = (1/N) sum over N clean n-shot prompts of head (l,h)'s last-token output
 """
 
 from __future__ import annotations
@@ -31,10 +21,7 @@ def mean_head_activations(model, tokenizer, info: ModelInfo, split: Split,
                           shuffle_labels: bool = False) -> torch.Tensor:
     """Average head outputs at the last token over clean n-shot prompts.
 
-    Returns a float32 CPU tensor of shape (n_layers, n_heads, head_dim).
-
-    `filter_ids` restricts the query drawn for each prompt to competence-filtered
-    items, matching the reference, which passes `filter_set_validation` here.
+    Returns float32 CPU tensor of shape (n_layers, n_heads, head_dim).
     """
     n_trials = int(exp.mean_activations["n_trials"])
     rng = rng_for("mean_acts", task, condition, exp.seed)

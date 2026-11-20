@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 """Stage 06 -- cross-condition transfer.
 
-Apply the function vector built in one condition to zero-shot prompts in
-another. This is the experiment that separates the two explanations for a drop
-on Telugu or Tenglish:
-
-* the English vector steers Telugu prompts about as well as the Telugu vector
-  does -> the task representation is language-independent, and what fails is
-  reading the input;
-* it does not transfer -> the task representation itself differs by condition.
+Apply the function vector built in one condition to zero-shot prompts in another.
 """
 
 from __future__ import annotations
@@ -56,11 +49,8 @@ def main() -> int:
             pool = [i for i in split.valid if not keep or i.id in keep]
             if not pool:
                 continue
-            # Hold the edit layer fixed at the target condition's own choice, so
-            # the comparison is about the vector, not about where it is injected.
+            # Target condition's own layer and scale, so only direction varies.
             layer = layers.get(f"{task}|{target}", info.mid_layer)
-            # Same reasoning for the scale: the target cell's alpha, so a source
-            # vector is never handicapped by being injected at the wrong norm.
             alpha = alphas.get(f"{task}|{target}") or default_alpha
             for source in conds:
                 try:

@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 """Stage 02 -- mean attention-head activations per (task, condition).
 
-The `ā_{l,h}` of the method: what each head outputs at the last token when the
-task is clear. Used twice downstream -- as the patch in causal mediation
-(stage 03) and as the raw material of the function vector (stage 04).
-
-Queries are drawn from the competence-filtered items written by stage 01,
-matching the reference, which passes its validation filter set here.
+    a_bar_{l,h} = mean last-token output of head (l,h) over clean n-shot prompts
 """
 
 from __future__ import annotations

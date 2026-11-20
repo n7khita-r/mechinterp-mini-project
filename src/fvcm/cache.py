@@ -1,12 +1,7 @@
 """Crash-resume cache and run manifests.
 
-Deliberately minimal. Function vectors are always refit from the current data,
-so there is no incremental-scoring or snapshot-delta machinery here: if the
-dataset changes, the run is redone. The cache exists only so that a SLURM job
-killed at hour three does not start from zero.
-
-A stage writes one JSONL file per unit of work, keyed by `config_hash`. On
-restart it reads back the keys it already has and skips them.
+A stage appends one JSONL record per unit of work, keyed by `config_hash`; on
+restart it skips the keys it already has.
 """
 
 from __future__ import annotations
@@ -91,7 +86,7 @@ def git_sha() -> str:
 
 def write_manifest(path: Path, *, stage: str, model: str, cfg_hash: str,
                    started: float, extra: dict | None = None) -> Path:
-    """Stamp every output with enough provenance to reproduce or discard it."""
+    """Stamp an output with the provenance needed to reproduce or discard it."""
     import torch
 
     peak = None

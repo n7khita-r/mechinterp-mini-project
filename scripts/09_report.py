@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """Stage 09 -- turn every stage's JSON into the paper's figures and tables.
 
-Writes PDFs into `paper/figures/` and PNGs into `presentation/images/`, plus
-`\\input`-able LaTeX fragments into `paper/tables/`. Runs on CPU; no model is
-loaded. Missing stages are skipped with a note rather than crashing, so the
-paper can be compiled from a partial run.
+CPU only. Missing stages are skipped with a note rather than crashing.
 """
 
 from __future__ import annotations
@@ -32,13 +29,9 @@ PAPER_TAB = REPO_ROOT / "paper" / "tables"
 SLIDE_IMG = REPO_ROOT / "presentation" / "images"
 
 
-# Tasks withheld from the reported tables and figures. `tense` is withheld
-# because its function vector is flat at zero in *every* condition including
-# English, at every layer and every scale. A condition effect shows up as a gap
-# between conditions; an identical zero in the control language is a failure of
-# the method on that task, so the row carries no information about code-mixing
-# and would only invite the reader to over-read it. The raw numbers stay in
-# results/ and the omission is stated in the write-up.
+# Withheld from the reported tables: `tense` is flat at zero in every condition
+# including English, so it measures nothing about code-mixing. Raw numbers stay
+# in results/ and the omission is stated in the write-up.
 EXCLUDE_TASKS = {"tense"}
 
 
@@ -48,7 +41,6 @@ def _drop_excluded(obj):
         return [r for r in obj
                 if not (isinstance(r, dict) and r.get("task") in EXCLUDE_TASKS)]
     if isinstance(obj, dict):
-        # Several files are keyed "task|condition".
         return {k: v for k, v in obj.items()
                 if str(k).split("|")[0] not in EXCLUDE_TASKS}
     return obj
@@ -135,8 +127,7 @@ def main() -> int:
     sim = _load(R / "04_build_fv" / m / "similarity.json")
     if sim:
         keys = [tuple(k) for k in sim["keys"]]
-        # Order task-major so task clustering shows as diagonal blocks and
-        # language clustering as a stripe -- the two hypotheses look different.
+        # Task-major: task clustering then reads as diagonal blocks.
         order = sorted(range(len(keys)),
                        key=lambda i: (keys[i][0], CONDITION_ORDER.index(keys[i][1])))
         M_ = np.array(sim["cosine"])[np.ix_(order, order)]
@@ -168,7 +159,6 @@ def main() -> int:
                                    args.headline_task.replace("_", " ")))
             made.append(PAPER_FIG / "layer_sweep.pdf")
 
-        # Paired condition gaps -- the table the claims rest on.
         if scores:
             deltas = []
             for task in sorted({r["task"] for r in interv}):
@@ -182,7 +172,6 @@ def main() -> int:
             made.append(T.paired_gaps(deltas, PAPER_TAB / "paired_gaps.tex"))
             write_json(out / "paired_gaps.json", deltas)
 
-            # Per-tier degradation, pooled over tasks.
             tier_rows = []
             for cond in CONDITION_ORDER:
                 allsc = [s for k, v in scores.items() if k.endswith(f"|{cond}")

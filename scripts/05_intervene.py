@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 """Stage 05 -- add each function vector to zero-shot prompts.
 
-The test of whether a vector carries the task: with no demonstrations at all,
-does adding v_t make the model do the task?
-
-The edit layer is chosen on a dev slice of the evaluation pool and the headline
-number is then computed at that fixed layer on the held-out remainder. The
-reference reports the maximum over all layers, which is fine with thousands of
-items but optimistically biased with the few dozen hand-authored data affords.
-The full sweep curve is still saved -- its shape is a result in itself.
+Layer and scale are chosen on a dev slice; accuracy is reported on the held-out
+remainder. The full sweep curve is saved too.
 """
 
 from __future__ import annotations

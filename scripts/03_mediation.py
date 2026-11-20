@@ -1,16 +1,7 @@
 #!/usr/bin/env python3
 """Stage 03 -- causal mediation: the indirect effect of every attention head.
 
-One sweep per condition (plus a pooled sweep over all of them), with each trial
-drawing a random task from that condition. The paper averages the indirect
-effect over tasks anyway to get a single universal head set; doing it per
-condition instead makes "do Telugu and English recruit the same heads?" a
-measurable quantity rather than an assumption.
-
-This is the expensive stage. It is batched over heads -- every patch at a given
-layer applies to the same prompt, so the prompt is replicated across the batch
-and each element carries a different head. That turns n_layers x n_heads
-forwards per trial into n_layers: 1,984 -> 62 on the 27B model.
+One sweep per condition, plus a pooled one, batched over heads. The expensive stage.
 """
 
 from __future__ import annotations

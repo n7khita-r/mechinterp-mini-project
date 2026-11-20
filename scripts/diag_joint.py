@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
-"""Joint (layer, scale) search for one cell -- does the sequential choice miss?
+"""Joint (layer, scale) grid search for one cell, on the dev slice.
 
-Stage 05 picks the edit layer at a *fixed* scale, then tunes the scale only at
-that layer. If the best layer depends on the scale, that path can miss a
-combination that works. This evaluates the full grid instead, on the dev slice
-only, and reports whether the joint best beats what the sequential procedure
-found.
-
-    python scripts/diag_joint.py --model configs/model/gemma3_12b_h200.yaml \
-        --task present_past --condition te
-
-Cost is layers x alphas forward passes over the dev slice: with the default
-stride of 4 that is ~12 x 5 = 60 evaluations, a few minutes.
+Reports whether the joint best beats what stage 05's sequential choice found.
 """
 
 from __future__ import annotations
@@ -45,8 +35,7 @@ def main() -> int:
     model, tok, info = M.load_model(mcfg)
     fv = FunctionVector.load(RESULTS / "fv", mcfg.name, args.condition, args.task)
 
-    # Dev slice only: the whole point is to compare against the choice stage 05
-    # made on this same slice, without touching held-out items.
+    # Dev slice only, to compare against stage 05's choice on the same slice.
     items = D.headline(D.load_items(args.task, args.condition, exp), exp)
     split = D.split_items(items, exp)
     filt = RESULTS / "01_baselines" / mcfg.name / "competence_filter.json"
@@ -78,7 +67,6 @@ def main() -> int:
 
     (best_l, best_a), best = max(grid.items(), key=lambda kv: kv[1])
 
-    # What stage 05 actually chose for this cell, for a like-for-like comparison.
     interv = RESULTS / "05_intervene" / mcfg.name / "intervention.json"
     seq = None
     if interv.exists():

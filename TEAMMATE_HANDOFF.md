@@ -26,10 +26,51 @@ task is: give the opposite". You can extract that vector and add it to a
 *zero-shot* prompt — one with no examples — and the model performs the task
 anyway.
 
-That gives us a probe: **if we can extract a working task vector under
-code-mixing, the task representation survived.** If injecting a good vector
-*repairs* the failure, what was missing was the task. If it doesn't, the damage
-is upstream, in reading the input.
+**The logic, stated carefully** (two earlier drafts got this wrong, and an
+expert will catch it):
+
+Injecting a vector and measuring accuracy tests **two things at once** — that a
+good task vector exists, *and* that the model can read the input it is applied
+to. Note also that there is no "failure being repaired": the zero-shot prompt
+never contained the task, so zero-shot accuracy is ~0 in every condition by
+construction.
+
+**Two separate tests pull them apart:**
+
+* **Did a representation form?** Apply the vector *built from* condition X to
+  **English** prompts — input the model reads easily.
+* **Can the model act on one?** Apply the **best** vector from any condition to
+  condition X's prompts.
+
+| `extract_verb` | en | te | rom | tg |
+|---|---|---|---|---|
+| did it form? | 0.98 | 0.46 | **0.01** | **0.00** |
+| can it act? | 0.98 | 0.92 | **0.33** | **0.43** |
+
+| `extract_person` | en | te | rom | tg |
+|---|---|---|---|---|
+| did it form? | 0.84 | 0.88 | 0.85 | 0.85 |
+| can it act? | 0.88 | 0.97 | 0.88 | 0.95 |
+
+**For verb extraction, romanized fails both.** The vector built from romanized
+examples scores 0.01 on *English* prompts, so no usable task representation
+formed at all. For person extraction, neither test fails.
+
+So **do not say "it is failure A, not failure B"** — that was wrong. Romanization
+breaks both the forming and the using of the task representation, and the
+dissociation is between **kinds of answer** (names vs word endings), not between
+stages.
+
+`subject_gender` cannot take the "did it form?" test: English marks no gender,
+so English is not a valid easy input for it.
+
+**The competence filter is unrelated to any of this.** It filters *evaluation
+items* to those the model already answers correctly at 10 shots, so we never
+measure "the model doesn't know this word". It says nothing about vector
+quality. What establishes vector quality is the **controls** (beats random and
+unrelated vectors), the **transfer diagonal**, and the **logit-lens vocabulary**
+(§5g) — and by those measures the `rom` and `tg` vectors for morphology tasks
+are demonstrably *not* good.
 
 **Our answer: the task survives; reading breaks — and selectively.**
 
@@ -349,7 +390,12 @@ make slides-zip                          # sources + PDF as presentation/slides.
   (copies of `paper/tables/`), so regenerating the analysis updates the slides.
 * The controls slide is **aggregated on purpose**. The raw 50-row table is
   unreadable on a projector; the grouped version shows the same controls plus a
-  "fails" column, and the failures are: `antonym/rom`, `next_item/rom`,
+  "fails" column. The four groups are **Word pairs** (antonym, past, plural,
+  next item), **Category / choice** (fruit-vs-animal etc., choose last),
+  **Extract from sentence** (person, place, food, verb) and **Yes/no
+  questions** (negation, subject gender) — each group names its member tasks on
+  the slide itself, because the group labels mean nothing to someone who has
+  not read the dataset. The failures are and the failures are: `antonym/rom`, `next_item/rom`,
   `subject_gender/rom` (too few items); all four `negation` cells,
   `present_past/en`, `subject_gender/en` and `/tg` (below the shuffled floor);
   `present_past/te` and `singular_plural/rom` (unrelated vector matches). Full

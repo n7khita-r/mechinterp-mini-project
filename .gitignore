@@ -46,6 +46,9 @@ logs/
 # Generated bundles (rebuild with: make slides-zip)
 presentation/slides.zip
 presentation.zip
+# Hand-made copies of the deck (the canonical source is presentation/main.tex)
+presentation/mechinterp project ppt/
+presentation/mechinterp project ppt.zip
 
 # OS
 .DS_Store

@@ -156,15 +156,16 @@
     \end{column}
     \begin{column}{0.46\textwidth}
       \vspace{2mm}
-      \begin{itemize}\small\tight
-      \end{itemize}
+      \textbf{Why this matters for us}
       \vspace{1mm}
       \begin{itemize}\footnotesize\tight
-        \item We can \textbf{extract} a task vector from code-mixed
-              prompts
-        \item If pasting the vector in works on a fresh prompt, the model still represents the task. 
-        \item If pasting it in does not help, the problem is further
-              upstream, as the model could not parse the input 
+        \item We build vectors from code-mixed prompts and inject them into
+              zero-shot prompts --- in every condition separately.
+        \item If the vector works, the task representation survived the
+              script change. If it does not, something upstream broke.
+        \item We also cross-inject: a vector built from condition X into
+              condition Y's prompts. That separates what is shared from what is
+              condition-specific.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -302,7 +303,7 @@
         \item Push those through the head's output matrix and add them up (scaled):
       \end{itemize}
       \vspace{-2mm}
-      \begin{equation*}\small
+      \begin{equation*}
         v_{t,c} \;=\; \sum_{h \in \mathcal{H}_c} W_O^{(h)}\, \bar a_h
       \end{equation*}
       \begin{itemize}\footnotesize\tight
@@ -310,7 +311,7 @@
               add $v$ to the model's internal state at one layer $\ell$:
       \end{itemize}
       \vspace{-2mm}
-      \begin{equation*}\small
+      \begin{equation*}
         h^{(\ell)} \;\leftarrow\; h^{(\ell)} + v_{t,c}
       \end{equation*}
     \end{column}

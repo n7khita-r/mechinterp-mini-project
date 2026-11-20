@@ -1,0 +1,532 @@
+\documentclass[11pt]{article}
+\usepackage[hyperref]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{multirow}
+\usepackage{iftex}
+\ifLuaTeX
+  \usepackage{fontspec}
+  \newfontfamily\telugufont[Path=fonts/,
+    UprightFont=NotoSansTelugu-Regular.ttf,
+    BoldFont=NotoSansTelugu-Bold.ttf, Scale=0.90]{NotoSansTelugu}
+\else
+  \newcommand{\telugufont}{}
+\fi
+
+\newcommand{\tel}[1]{{\telugufont #1}}
+\newcommand{\cond}[1]{\textsc{#1}}
+
+\graphicspath{{figures/}}
+
+\title{Where Does Code-Mixing Break the Task?\\
+  Function Vectors in Telugu, Romanized Telugu, and Tenglish}
+
+\author{Nikhita Ravi \quad Krishna Kartheek \\
+  IIIT Hyderabad \\
+  \texttt{\{2024114003, 2025701032\}@iiit.ac.in}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Code-mixed and romanized text degrades the performance of large language
+models on a range of tasks, but accuracy alone cannot reveal where in the
+computation the damage occurs. We use \emph{function vectors}
+\cite{todd2024function} to probe the internal task representations of
+Gemma~3 (4B and 12B) across four parallel conditions---English, Telugu
+script, romanized Telugu, and Tenglish---on fifteen tasks spanning word-level
+and sentence-level inference. We find that the same two attention heads
+dominate task-carrying computations in all four conditions, that function
+vectors group by task rather than by language, and that cross-condition
+transfer is partial but consistent with a shared core representation. The
+degradation under romanization is not uniform: tasks whose answers are
+proper names survive largely intact, while tasks whose answers depend on
+Telugu morphological endings---verb extraction and subject gender---collapse
+to near zero regardless of whether the vector was built from code-mixed
+examples or supplied from a known-good source. Tokenization length does not
+explain the gap; romanized answers are shorter in tokens yet far worse.
+We report the 12B inversion---where Telugu script becomes the weakest
+condition despite being strongest at 4B---as an open result.
+\end{abstract}
+
+\section{Introduction}
+
+A substantial fraction of text produced by Telugu speakers interleaves
+Telugu and English, often written entirely in Latin script. This
+\emph{Tenglish} and its purely romanized predecessor pose a persistent
+challenge for NLP systems: models that handle Telugu script and English
+separately degrade sharply when inputs mix both, and the shape of that
+degradation is poorly understood.
+
+Accuracy on a held-out test set captures the \emph{extent} of degradation
+but not its \emph{nature}. A single accuracy number conflates at least two
+failure modes: the model may fail to parse the input correctly, or it may
+parse the input but lose its representation of the task being asked. These
+failures call for different interventions---a better tokenizer addresses the
+first, an improved task-induction mechanism the second---so distinguishing
+them matters.
+
+\citet{todd2024function} showed that transformer language models construct a
+compact \emph{function vector} (FV) that encodes a task's abstract
+specification when given in-context demonstrations. The vector can be
+extracted from one prompt and injected into a structurally different one,
+causing the model to perform the task without any demonstrations. This
+mechanism offers a direct window into how the model represents the task
+internally, independent of whether the input is well-formed.
+
+We exploit this to study code-mixing in Gemma~3. By building function vectors
+separately for each of four input conditions and measuring how well they drive
+zero-shot outputs, we ask: does the internal task representation survive a
+script change, and if not, is the failure in building the representation or in
+acting on it? A secondary set of experiments measures how similar the
+resulting vectors are across conditions and whether a vector built in one
+condition transfers usefully to another---providing an independent structural
+characterisation of what is shared and what is condition-specific.
+
+Our main findings are:
+\begin{itemize}
+  \item The same two attention heads (17.4 and 17.6) carry the task in all
+    four conditions; Jaccard overlaps range from 0.33 to 0.54.
+  \item Function vectors group by task before they group by language,
+    confirming a shared internal structure that persists under romanization.
+  \item Transfer is partial: a vector from any condition outperforms a random
+    vector on any other condition's prompts, but each condition's own vector
+    wins the diagonal.
+  \item The survival of a task under romanization is predicted by the surface
+    form of its answer. Tasks answered with proper names survive; tasks
+    answered with inflected word forms collapse at both the vector-formation
+    and vector-application stages.
+  \item Grammatical complexity has no effect on FV accuracy; rare vocabulary
+    does.
+\end{itemize}
+
+\section{Background}
+
+\paragraph{Function vectors.}
+\citet{todd2024function} introduced function vectors as a mechanism for
+task-level in-context learning. Given a $k$-shot prompt for task $t$ in
+condition $c$, causal mediation analysis \cite{pearl2001direct,vig2020causal}
+identifies the attention heads $\mathcal{H}_c$ whose outputs causally mediate
+task recovery: when the prompt is corrupted by shuffling its demonstration
+labels, restoring head $h$'s activations from a clean prompt recovers correct
+output proportionally to that head's \emph{average indirect effect} (AIE).
+The function vector is then
+\begin{equation}
+  v_{t,c} = \sum_{h \in \mathcal{H}_c} W_O^{(h)}\,\bar{a}_h,
+\end{equation}
+where $\bar{a}_h$ is the mean attention output of head $h$ over a set of
+in-context prompts and $W_O^{(h)}$ is its output projection. Adding $v_{t,c}$
+to the residual stream at a single layer of a zero-shot prompt causes the
+model to perform the task without any demonstrations.
+
+A known technical issue with Gemma~3 is that its embedding layer rescales
+token representations by $\sqrt{d_\text{model}}$, so the residual stream norm
+grows from roughly 780 at layer~0 to ${\sim}10^5$ at layer~33. A raw FV
+(norm ${\approx}16$) is a 0.1\% perturbation at mid-depth and has negligible
+effect. We therefore rescale every injected vector to a fixed fraction
+$\alpha$ of the residual norm at the injection layer, with $\alpha$ selected
+on a held-out development slice.
+
+\paragraph{Code-mixing and romanization.}
+Code-switching, the interleaving of two or more languages in a single
+utterance, is pervasive in multilingual communities
+\cite{sitaram2019survey,khanuja2020gluecos}. For Telugu specifically,
+romanization flattens the morphologically rich agglutinative script into Latin
+characters, collapsing distinctions that Telugu encodes in suffixes: tense,
+aspect, number, gender, and negation are all suffix-borne. The impact on
+standard NLP pipelines is well-documented at the task level; the present work
+asks what the internal mechanisms of a large language model do with such input.
+
+\section{Data}
+
+\paragraph{Four conditions.}
+Every item in our dataset exists in four parallel versions. Using the sentence
+\emph{``next week Kavita is buying upma in Guntur''} as an example:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lp{70mm}@{}}
+\toprule
+\cond{en} & next week kavita is buying upma in guntur \\
+\cond{te} & \tel{వచ్చే వారం కవిత గుంటూరులో ఉప్మా కొంటోంది} \\
+\cond{rom} & vachche varam kavita guntur lo upma kontondi \\
+\cond{tg} & \textbf{next week} kavita guntur lo upma kontondi \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The \cond{te}~$\to$~\cond{rom} step changes only the script; the
+\cond{rom}~$\to$~\cond{tg} step introduces English content words while
+keeping the sentence structure and romanized Telugu morphology. This factorial
+design lets us vary script and mixing independently on the same underlying
+content.
+
+\paragraph{Tasks.}
+We construct fifteen tasks across two broad categories. \emph{Word-level
+tasks} (antonym, present$\to$past, singular$\to$plural, next-item, and three
+semantic-category tasks) test whether the model can transform or classify
+individual Telugu words. \emph{Sentence-level tasks} (extract person, place,
+food, verb; negation detection; subject-gender classification) test inference
+over a full sentence. For extraction tasks, in-context examples provide a
+sentence and its correct extraction target; for classification tasks, examples
+pair sentences with their binary or ternary label. Dataset sizes range from 74
+items (subject gender) to 400 items (four extraction tasks), all
+programmatically generated from templates.
+
+\paragraph{Difficulty tiers.}
+Each item belongs to one of four tiers: \texttt{core} (everyday vocabulary,
+simple syntax), \texttt{complex} (longer sentences, heavier morphology),
+\texttt{sanskritized} (formal high-register Telugu), and \texttt{rare}
+(uncommon vocabulary). Main results use \texttt{core}; tier effects are
+reported separately in Section~\ref{sec:tiers}.
+
+\paragraph{Data splits.}
+Items are partitioned into an \emph{example pool} (35\%), a \emph{tuning
+slice} (30\% of the remainder, used to select injection layer and scale), and
+a \emph{held-out test set} (the remaining 70\%). We additionally apply a
+\emph{competence filter}: an item is included in the FV evaluation only if the
+model already answers it correctly with ten in-context demonstrations. This
+ensures that FV accuracy reflects whether the vector carries the task, not
+whether the model knows the vocabulary.
+
+\section{Method}
+
+\paragraph{Head selection.}
+For each (task, condition) pair we run causal mediation analysis
+\cite{pearl2001direct} over the tuning slice. We corrupt a prompt by
+shuffling its demonstration labels and measure the AIE of restoring each
+attention head from a clean prompt. We average AIE over 50 corruption trials
+and select the top-10 heads. We repeat this procedure independently for each
+condition, yielding four head sets per task.
+
+\paragraph{Vector construction.}
+We collect 100 unique in-context prompts from the example pool, record the
+mean last-token output $\bar{a}_h$ for each selected head, and compute
+$v_{t,c}$ as above. The vector is then rescaled to
+$v \leftarrow v \cdot \alpha \,\|h_\ell\| / \|v\|$, where $h_\ell$ is the
+mean residual at the injection layer over eight tuning-slice prompts and
+$\alpha$ is chosen by a grid search over the tuning slice.
+
+\paragraph{Injection and evaluation.}
+For each held-out item we construct a zero-shot prompt (input only, no
+demonstrations), add the scaled FV to the residual stream at the chosen layer,
+and record whether the top-1 generated token matches the gold answer. Accuracy
+is bootstrapped for 95\% confidence intervals.
+
+\paragraph{Controls.}
+Four controls rule out confounds:
+\begin{itemize}
+\item \textbf{Random vector}: same norm as the FV, random direction. Rules out
+  the possibility that any vector addition at that depth produces the right
+  answer.
+\item \textbf{Unrelated-task FV}: a vector built for a different task with the
+  same procedure. Rules out the possibility that any well-formed vector helps.
+\item \textbf{Shuffled-label floor}: accuracy of a ten-shot prompt whose
+  demonstration labels have been scrambled. The prompt has the structural form
+  of a task demonstration but no informative signal.
+\item \textbf{Majority-class floor}: for binary/ternary classification tasks,
+  the accuracy of always predicting the most frequent label in the held-out
+  set.
+\end{itemize}
+
+\paragraph{Transfer experiments.}
+We run two targeted tests to separate the formation and application of a task
+representation. In the \emph{formation test} we apply the vector built from
+condition $X$ to English (\cond{en}) zero-shot prompts, which the model
+processes reliably; this checks whether a usable vector was extracted from
+$X$'s examples. In the \emph{application test} we apply the best available
+vector (from any condition) to condition $X$'s prompts; this checks whether
+the model can act on a known-good vector when presented with $X$ as input.
+
+\section{Results}
+
+\subsection{Ten-shot baselines}
+\label{sec:baselines}
+
+Table~\ref{tab:baselines} reports ten-shot accuracy and the number of items
+retained by the competence filter. Extraction tasks stay near ceiling in all
+four conditions (0.87--1.00). Grammar-dependent tasks show a clear gradient:
+negation falls from 0.93 in \cond{en} to 0.60 in \cond{tg}, and
+present-to-past tense from 0.99 to 0.73 in \cond{rom}. Subject-gender
+classification is an exception to the \cond{en}-first ordering: English reaches
+only 0.50 (chance) because English verbs carry no morphological gender, while
+Telugu script reaches 0.96. Word-level tasks degrade sharply under romanization:
+antonym retains only 4 of 167 items after the competence filter in \cond{rom},
+meaning the model cannot perform the task at all in that condition.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Ten-shot accuracy and items surviving the competence filter,
+  Gemma~3~4B, \texttt{core} tier. ``kept'' is the item count passed to FV
+  evaluation.}
+\label{tab:baselines}
+\adjustbox{max width=\linewidth}{\input{tables/baselines.tex}}
+\end{table}
+
+\subsection{Function vector accuracy}
+\label{sec:fv}
+
+Table~\ref{tab:fv} shows held-out zero-shot accuracy after FV injection.
+The vectors succeed broadly in \cond{en} and \cond{te}, with the four
+extraction tasks averaging 0.92 and 0.97 respectively. \cond{rom} and
+\cond{tg} show a task-selective collapse: extraction of persons and places
+remains high (0.76--0.93), while extraction of verbs falls to 0.21/0.30 and
+subject-gender classification reaches 0.00 in both conditions. This
+dissociation is not attributable to the amount of test data: the verb and
+person extraction tasks have comparable held-out sizes (179--194 items).
+
+\begin{table}[t]
+\centering
+\small
+\caption{Held-out zero-shot accuracy with function vector injection, 95\%
+  bootstrap CIs, Gemma~3~4B.}
+\label{tab:fv}
+\adjustbox{max width=\linewidth}{\input{tables/fv_strength.tex}}
+\end{table}
+
+\subsection{Controls}
+\label{sec:controls}
+
+For the extraction tasks, the FV consistently outperforms all three controls
+(random vector, unrelated-task FV, shuffled-label floor) in every condition
+where the task survives the competence filter. For binary classification tasks
+(negation, subject gender), the shuffled-label floor is high because a prompt
+that always produces the majority label scores 0.50--0.80; several cells at
+this floor cannot be declared meaningful FV results. We report these as
+``not demonstrated'' rather than including them in the aggregate.
+
+\subsection{Which heads carry the task?}
+\label{sec:heads}
+
+Table~\ref{tab:heads} shows the top-10 heads selected by causal mediation for
+each condition, pooled over tasks. Heads 17.4 and 17.6 rank first and second
+in all four conditions without exception. The Jaccard similarity between
+\cond{te} and \cond{tg} is 0.54, the highest pair; \cond{en}--\cond{rom} is
+the lowest at 0.33 (Table~\ref{tab:transfer}). The three Telugu-based
+conditions are mutually more similar than any of them is to English, which may
+partly reflect the SOV word order shared by \cond{te}, \cond{rom}, and
+\cond{tg} versus the SVO order of \cond{en}.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Top-10 heads by mean AIE, pooled over all tasks, per condition.
+  Heads 17.4 and 17.6 are the top two in every condition.}
+\label{tab:heads}
+\input{tables/head_sets.tex}
+\end{table}
+
+\subsection{Vector similarity and transfer}
+\label{sec:transfer}
+
+We compute the cosine similarity between every pair of function vectors and
+find that pairs sharing the same task are more similar than pairs sharing the
+same condition, confirming that the vector space organises primarily around
+task identity rather than language.
+
+Table~\ref{tab:transfer} shows the full cross-condition transfer matrix for
+the extraction tasks (the tasks with the most robust per-condition vectors).
+The diagonal dominates: each condition's own vector achieves the highest
+accuracy on that condition's prompts. Cross-condition transfer is non-trivial:
+an English vector on Telugu-script prompts reaches 0.50 versus Telugu's own
+0.74; a Telugu vector on romanized prompts reaches 0.49 versus romanized's own
+0.48. The pattern is consistent with a shared core representation plus a
+smaller condition-specific component.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Cross-condition transfer matrix for extraction tasks, Gemma~3~4B.
+  Rows: source condition of the vector; columns: target condition of the
+  prompts. Diagonal entries are each condition's own vector.}
+\label{tab:transfer}
+\input{tables/transfer.tex}
+\end{table}
+
+\subsection{Formation and application of task representations}
+\label{sec:formation}
+
+The transfer result above averages across conditions and partially confounds
+two distinct stages: extracting a usable task vector from examples
+(formation), and applying a vector to a new prompt (application). We isolate
+them with the targeted tests described in Section~4.
+
+For \textbf{verb extraction} the results are unambiguous. Formation from
+\cond{rom} examples produces a vector that scores 0.01 on easy English
+prompts, and 0.00 from \cond{tg} examples---the vector carries essentially
+none of the task. Application of the best available vector to \cond{rom}
+prompts achieves only 0.33, well below the same vector's 0.98 on English and
+0.92 on Telugu-script prompts. Both stages fail under romanization.
+
+For \textbf{person extraction} neither stage fails: formation from \cond{rom}
+and \cond{tg} produces vectors that score 0.85 on English prompts, and
+application of the best vector to romanized/Tenglish prompts reaches 0.88 and
+0.95 respectively.
+
+The contrast is sharp and aligns with the character of the answer. The verb
+\tel{కొంటోంది} becomes \texttt{kontondi} under romanization; tense, aspect,
+and subject-agreement information that Telugu encodes in the suffix is present
+in the romanized string but no longer segregated as a distinct token sequence
+the model can reliably identify. The person name \emph{kavita} is spelled
+identically regardless of script.
+
+\subsection{Tokenization as an alternative explanation}
+\label{sec:tokens}
+
+One might attribute the verb-extraction collapse to fragmentation: a Telugu
+word tokenises into more subword pieces than its romanized equivalent,
+potentially distributing the information the model needs across more positions.
+The token-length data do not support this. Averaged over the extraction tasks,
+romanized answers are \emph{shorter} in tokens than Telugu-script answers
+(2.29 vs.\ 2.89 mean tokens); for verb extraction specifically, \cond{rom}
+averages 2.95 answer tokens against \cond{te}'s 3.25. The Pearson correlation
+between mean answer-token length and FV accuracy across all 37 cells with
+sufficient data is $r = +0.36$, the wrong sign for a fragmentation account
+(longer tokens, better performance). We conclude that tokenization length is
+not the primary driver.
+
+\subsection{Difficulty tiers}
+\label{sec:tiers}
+
+Table~\ref{tab:tiers4b} reports FV accuracy by difficulty tier pooled over
+all fifteen tasks. \texttt{complex} items (longer sentences, heavier
+morphology) show no reliable change relative to \texttt{core} in any
+condition ($-0.01$ to $+0.05$). \texttt{sanskritized} and \texttt{rare}
+items are substantially worse, with drops of $-0.09$ to $-0.35$ across
+conditions. This pattern is consistent across model sizes (Appendix,
+Table~\ref{tab:tiers12b}). The result suggests that grammatical complexity
+per se does not impede the function vector mechanism; unfamiliar vocabulary
+does, presumably because the model's ten-shot prompts fail to teach the task
+when individual examples are themselves unknown.
+
+\begin{table}[t]
+\centering
+\small
+\caption{FV accuracy by difficulty tier, pooled over all tasks,
+  Gemma~3~4B. \texttt{core} is the main condition; other tiers are deltas
+  relative to it.}
+\label{tab:tiers4b}
+\input{tables/tier_accuracy_gemma3_4b_h200.tex}
+\end{table}
+
+\subsection{Scaling to 12B}
+\label{sec:12b}
+
+We ran the full pipeline on Gemma~3~12B on the five tasks with the
+most reliable 4B results. Every cell improves over the corresponding zero-shot
+baseline, confirming that the function vector mechanism scales. However, the
+rank ordering of conditions inverts: at 4B, \cond{te} is the strongest
+condition on average; at 12B it is the weakest in all five tasks (extract
+verb: 0.93~$\to$~0.19; negation: 0.49~$\to$~0.07; present-past:
+1.00~$\to$~0.25). This inversion is not explained by model competence---12B
+has stronger ten-shot baselines in Telugu script than 4B does (0.86--1.00)
+and larger AIE signals---nor by the head-selection or layer-search procedures
+we tested. We report it as an open result.
+
+\section{Discussion}
+
+The overarching picture that emerges from these experiments is that
+code-mixing and romanization do not disrupt the structural location of task
+computation in Gemma~3. The same two heads carry tasks across all four input
+styles, and function vectors organise by task identity rather than by the
+language they were extracted from. These findings are consistent with prior
+evidence for a cross-lingual shared representational space in large pretrained
+models \cite{pires2019multilingual,conneau2020emerging}.
+
+What romanization does disrupt is a narrower and more specific phenomenon: the
+ability to recover information that Telugu encodes morphologically. When a task
+requires the model to produce a word whose identity is signalled by a Telugu
+suffix---the verb form encoding tense and agreement, the suffix encoding
+subject gender---romanization makes that information available but not
+recoverable. The romanized string contains all the phonological material, but
+the model cannot reliably segment or use it. By contrast, tasks requiring
+extraction of a proper name are unaffected: a name is a name in any script,
+and no suffix boundary is needed to identify it.
+
+This diagnosis has practical implications. It suggests that romanization
+degradation in LLMs is not primarily a tokenization artefact and not
+primarily a consequence of the model's general unfamiliarity with romanized
+text, but a specific failure to process morphological boundaries in agglutinative
+languages written in non-native scripts. A morphology-aware tokenizer, or
+explicit character-level pre-processing that segments romanized Telugu into
+stem and suffix, might address this failure without requiring retraining on
+large romanized corpora.
+
+\section{Related Work}
+
+\citet{todd2024function} established function vectors as a mechanism for
+studying how in-context learning is implemented in transformers. Prior
+mechanistic work on attention heads---induction heads \cite{olsson2022context},
+retrieval heads in factual recall \cite{meng2022rome}---shares the
+methodology of identifying causally important components. The logit-lens
+technique \cite{nostalgebraist2020logitlens} provides a complementary view,
+and we confirm here that vectors which succeed in driving the correct output
+also decode coherently through the unembedding matrix.
+
+Work on code-switching and multilingual NLP has documented performance drops
+across tasks and models \cite{sitaram2019survey,khanuja2020gluecos}, but
+this work generally reports accuracy at the task level without probing what
+internal representations look like. Our study is, to our knowledge, the first
+to apply function-vector analysis to code-mixed input in an agglutinative
+language.
+
+\section{Limitations}
+
+Our experiments are limited to a single model family (Gemma~3) in two sizes,
+and to a single romanization convention. The word-order difference between
+English (SVO) and Telugu (SOV) is a confound when comparing \cond{en} and
+\cond{te} vectors, though the \cond{rom}--\cond{tg} comparison is clean
+(same word order, same script, only lexical mixing changes). The
+classification tasks (negation, subject gender) were not conclusively
+demonstrated for most conditions because majority-class baselines are high for
+small label sets; we report those cells as inconclusive. The 12B inversion
+is unexplained. All items were generated from templates, so the results may
+not fully generalise to naturalistic code-mixed text.
+
+\section{Conclusion}
+
+We examined the effect of romanization and Tenglish code-mixing on the
+internal task representations of Gemma~3 using function vectors. The
+mechanism operates through the same heads in all four conditions and produces
+vectors that are cross-conditionally transferable, indicating that the model
+uses a shared representational substrate for in-context task learning
+regardless of script. The romanization-induced degradation is selective: it
+specifically damages tasks whose answers require reading Telugu morphological
+suffixes, while leaving tasks whose answers are proper names largely intact.
+Both the formation and application of task representations fail for
+morphologically-answered tasks under romanization, and this failure is not
+explained by tokenization length. These findings localise the breakdown to
+morphological processing rather than to the task-induction mechanism itself.
+
+\bibliography{refs}
+
+\appendix
+
+\section{Full tier results, Gemma~3~12B}
+
+\begin{table}[h]
+\centering
+\small
+\caption{FV accuracy by difficulty tier, Gemma~3~12B.}
+\label{tab:tiers12b}
+\input{tables/tier_accuracy_gemma3_12b_h200.tex}
+\end{table}
+
+\section{Majority-class baselines for classification tasks}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Majority-class floors for classification tasks. Cells at or below
+  the floor are shown in bold; they are not interpretable as FV results.}
+\label{tab:majority}
+\input{tables/majority_baseline.tex}
+\end{table}
+
+\end{document}

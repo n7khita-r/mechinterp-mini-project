@@ -160,12 +160,9 @@
       \vspace{1mm}
       \begin{itemize}\footnotesize\tight
         \item We build vectors from code-mixed prompts and inject them into
-              zero-shot prompts --- in every condition separately.
+              zero-shot prompts, in every condition separately.
         \item If the vector works, the task representation survived the
               script change. If it does not, something upstream broke.
-        \item We also cross-inject: a vector built from condition X into
-              condition Y's prompts. That separates what is shared from what is
-              condition-specific.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -615,65 +612,6 @@
 \end{frame}
 
 
-% ===================== FULL 4B RESULTS ==================================== %
-
-\begin{frame}{All 15 tasks: baseline accuracy}
-  \centering
-  \src{10-shot accuracy and items kept by the competence filter, Gemma 3 4B,
-    \texttt{core} tier. ``kept'' is the control: items the model already gets
-    right with examples, which are the only ones we go on to test.}\\[1mm]
-  {\setlength{\tabcolsep}{3.2pt}%
-   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
-     \input{tables/baselines.tex}}}
-  \reading{Extraction tasks are done well in every condition. Word-level
-    tasks (antonym, next item) lose most of their items under romanization, implying the model cannot do
-    the task at all there.}
-\end{frame}
-
-\begin{frame}{All 15 tasks: does the vector restore the task?}
-  \centering
-  \src{Held-out zero-shot accuracy with the function vector, 95\% bootstrap CIs,
-    Gemma 3 4B}\\[1mm]
-  {\setlength{\tabcolsep}{3.0pt}%
-   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
-     \input{tables/fv_strength.tex}}}
-
-\end{frame}
-
-\begin{frame}{Controls}
-  \centering
-  \src{Mean accuracy per group; \textbf{FV} must beat all three controls. 4B}\\[1mm]
-  {\scriptsize\setlength{\tabcolsep}{4.5pt}
-  \begin{tabular}{llcccc c}
-    \toprule
-    task group & cond. & \textbf{FV} & random & unrelated & shuffled & fails \\
-    \midrule
-    Word pairs              & \cond{en}  & 0.58 & 0.00 & 0.03 & 0.21 & 1 of 4 \\
-    {\tiny antonym, past, plural, next} & \cond{te}  & 0.79 & 0.37 & 0.59 & 0.20 & 1 of 4 \\
-                            & \cond{rom} & 0.64 & 0.43 & 0.61 & 0.35 & \textbf{3 of 4} \\
-    \midrule
-    Category / choice       & \cond{en}  & 0.55 & 0.13 & 0.43 & 0.00 & -- \\
-    {\tiny is it a fruit? pick last} & \cond{te}  & 0.71 & 0.01 & 0.48 & 0.01 & -- \\
-                            & \cond{rom} & 0.41 & 0.00 & 0.19 & 0.03 & -- \\
-    \midrule
-    Extract from sentence   & \cond{en}  & \textbf{0.89} & 0.12 & 0.32 & 0.09 & -- \\
-    {\tiny person, place, food, verb} & \cond{te}  & \textbf{0.93} & 0.04 & 0.26 & 0.06 & -- \\
-                            & \cond{rom} & 0.55 & 0.05 & 0.23 & 0.05 & -- \\
-                            & \cond{tg}  & 0.60 & 0.01 & -- & 0.06 & -- \\
-    \midrule
-    Yes/no questions        & \cond{en}  & 0.63 & 0.00 & 0.02 & 0.64 & \textbf{2 of 2} \\
-    {\tiny negated? subject male/female?} & \cond{te}  & 0.71 & 0.00 & 0.00 & 0.57 & 1 of 2 \\
-                            & \cond{rom} & 0.39 & 0.00 & 0.00 & 0.55 & 1 of 2 \\
-                            & \cond{tg}  & 0.22 & 0.00 & -- & 0.60 & \textbf{2 of 2} \\
-    \bottomrule
-  \end{tabular}}
-  \readingsm{Extraction passes every control.Yes/no questions
-    fail everywhere.
-    \textbf{Romanized word pairs fail} on 3--4 surviving items.}
-\end{frame}
-
-
-
 \begin{frame}{Where in the model the task lives}
   \centering
   \includegraphics[width=0.62\linewidth,height=0.56\textheight,keepaspectratio]{layer_sweep.png}\\[0.5mm]
@@ -850,6 +788,64 @@
   {\small Todd, Li, Sharma, Mueller, Wallace, Bau.\\
    Function Vectors in Large Language Models. ICLR 2024.}
   \vfill
+\end{frame}
+
+% ============================================================ APPENDIX === %
+\appendix
+
+\begin{frame}{Appendix: All 15 tasks --- baseline accuracy}
+  \centering
+  \src{10-shot accuracy and items kept by the competence filter, Gemma 3 4B,
+    \texttt{core} tier. ``kept'': items the model already gets right with
+    examples, which are the only ones passed to FV evaluation.}\\[1mm]
+  {\setlength{\tabcolsep}{3.2pt}%
+   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
+     \input{tables/baselines.tex}}}
+  \reading{Extraction tasks stay near ceiling in every condition. Word-level
+    tasks (antonym, next item) lose most items under romanization --- the
+    model cannot perform the task there at all.}
+\end{frame}
+
+\begin{frame}{Appendix: All 15 tasks --- does the vector restore the task?}
+  \centering
+  \src{Held-out zero-shot accuracy with the function vector, 95\% bootstrap
+    CIs, Gemma 3 4B}\\[1mm]
+  {\setlength{\tabcolsep}{3.0pt}%
+   \adjustbox{max width=\linewidth, max totalheight=0.56\textheight}{%
+     \input{tables/fv_strength.tex}}}
+\end{frame}
+
+\begin{frame}{Appendix: Controls}
+  \centering
+  \src{Mean accuracy per group; \textbf{FV} must beat all three controls. 4B}\\[1mm]
+  {\scriptsize\setlength{\tabcolsep}{4.5pt}
+  \begin{tabular}{llcccc c}
+    \toprule
+    task group & cond. & \textbf{FV} & random & unrelated & shuffled & fails \\
+    \midrule
+    Word pairs              & \cond{en}  & 0.58 & 0.00 & 0.03 & 0.21 & 1 of 4 \\
+    {\tiny antonym, past, plural, next} & \cond{te}  & 0.79 & 0.37 & 0.59 & 0.20 & 1 of 4 \\
+                            & \cond{rom} & 0.64 & 0.43 & 0.61 & 0.35 & \textbf{3 of 4} \\
+    \midrule
+    Category / choice       & \cond{en}  & 0.55 & 0.13 & 0.43 & 0.00 & -- \\
+    {\tiny is it a fruit? pick last} & \cond{te}  & 0.71 & 0.01 & 0.48 & 0.01 & -- \\
+                            & \cond{rom} & 0.41 & 0.00 & 0.19 & 0.03 & -- \\
+    \midrule
+    Extract from sentence   & \cond{en}  & \textbf{0.89} & 0.12 & 0.32 & 0.09 & -- \\
+    {\tiny person, place, food, verb} & \cond{te}  & \textbf{0.93} & 0.04 & 0.26 & 0.06 & -- \\
+                            & \cond{rom} & 0.55 & 0.05 & 0.23 & 0.05 & -- \\
+                            & \cond{tg}  & 0.60 & 0.01 & -- & 0.06 & -- \\
+    \midrule
+    Yes/no questions        & \cond{en}  & 0.63 & 0.00 & 0.02 & 0.64 & \textbf{2 of 2} \\
+    {\tiny negated? subject male/female?} & \cond{te}  & 0.71 & 0.00 & 0.00 & 0.57 & 1 of 2 \\
+                            & \cond{rom} & 0.39 & 0.00 & 0.00 & 0.55 & 1 of 2 \\
+                            & \cond{tg}  & 0.22 & 0.00 & -- & 0.60 & \textbf{2 of 2} \\
+    \bottomrule
+  \end{tabular}}
+  \readingsm{Extraction passes every control. Yes/no questions fail
+    everywhere --- with only two possible answers the shuffled floor is
+    already ${\sim}0.6$.
+    \textbf{Romanized word pairs fail} on 3--4 surviving items.}
 \end{frame}
 
 \end{document}

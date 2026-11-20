@@ -1,13 +1,13 @@
 {
   "stage": "08_controls",
   "model": "gemma3_4b_h200",
-  "config_hash": "16ebfd7c1d3e",
+  "config_hash": "f55c147873da",
   "git_sha": "unknown",
   "host": "12c91c669205",
   "slurm_job_id": null,
-  "started": "2026-11-20T01:24:02.221323+00:00",
-  "elapsed_sec": 529.6,
-  "peak_vram_gib": 14.72,
-  "torch": "2.8.0+cu129",
+  "started": "2026-11-20T01:55:27.807877+00:00",
+  "elapsed_sec": 707.9,
+  "peak_vram_gib": 14.69,
+  "torch": "2.15.0+cu132",
   "n_cells": 52
 }

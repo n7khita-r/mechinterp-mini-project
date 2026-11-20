@@ -32,11 +32,33 @@ PAPER_TAB = REPO_ROOT / "paper" / "tables"
 SLIDE_IMG = REPO_ROOT / "presentation" / "images"
 
 
+# Tasks withheld from the reported tables and figures. `tense` is withheld
+# because its function vector is flat at zero in *every* condition including
+# English, at every layer and every scale. A condition effect shows up as a gap
+# between conditions; an identical zero in the control language is a failure of
+# the method on that task, so the row carries no information about code-mixing
+# and would only invite the reader to over-read it. The raw numbers stay in
+# results/ and the omission is stated in the write-up.
+EXCLUDE_TASKS = {"tense"}
+
+
+def _drop_excluded(obj):
+    """Strip withheld tasks from a loaded result file, whatever its shape."""
+    if isinstance(obj, list):
+        return [r for r in obj
+                if not (isinstance(r, dict) and r.get("task") in EXCLUDE_TASKS)]
+    if isinstance(obj, dict):
+        # Several files are keyed "task|condition".
+        return {k: v for k, v in obj.items()
+                if str(k).split("|")[0] not in EXCLUDE_TASKS}
+    return obj
+
+
 def _load(path: Path):
     if not path.exists():
         print(f"  skip: {path.relative_to(REPO_ROOT)} not found")
         return None
-    return read_json(path)
+    return _drop_excluded(read_json(path))
 
 
 def _scores(dicts: list[dict]) -> list[Score]:
@@ -67,6 +89,8 @@ def main() -> int:
     # ---- dataset summary (no model needed) --------------------------------- #
     ds_rows = []
     for task in ALL_TASKS:
+        if task in EXCLUDE_TASKS:
+            continue
         cond = conditions_for(task)[0]
         items = load_items(task, cond, ExpConfig.load(args.exp))
         counts = {t: sum(1 for i in items if i.tier == t) for t in TIERS}

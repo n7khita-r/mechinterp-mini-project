@@ -17,8 +17,19 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-WS=/workspace
-[ -d "$WS" ] || WS="$HOME"
+# Pick the volume with the most free space rather than assuming /workspace.
+# RunPod names a resized or recreated volume /workspace-2, /workspace-3, ... and
+# the original /workspace stays mounted but small, so a hardcoded path sends a
+# 24.5 GB checkpoint to the small volume and fills it mid-run (this has happened).
+WS=""; WS_KB=0
+for v in /workspace /workspace-*; do
+  [ -d "$v" ] || continue
+  KB=$(df -Pk "$v" 2>/dev/null | awk 'NR==2{print $4}')
+  [ -n "$KB" ] || continue
+  if [ "$KB" -gt "$WS_KB" ]; then WS_KB=$KB; WS=$v; fi
+done
+[ -n "$WS" ] || WS="$HOME"
+echo "using volume $WS ($((WS_KB/1024/1024)) GiB free)"
 export HF_HOME="${HF_HOME:-$WS/hf}"
 mkdir -p "$HF_HOME"
 

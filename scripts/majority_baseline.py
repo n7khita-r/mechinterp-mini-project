@@ -49,8 +49,12 @@ def main() -> int:
     interv = {f"{r['task']}|{r['condition']}": r
               for r in json.loads(interv_path.read_text(encoding="utf-8"))}
 
+    # Withheld from the report for the reason given in scripts/09_report.py.
+    exclude = {"tense"}
     rows, suspect = [], []
     for task in PART2_LABEL:
+        if task in exclude:
+            continue
         for cond in conditions_for(task):
             key = f"{task}|{cond}"
             if key not in scores or key not in interv:

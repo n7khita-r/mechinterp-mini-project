@@ -40,7 +40,9 @@ def main() -> int:
     model, tok, info = M.load_model(mcfg)
     todo = cells(resolve_tasks(args.tasks), args.conditions)
 
-    rows, filters, thin = [], {}, []
+    # Per-item scores, so accuracy can be broken down by tier afterwards without
+    # re-running the model. The aggregate rows below cannot support that.
+    rows, filters, thin, per_item = [], {}, [], []
     for task, cond in track(todo, "cells", stage="01_baselines", enabled=not args.no_progress, label=lambda tc: f"{tc[0]}/{tc[1]}"):
         items = D.headline(D.load_items(task, cond, exp), exp)
         split = D.split_items(items, exp)
@@ -76,10 +78,13 @@ def main() -> int:
         row["mean_prompt_tokens"] = row["nshot_mean_prompt_tokens"]
         row["mean_answer_tokens"] = row["nshot_mean_answer_tokens"]
         rows.append(row)
+        per_item += [{"task": task, "condition": cond, "item_id": s.item_id,
+                      "tier": s.tier, "rank": s.rank} for s in nshot]
         if len(kept) < MIN_KEPT_WARN:
             thin.append((task, cond, len(kept)))
 
     write_json(out / "baselines.json", rows)
+    write_json(out / "scores.json", per_item)
     write_json(out / "competence_filter.json", filters)
 
     print(f"\n{'task':20s} {'cond':5s} {'n':>4s} {'10-shot':>8s} {'0-shot':>7s} {'kept':>6s}")

@@ -28,16 +28,23 @@ export PYTHONUNBUFFERED=1
 export TOKENIZERS_PARALLELISM=false
 mkdir -p logs
 
+# 09_report is NOT in the default list. It writes paper/tables/*.tex keyed by
+# stage only, not by model, so running it for a second model silently overwrites
+# the first model's tables -- i.e. the ones the write-up already cites. The 12B
+# numbers are read straight out of results/05_intervene/<model>/ instead.
+# Override if you really want it:  STAGES="... 09_report" bash scripts/run_subset.sh
+STAGES="${STAGES:-00_env_check 01_baselines 02_mean_activations 03_mediation 04_build_fv 05_intervene 06_transfer 08_controls}"
+
 LOG="logs/subset-$(basename "$MODEL" .yaml)-$(date +%Y%m%d-%H%M%S).log"
 M="--model $MODEL --exp $EXP --tasks $TASKS"
 
 {
   echo "model: $MODEL"
   echo "tasks: $TASKS"
+  echo "stages: $STAGES"
   echo "gpu:   $(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>/dev/null || true)"
   echo "started: $(date)"
-  for s in 00_env_check 01_baselines 02_mean_activations 03_mediation \
-           04_build_fv 05_intervene 06_transfer 07_logitlens 08_controls 09_report; do
+  for s in $STAGES; do
     echo; echo "================ $s ================  $(date +%H:%M:%S)"
     python3 "scripts/$s.py" $M
   done

@@ -1,0 +1,30 @@
+{
+  "stage": "01_baselines",
+  "model": "gemma3_4b_h200",
+  "config_hash": "516cdbde0f85",
+  "git_sha": "unknown",
+  "host": "12c91c669205",
+  "slurm_job_id": null,
+  "started": "2026-11-20T02:12:12.324150+00:00",
+  "elapsed_sec": 403.4,
+  "peak_vram_gib": 14.58,
+  "torch": "2.8.0+cu129",
+  "n_cells": 52,
+  "thin_cells": [
+    [
+      "antonym",
+      "rom",
+      9
+    ],
+    [
+      "next_item",
+      "rom",
+      4
+    ],
+    [
+      "colour_vs_animal",
+      "rom",
+      9
+    ]
+  ]
+}

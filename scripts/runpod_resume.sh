@@ -10,13 +10,20 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# Prefer the larger volume if it is mounted.
-if [ -d /workspace-2 ]; then
-  export HF_HOME=/workspace-2/hf
-else
-  echo "WARNING: /workspace-2 not mounted; falling back to /workspace"
-  export HF_HOME=/workspace/hf
-fi
+# Prefer the largest mounted volume. The volume is NOT hardcoded: RunPod names a
+# replacement volume /workspace-2, /workspace-3, ... each time one is resized or
+# recreated, and a hardcoded name silently sends a 24.5 GB download to the small
+# volume and fills it mid-run. Pick by free space instead.
+BEST=""; BEST_KB=0
+for v in /workspace /workspace-*; do
+  [ -d "$v" ] || continue
+  KB=$(df -Pk "$v" 2>/dev/null | awk 'NR==2{print $4}')
+  [ -n "$KB" ] || continue
+  if [ "$KB" -gt "$BEST_KB" ]; then BEST_KB=$KB; BEST=$v; fi
+done
+[ -n "$BEST" ] || { echo "ERROR: no /workspace volume mounted"; exit 1; }
+export HF_HOME="$BEST/hf"
+echo "volume with most free space: $BEST ($((BEST_KB/1024/1024)) GiB free)"
 mkdir -p "$HF_HOME"
 echo "HF_HOME: $HF_HOME"
 df -h "$HF_HOME" | tail -1
@@ -25,7 +32,7 @@ df -h "$HF_HOME" | tail -1
 # possible cache locations -- the cache may have been written under either.
 echo
 echo "clearing unrelated cached repos:"
-for root in /workspace/.cache/huggingface /workspace/hf /workspace-2/hf; do
+for root in /workspace/.cache/huggingface /workspace/hf /workspace-*/hf; do
   [ -d "$root/hub" ] || continue
   for repo in datasets--nikhitaravi--anlp-assn3-data models--nikhitaravi--anlp-assn3 \
               datasets--belumind--en-vi-ja-curated-500k-triplets \

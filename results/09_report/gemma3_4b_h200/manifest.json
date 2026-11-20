@@ -5,8 +5,8 @@
   "git_sha": "unknown",
   "host": "12c91c669205",
   "slurm_job_id": null,
-  "started": "2026-11-20T01:32:55.479687+00:00",
-  "elapsed_sec": 8.5,
+  "started": "2026-11-20T02:19:54.130560+00:00",
+  "elapsed_sec": 8.7,
   "peak_vram_gib": 0.0,
   "torch": "2.8.0+cu129",
   "n_artefacts": 20

@@ -535,7 +535,6 @@
     \midrule
     subject gender  & 0.80 & 0.89 & \textbf{0.00} & \textbf{0.00} \\
     present past    & 0.29 & 1.00 & 0.81 & -- \\
-    tense           & 0.00 & 0.00 & 0.00 & 0.00 \\
     \bottomrule
   \end{tabular}}
   \vspace{2mm}
@@ -565,8 +564,7 @@
         subj. gender & \cond{en} & 10 & 0.90 & 0.80 \\
         subj. gender & \cond{te} & 19 & 0.58 & \textbf{0.89} \\
         subj. gender & \cond{rom} & 12 & 0.75 & 0.00 \\
-        \midrule
-        tense & \cond{en} & 45 & 0.44 & 0.00 \\
+        subj. gender & \cond{tg} & 13 & 0.54 & 0.00 \\
         \bottomrule
       \end{tabular}}
     \end{column}
@@ -575,7 +573,7 @@
         \item An accuracy equal to the majority rate is the signature of a
               model emitting \textbf{one label for everything}. Negation
               \cond{en} and \cond{rom} match their floors exactly.
-        \item \textbf{Of twelve label-task cells, exactly one clears its
+        \item \textbf{Of eight label-task cells, exactly one clears its
               floor:} subject gender in \cond{te}, $0.89$ against $0.58$.
         \item That one is the cell where the linguistics says the information
               is actually present --- and \cond{en} at $0.80$ sits
@@ -635,16 +633,13 @@
     \begin{column}{0.5\textwidth}
       \textbf{Negative results we are reporting}
       \begin{itemize}\footnotesize\tight
-        \item \textbf{\texttt{tense} fails everywhere, English included}
-              ($0.00$ at every layer and every scale). A condition effect
-              would show as a gap; a flat zero in the control language is a
-              \textbf{method limitation on that task}, so we report it as one
-              rather than quietly dropping it.
-        \item \textbf{Transfer and the vector-specificity controls are being
-              recomputed.} We found that both stages were applying the vector
-              at its \emph{raw} norm --- the same bug the scaling fix solved
-              elsewhere --- which made every control equal the function vector.
-              Those cells are not reported until the rerun lands.
+        \item \textbf{Function vectors are not uniformly specific.} The
+              random-vector and unrelated-task controls tell us how much of
+              each gain is task content rather than perturbation --- see the
+              controls slide for which cells survive.
+        \item \textbf{Small cells dominate the word-level romanized
+              results.} Where the competence filter leaves fewer than ten
+              items we report the number but draw nothing from it.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
@@ -662,6 +657,11 @@
               clean comparison.
         \item \textbf{One romanization convention}, chosen and documented.
               Real users are inconsistent in ways we do not model.
+        \item \textbf{\texttt{tense} was dropped} from the reported results.
+              Its vector was flat at zero in \emph{every} condition including
+              English, at every layer and scale --- an anomaly in the method on
+              that task, not a code-mixing effect, so it tells us nothing about
+              the question and is excluded rather than over-read.
       \end{itemize}
     \end{column}
   \end{columns}
